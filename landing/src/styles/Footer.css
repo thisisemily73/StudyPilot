@@ -1,0 +1,28 @@
+/* FOOTER */
+.footer {
+  width: min(100% - 48px, var(--max-width));
+
+  margin: 0 auto;
+  padding: 30px 0;
+
+  border-top: 1px solid var(--border);
+}
+
+.footer-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  font-size: 0.75rem;
+}
+
+.footer-logo {
+  font-weight: 700;
+
+  color: var(--navy);
+}
+
+.footer-copy,
+.footer-year {
+  color: var(--text-muted);
+}

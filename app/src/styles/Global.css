@@ -1,0 +1,41 @@
+* {
+  box-sizing: border-box;
+}
+
+html {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  margin: 0;
+
+  background: var(--background);
+  color: var(--text);
+
+  font-family:
+    Inter,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    sans-serif;
+}
+
+a {
+  color: inherit;
+}
+
+/* APP LAYOUT */
+
+.app {
+  min-height: 100vh;
+}
+
+.app-main {
+  min-height: 100vh;
+
+  margin-left: 240px;
+
+  display: flex;
+  flex-direction: column;
+}

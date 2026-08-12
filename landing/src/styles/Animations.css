@@ -1,0 +1,76 @@
+/* SECTION ANIMATIONS */
+.reveal {
+  opacity: 0;
+
+  transform: translateY(30px);
+
+  transition:
+    opacity 0.7s ease,
+    transform 0.7s ease;
+}
+
+.reveal.visible {
+  opacity: 1;
+
+  transform: translateY(0);
+}
+
+
+/* HERO ANIMATION */
+.hero-content {
+  animation: heroFade 0.8s ease forwards;
+}
+
+.hero-visual {
+  animation: heroVisualFade 0.9s ease 0.15s forwards;
+
+  opacity: 0;
+}
+
+
+@keyframes heroFade {
+  from {
+    opacity: 0;
+
+    transform: translateY(20px);
+  }
+
+  to {
+    opacity: 1;
+
+    transform: translateY(0);
+  }
+}
+
+
+@keyframes heroVisualFade {
+  from {
+    opacity: 0;
+
+    transform: translateY(30px);
+  }
+
+  to {
+    opacity: 1;
+
+    transform: translateY(0);
+  }
+}
+
+
+/* REDUCED MOTION */
+@media (prefers-reduced-motion: reduce) {
+
+  .reveal,
+  .hero-content,
+  .hero-visual {
+    animation: none;
+
+    opacity: 1;
+
+    transform: none;
+
+    transition: none;
+  }
+
+}

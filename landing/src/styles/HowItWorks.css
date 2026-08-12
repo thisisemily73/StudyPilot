@@ -1,0 +1,135 @@
+/* HOW IT WORKS */
+.how-it-works {
+    width: min(100% - 48px, var(--max-width));
+
+    margin: 0 auto;
+    padding: 100px 0 70px;
+}
+
+
+/* FLIGHT PATH */
+.flight-path {
+    max-width: 700px;
+
+    margin: 55px auto 0;
+}
+
+
+/* FLIGHT STOP */
+.flight-stop {
+    display: flex;
+    align-items: flex-start;
+
+    gap: 28px;
+}
+
+
+/* STEP NUMBER */
+.flight-number {
+    width: 52px;
+    height: 52px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid var(--primary);
+    border-radius: 50%;
+    background: var(--surface);
+}
+
+
+/* STEP CONTENT */
+.flight-content h3 {
+    margin: 0;
+
+    font-size: 2rem;
+    font-weight: 650;
+    letter-spacing: -0.04em;
+
+    color: var(--navy);
+}
+
+.flight-content p {
+    max-width: 450px;
+
+    margin: 8px 0 0;
+
+    font-size: 1rem;
+    line-height: 1.65;
+
+    color: var(--text-secondary);
+}
+
+
+/* CONNECTOR */
+.flight-connector {
+    width: 0px; /* CHANGE THIS TO MAKE IT SHOW */
+    height: 55px;
+
+    margin: 12px 0 12px 26px;
+
+    background: var(--border);
+}
+
+
+/* MOBILE */
+@media (max-width: 768px) {
+    .how-it-works {
+        padding: 75px 0 55px;
+    }
+
+    .flight-path {
+        margin-top: 45px;
+    }
+
+    .flight-stop {
+        gap: 20px;
+    }
+
+    .flight-number {
+        width: 40px;
+
+        font-size: 0.72rem;
+    }
+
+    .flight-content h3 {
+        font-size: 1.7rem;
+    }
+
+    .flight-content p {
+        font-size: 0.95rem;
+    }
+
+    .flight-connector {
+        margin-left: 20px;
+    }
+}
+
+
+/* SMALL MOBILE */
+@media (max-width: 480px) {
+    .how-it-works {
+        padding-bottom: 45px;
+    }
+
+    .flight-stop {
+        gap: 16px;
+    }
+
+    .flight-number {
+        width: 32px;
+    }
+
+    .flight-content h3 {
+        font-size: 1.5rem;
+    }
+
+    .flight-content p {
+        font-size: 0.9rem;
+    }
+
+    .flight-connector {
+        height: 40px;
+
+        margin-left: 16px;
+    }
+}

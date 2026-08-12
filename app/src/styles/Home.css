@@ -1,0 +1,182 @@
+/* HOME */
+
+.home {
+  width: min(100% - 72px, 1050px);
+
+  margin: 0 auto;
+
+  padding: 55px 0 100px;
+}
+
+
+/* HEADER */
+
+.home-header {
+  margin-bottom: 55px;
+}
+
+.home-label {
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+
+  color: var(--primary);
+}
+
+.home-header h1 {
+  margin: 12px 0 0;
+
+  font-size: clamp(2.5rem, 5vw, 3.8rem);
+  line-height: 1;
+
+  letter-spacing: -0.055em;
+
+  color: var(--navy);
+}
+
+.home-header p {
+  margin: 18px 0 0;
+
+  font-size: 1rem;
+
+  color: var(--text-secondary);
+}
+
+
+/* SECTION */
+
+.home-section {
+  margin-top: 50px;
+}
+
+.home-section-header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+
+  margin-bottom: 18px;
+}
+
+.home-section-header h2 {
+  margin: 0;
+
+  font-size: 1.15rem;
+  font-weight: 650;
+
+  color: var(--navy);
+}
+
+.home-section-header span {
+  font-size: 0.8rem;
+
+  color: var(--text-muted);
+}
+
+
+/* TASK LIST */
+
+.task-list {
+  overflow: hidden;
+
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+
+  background: var(--surface);
+}
+
+
+.task {
+  min-height: 82px;
+
+  padding: 20px 24px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  border-bottom: 1px solid var(--border);
+
+  transition:
+    background 0.2s ease,
+    transform 0.2s ease;
+}
+
+.task:last-child {
+  border-bottom: none;
+}
+
+.task:hover {
+  background: var(--background);
+}
+
+
+/* TASK INFO */
+
+.task-info {
+  display: flex;
+  flex-direction: column;
+
+  gap: 5px;
+}
+
+.task-subject {
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+
+  text-transform: uppercase;
+
+  color: var(--primary);
+}
+
+.task h3 {
+  margin: 0;
+
+  font-size: 0.95rem;
+  font-weight: 600;
+
+  color: var(--navy);
+}
+
+
+/* DURATION */
+
+.task-duration {
+  font-size: 0.8rem;
+  font-weight: 500;
+
+  color: var(--text-secondary);
+}
+
+
+/* UPCOMING */
+
+.upcoming {
+  margin-top: 55px;
+}
+
+.upcoming-list {
+  display: flex;
+  flex-direction: column;
+
+  border-top: 1px solid var(--border);
+}
+
+.upcoming-item {
+  padding: 17px 4px;
+
+  display: flex;
+  justify-content: space-between;
+
+  border-bottom: 1px solid var(--border);
+
+  font-size: 0.9rem;
+
+  color: var(--navy);
+}
+
+.upcoming-item small {
+  font-size: 0.8rem;
+
+  color: var(--text-muted);
+}

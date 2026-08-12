@@ -1,0 +1,321 @@
+/* PLANNER */
+
+.planner {
+  width: min(100% - 72px, 1150px);
+
+  margin: 0 auto;
+
+  padding: 55px 0 100px;
+}
+
+
+/* HEADER */
+
+.planner-header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+
+  margin-bottom: 40px;
+}
+
+.planner-label {
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+
+  color: var(--primary);
+}
+
+.planner-header h1 {
+  margin: 12px 0 0;
+
+  font-size: clamp(2.5rem, 5vw, 3.8rem);
+  line-height: 1;
+
+  letter-spacing: -0.055em;
+
+  color: var(--navy);
+}
+
+.planner-header p {
+  margin: 18px 0 0;
+
+  font-size: 1rem;
+
+  color: var(--text-secondary);
+}
+
+
+/* ADD TASK */
+
+.add-task-button {
+  padding: 11px 18px;
+
+  border: none;
+  border-radius: var(--radius-pill);
+
+  background: var(--navy);
+  color: white;
+
+  font-family: inherit;
+  font-size: 0.85rem;
+  font-weight: 600;
+
+  cursor: pointer;
+}
+
+
+/* WEEK CONTROLS */
+
+.week-controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  gap: 20px;
+
+  margin-bottom: 20px;
+}
+
+.week-controls span {
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+
+  color: var(--text-secondary);
+}
+
+.week-arrow {
+  width: 30px;
+  height: 30px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border: 1px solid var(--border);
+  border-radius: 50%;
+
+  background: var(--surface);
+
+  color: var(--text-secondary);
+
+  cursor: pointer;
+
+  transition:
+    background 0.2s ease,
+    color 0.2s ease;
+}
+
+.week-arrow:hover {
+  background: var(--background);
+  color: var(--navy);
+}
+
+
+/* WEEK */
+
+.planner-week {
+  display: grid;
+
+  grid-template-columns: repeat(5, 1fr);
+
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+}
+
+
+/* DAY */
+
+.planner-day {
+  min-height: 420px;
+
+  padding: 20px 16px;
+
+  border-right: 1px solid var(--border);
+}
+
+.planner-day:last-child {
+  border-right: none;
+}
+
+
+/* TODAY */
+
+.planner-day.today {
+  background: rgba(15, 23, 42, 0.018);
+}
+
+
+/* DAY HEADER */
+
+.day-header {
+  min-height: 75px;
+
+  display: flex;
+  flex-direction: column;
+
+  gap: 2px;
+
+  padding-bottom: 16px;
+
+  border-bottom: 1px solid var(--border);
+}
+
+.day-header span {
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+
+  color: var(--text-muted);
+}
+
+.day-header strong {
+  font-size: 1.7rem;
+  line-height: 1;
+
+  font-weight: 650;
+
+  color: var(--navy);
+}
+
+.day-header small {
+  margin-top: 5px;
+
+  font-size: 0.58rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+
+  color: var(--primary);
+}
+
+
+/* TASKS */
+
+.day-tasks {
+  display: flex;
+  flex-direction: column;
+
+  gap: 9px;
+
+  padding-top: 14px;
+}
+
+
+/* TASK */
+
+.planner-task {
+  padding: 13px;
+
+  display: flex;
+  flex-direction: column;
+
+  gap: 5px;
+
+  border: 1px solid var(--border);
+  border-radius: 10px;
+
+  background: var(--surface);
+
+  transition:
+    background 0.18s ease,
+    border-color 0.18s ease;
+}
+
+.planner-task:hover {
+  background: rgba(15, 23, 42, 0.03);
+
+  border-color: rgba(15, 23, 42, 0.34);
+}
+
+.planner-task span {
+  font-size: 0.57rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+
+  color: var(--primary);
+}
+
+.planner-task strong {
+  font-size: 0.78rem;
+  line-height: 1.35;
+
+  color: var(--navy);
+}
+
+.planner-task small {
+  margin-top: 3px;
+
+  font-size: 0.68rem;
+
+  color: var(--text-muted);
+}
+
+
+/* EMPTY */
+
+.day-empty {
+  padding: 20px 2px;
+
+  font-size: 0.75rem;
+
+  color: var(--text-muted);
+}
+
+
+/* SUMMARY */
+
+.week-summary {
+  display: flex;
+  align-items: center;
+
+  gap: 12px;
+
+  padding: 20px 4px;
+}
+
+.week-summary span {
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+
+  color: var(--primary);
+}
+
+.week-summary strong {
+  font-size: 0.8rem;
+
+  color: var(--navy);
+}
+
+.week-summary small {
+  font-size: 0.75rem;
+
+  color: var(--text-muted);
+}
+
+
+/* MOBILE */
+
+@media (max-width: 900px) {
+
+  .planner {
+    width: min(100% - 40px, 1150px);
+  }
+
+  .planner-week {
+    overflow-x: auto;
+
+    grid-template-columns: repeat(5, minmax(180px, 1fr));
+  }
+
+  .planner-header {
+    align-items: flex-start;
+
+    flex-direction: column;
+
+    gap: 25px;
+  }
+
+}
