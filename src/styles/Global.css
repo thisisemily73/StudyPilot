@@ -77,7 +77,6 @@ input {
   color: var(--text-secondary);
 }
 
-
 /* MOBILE */
 @media (max-width: 768px) {
   .hero {
