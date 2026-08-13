@@ -1,12 +1,29 @@
 import { useTasks } from "../context/TaskContext"
 import { formatUpcomingDate, daysUntil } from "../utils/dateUtils"
+import type { Task } from "../types/Task"
 
-function UpcomingTasks() {
+type UpcomingTasksProps = {
+    weekEnd: Date
+    onEdit: (task: Task) => void
+}
+
+function UpcomingTasks({
+    weekEnd,
+    onEdit,
+}: UpcomingTasksProps) {
 
     const { tasks } = useTasks()
 
     const upcomingTasks = tasks
-        .filter((task) => !task.completed)
+        .filter((task) => {
+            if (task.completed) {
+                return false
+            }
+
+            const dueDate = new Date(`${task.dueDate}T00:00:00`)
+
+            return dueDate > weekEnd
+        })
         .sort(
             (a, b) =>
                 new Date(a.dueDate).getTime() -
@@ -75,13 +92,20 @@ function UpcomingTasks() {
 
                         </div>
 
+                        <button
+                            type="button"
+                            className="upcoming-task-edit-button"
+                            onClick={() => onEdit(task)}
+                            aria-label={`Edit ${task.title}`}
+                        >
+                            Edit
+                        </button>
 
                         <div className="upcoming-time">
 
                             {task.estimatedMinutes} min
 
                         </div>
-
                     </div>
 
                 ))}

@@ -13,6 +13,7 @@ import { initialTasks } from "../data/tasks"
 type TaskContextType = {
     tasks: Task[]
     addTask: (task: Task) => void
+    updateTask: (task: Task) => void
     toggleTask: (id: string) => void
     deleteTask: (id: string) => void
 }
@@ -67,6 +68,16 @@ export function TaskProvider({ children }: { children: ReactNode }) {
         )
     }
 
+    function updateTask(updatedTask: Task) {
+    setTasks((currentTasks) =>
+        currentTasks.map((task) =>
+            task.id === updatedTask.id
+                ? updatedTask
+                : task
+        )
+    )
+}
+
 
     return (
         <TaskContext.Provider
@@ -75,6 +86,7 @@ export function TaskProvider({ children }: { children: ReactNode }) {
                 addTask,
                 toggleTask,
                 deleteTask,
+                updateTask
             }}
         >
             {children}

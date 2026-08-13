@@ -1,7 +1,9 @@
 import { useState } from "react"
 import AddTaskModal from "../components/AddTaskModal.tsx"
+import TaskCard from "../components/TaskCard.tsx"
 
-import { useTasks } from '../context/TaskContext.tsx'
+import { useTasks } from "../context/TaskContext.tsx"
+import type { Task } from "../types/Task"
 
 import {
     startOfWeek,
@@ -11,11 +13,14 @@ import {
     formatDayNumber,
     formatWeekRange,
 } from "../utils/dateUtils"
+
 import UpcomingTasks from "../components/UpcomingTasks.tsx"
 
 function Planner() {
     const { tasks, toggleTask } = useTasks()
+
     const [showAddTask, setShowAddTask] = useState(false)
+    const [selectedTask, setSelectedTask] = useState<Task | null>(null)
 
     {/* WEEK OFFSET */ }
     const [weekOffset, setWeekOffset] = useState(0)
@@ -27,6 +32,11 @@ function Planner() {
     const displayedWeekStart = addDays(
         currentWeekStart,
         weekOffset * 7
+    )
+
+    const displayedWeekEnd = addDays(
+        displayedWeekStart,
+        6
     )
 
     {/* GENERATE WEEKDAYS AND WEEKEND DAYS */ }
@@ -110,6 +120,13 @@ function Planner() {
                     />
                 )}
 
+                {selectedTask && (
+                    <AddTaskModal
+                        task={selectedTask}
+                        onClose={() => setSelectedTask(null)}
+                    />
+                )}
+
             </div>
 
 
@@ -183,30 +200,12 @@ function Planner() {
 
                                 {dayTasks.map((task) => (
 
-                                    <div
-                                        className={`planner-task ${task.completed
-                                            ? "completed"
-                                            : ""
-                                            }`}
+                                    <TaskCard
                                         key={task.id}
-                                        onClick={() =>
-                                            toggleTask(task.id)
-                                        }
-                                    >
-
-                                        <span>
-                                            {task.subject}
-                                        </span>
-
-                                        <strong>
-                                            {task.title}
-                                        </strong>
-
-                                        <small>
-                                            {task.estimatedMinutes} min
-                                        </small>
-
-                                    </div>
+                                        task={task}
+                                        onToggle={() => toggleTask(task.id)}
+                                        onEdit={() => setSelectedTask(task)}
+                                    />
 
                                 ))}
 
@@ -306,30 +305,12 @@ function Planner() {
 
                                     {dayTasks.map((task) => (
 
-                                        <div
-                                            className={`planner-task ${task.completed
-                                                ? "completed"
-                                                : ""
-                                                }`}
+                                        <TaskCard
                                             key={task.id}
-                                            onClick={() =>
-                                                toggleTask(task.id)
-                                            }
-                                        >
-
-                                            <span>
-                                                {task.subject}
-                                            </span>
-
-                                            <strong>
-                                                {task.title}
-                                            </strong>
-
-                                            <small>
-                                                {task.estimatedMinutes} min
-                                            </small>
-
-                                        </div>
+                                            task={task}
+                                            onToggle={() => toggleTask(task.id)}
+                                            onEdit={() => setSelectedTask(task)}
+                                        />
 
                                     ))}
 
@@ -352,7 +333,10 @@ function Planner() {
 
             </section>
 
-            <UpcomingTasks />
+            <UpcomingTasks
+                weekEnd={displayedWeekEnd}
+                onEdit={setSelectedTask}
+            />
 
         </section>
 
