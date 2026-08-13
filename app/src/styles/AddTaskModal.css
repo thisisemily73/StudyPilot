@@ -1,0 +1,173 @@
+.modal-overlay {
+  position: fixed;
+
+  inset: 0;
+
+  z-index: 2000;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 24px;
+
+  background: rgba(15, 23, 42, 0.25);
+
+  backdrop-filter: blur(6px);
+}
+
+
+.task-modal {
+  width: min(100%, 460px);
+
+  padding: 28px;
+
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+
+  background: var(--surface);
+
+  box-shadow:
+    0 25px 70px rgba(15, 23, 42, 0.15);
+}
+
+
+.task-modal-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+
+  margin-bottom: 28px;
+}
+
+
+.task-modal-header span {
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+
+  color: var(--primary);
+}
+
+
+.task-modal-header h2 {
+  margin: 7px 0 0;
+
+  font-size: 1.5rem;
+  letter-spacing: -0.035em;
+
+  color: var(--navy);
+}
+
+
+.modal-close {
+  width: 30px;
+  height: 30px;
+
+  border: none;
+  border-radius: 50%;
+
+  background: transparent;
+
+  color: var(--text-secondary);
+
+  font-size: 1.3rem;
+
+  cursor: pointer;
+}
+
+
+.modal-close:hover {
+  background: var(--background);
+}
+
+
+.task-modal form {
+  display: flex;
+  flex-direction: column;
+
+  gap: 18px;
+}
+
+
+.task-modal label {
+  display: flex;
+  flex-direction: column;
+
+  gap: 7px;
+
+  font-size: 0.7rem;
+  font-weight: 600;
+
+  color: var(--navy);
+}
+
+
+.task-modal input,
+.task-modal select {
+  width: 100%;
+
+  box-sizing: border-box;
+
+  padding: 11px 12px;
+
+  border: 1px solid var(--border);
+  border-radius: 9px;
+
+  background: var(--surface);
+
+  color: var(--navy);
+
+  font-family: inherit;
+  font-size: 0.8rem;
+
+  outline: none;
+}
+
+
+.task-modal input:focus,
+.task-modal select:focus {
+  border-color: var(--primary);
+}
+
+
+.task-modal-actions {
+  display: flex;
+  justify-content: flex-end;
+
+  gap: 10px;
+
+  margin-top: 10px;
+}
+
+
+.cancel-button,
+.add-task-button {
+  padding: 10px 16px;
+
+  border-radius: var(--radius-pill);
+
+  font-family: inherit;
+  font-size: 0.75rem;
+  font-weight: 600;
+
+  cursor: pointer;
+}
+
+
+.cancel-button {
+  border: 1px solid var(--border);
+
+  background: transparent;
+
+  color: var(--text-secondary);
+}
+
+
+.add-task-button {
+  border: none;
+
+  background: var(--primary);
+
+  color: white;
+}

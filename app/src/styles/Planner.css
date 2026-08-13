@@ -53,7 +53,7 @@
   padding: 11px 18px;
 
   border: none;
-  border-radius: var(--radius-pill);
+  border-radius: 12px;
 
   background: var(--navy);
   color: white;
@@ -295,6 +295,316 @@
   color: var(--text-muted);
 }
 
+.add-task-trigger {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 9px 15px;
+
+  border: 1px solid var(--border);
+  border-radius: 12px;
+
+  background: var(--navy);
+
+  color: var(--surface);
+
+  font-family: inherit;
+  font-size: 0.75rem;
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition:
+    background 0.18s ease,
+    border-color 0.18s ease,
+    transform 0.18s ease;
+}
+
+.add-task-trigger:hover {
+  border-color: rgba(15, 23, 42, 0.34);
+}
+
+.add-task-trigger:active {
+  transform: translateY(0);
+}
+
+/* UPCOMING */
+
+.upcoming {
+    margin-top: 42px;
+}
+
+
+/* HEADER */
+
+.upcoming-header {
+    margin-bottom: 18px;
+}
+
+.upcoming-header h2 {
+    margin: 5px 0 4px;
+
+    font-size: 1.35rem;
+    font-weight: 650;
+    letter-spacing: -0.03em;
+
+    color: var(--navy);
+}
+
+.upcoming-header p {
+    margin: 0;
+
+    font-size: 0.85rem;
+
+    color: var(--text-secondary);
+}
+
+
+/* LIST */
+
+.upcoming-list {
+    display: flex;
+    flex-direction: column;
+
+    gap: 8px;
+}
+
+
+/* TASK */
+
+.upcoming-task {
+    display: flex;
+    align-items: center;
+
+    min-height: 72px;
+
+    padding: 14px 18px;
+
+    border: 1px solid var(--border);
+    border-radius: 12px;
+
+    background: var(--surface);
+
+    transition:
+        background 0.18s ease,
+        border-color 0.18s ease;
+}
+
+.upcoming-task:hover {
+    border-color: rgba(15, 23, 42, 0.34);
+}
+
+
+/* DATE */
+
+.upcoming-date {
+    width: 82px;
+
+    display: flex;
+    flex-direction: column;
+
+    gap: 3px;
+}
+
+.upcoming-date strong {
+    font-size: 0.78rem;
+    font-weight: 700;
+
+    letter-spacing: 0.02em;
+
+    color: var(--navy);
+}
+
+.upcoming-date span {
+    font-size: 0.65rem;
+    font-weight: 600;
+
+    letter-spacing: 0.04em;
+
+    color: var(--text-secondary);
+}
+
+
+/* DIVIDER */
+
+.upcoming-divider {
+    width: 1px;
+    height: 32px;
+
+    margin-right: 18px;
+
+    background: var(--border);
+}
+
+
+/* INFO */
+
+.upcoming-info {
+    flex: 1;
+
+    display: flex;
+    flex-direction: column;
+
+    gap: 4px;
+}
+
+.upcoming-info span {
+    font-size: 0.65rem;
+    font-weight: 700;
+
+    letter-spacing: 0.06em;
+
+    color: var(--text-secondary);
+}
+
+.upcoming-info strong {
+    font-size: 0.88rem;
+    font-weight: 600;
+
+    color: var(--navy);
+}
+
+
+/* TIME */
+
+.upcoming-time {
+    font-size: 0.72rem;
+    font-weight: 500;
+
+    color: var(--text-secondary);
+}
+
+/* PLANNER SHORTCUTS */
+
+.planner-shortcuts {
+    display: flex;
+    justify-content: flex-end;
+
+    margin-top: 24px;
+    margin-bottom: 12px;
+}
+
+.planner-shortcut {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+
+    padding: 7px 11px;
+
+    border: 1px solid var(--border);
+    border-radius: 999px;
+
+    background: var(--surface);
+
+    color: var(--text-secondary);
+
+    font-family: inherit;
+    font-size: 0.7rem;
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition:
+        background 0.18s ease,
+        color 0.18s ease;
+}
+
+.planner-shortcut:hover {
+    background: var(--background);
+    color: var(--navy);
+}
+
+.planner-shortcut span {
+    font-size: 0.85rem;
+}
+
+/* PLANNER ACTIONS */
+
+.planner-actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.planner-action {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+
+    padding: 9px 12px;
+
+    border: 1px solid var(--border);
+    border-radius: 9px;
+
+    background: var(--surface);
+
+    color: var(--text-secondary);
+
+    font-family: inherit;
+    font-size: 0.72rem;
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition:
+        background 0.18s ease,
+        color 0.18s ease,
+        border-color 0.18s ease;
+}
+
+.planner-action:hover {
+    color: var(--navy);
+    border-color: rgba(15, 23, 42, 0.34);
+}
+
+.planner-action span {
+    font-size: 0.8rem;
+}
+
+/* WEEKEND GRID */
+
+.weekend {
+    margin-top: 42px;
+}
+
+.weekend-header {
+    margin-bottom: 18px;
+}
+
+.weekend-header h2 {
+    margin: 5px 0 4px;
+
+    font-size: 1.35rem;
+    font-weight: 650;
+    letter-spacing: -0.03em;
+
+    color: var(--navy);
+}
+
+.weekend-header p {
+    margin: 0;
+
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+}
+
+.weekend-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+}
+
+.weekend-day {
+    min-height: 150px;
+
+    padding: 18px;
+
+    border: 1px solid var(--border);
+    border-radius: 12px;
+
+    background: var(--surface);
+}
 
 /* MOBILE */
 
