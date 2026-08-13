@@ -14,6 +14,10 @@ function Sidebar() {
                     Flight Plan
                 </NavLink>
 
+                <NavLink to="/todo" className="sidebar-link">
+                    To-Do
+                </NavLink>
+
                 <NavLink to="/planner" className="sidebar-link">
                     Planner
                 </NavLink>

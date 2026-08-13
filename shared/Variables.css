@@ -12,6 +12,9 @@
 
   --border: #e2e8f0;
 
+  --completed: #4f7d62;
+  --incomplete: #b45353;
+
   --radius-sm: 8px;
   --radius-md: 14px;
   --radius-lg: 24px;

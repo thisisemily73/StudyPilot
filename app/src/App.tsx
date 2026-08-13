@@ -8,6 +8,7 @@ import Planner from './pages/Planner'
 import Subjects from './pages/Subjects'
 import Progress from './pages/Progress'
 import Settings from './pages/Settings'
+import Todo from './pages/Todo'
 
 function App() {
     return (
@@ -25,6 +26,8 @@ function App() {
                         <Routes>
 
                             <Route path="/" element={<Home />} />
+
+                            <Route path="/todo" element={<Todo />} />
 
                             <Route path="/planner" element={<Planner />} />
 

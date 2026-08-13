@@ -275,6 +275,32 @@
         color 0.15s ease;
 }
 
+.planner-task-meta {
+    width: 100%;
+
+    display: flex;
+    align-items: center;
+}
+
+.task-status {
+    margin-left: auto;
+
+    font-size: 0.55rem;
+    font-weight: 700;
+
+    letter-spacing: 0.08em;
+
+    text-align: right;
+}
+
+.task-status.ready {
+    color: var(--incomplete);
+}
+
+.task-status.landed {
+    color: var(--completed);
+}
+
 .planner-task:hover {
     background: rgba(15, 23, 42, 0.03);
 

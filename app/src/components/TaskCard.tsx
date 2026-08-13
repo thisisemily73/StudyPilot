@@ -33,9 +33,23 @@ function TaskCard({
                 </div>
 
 
-                <small>
-                    {task.estimatedMinutes} min
-                </small>
+                <div className="planner-task-meta">
+
+                    <small>
+                        {task.estimatedMinutes} min
+                    </small>
+
+                    <span
+                        className={`task-status ${task.completed ? "landed" : "ready"
+                            }`}
+                    >
+                        {task.completed
+                            ? "LANDED"
+                            : "READY FOR TAKEOFF"
+                        }
+                    </span>
+
+                </div>
 
                 <button
                     type="button"
