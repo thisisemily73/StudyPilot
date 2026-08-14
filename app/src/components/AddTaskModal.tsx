@@ -1,5 +1,7 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { useTasks } from "../context/TaskContext"
+import { useSubjects } from "../context/SubjectContext"
+
 import type { Task } from "../types/Task"
 
 type AddTaskModalProps = {
@@ -10,12 +12,13 @@ type AddTaskModalProps = {
 function AddTaskModal({ onClose, task }: AddTaskModalProps) {
 
     const { addTask, updateTask, deleteTask } = useTasks()
+    const { subjects } = useSubjects()
 
     const isEditing = Boolean(task)
 
     const [title, setTitle] = useState(task?.title ?? "")
     const [subject, setSubject] = useState(
-        task?.subject ?? "AP Chemistry"
+        task?.subject ?? ""
     )
     const [dueDate, setDueDate] = useState(task?.dueDate ?? "")
     const [estimatedMinutes, setEstimatedMinutes] = useState(
@@ -70,6 +73,14 @@ function AddTaskModal({ onClose, task }: AddTaskModalProps) {
         deleteTask(task.id)
         onClose()
     }
+
+    useEffect(() => {
+
+        if (!task && !subject && subjects.length > 0) {
+            setSubject(subjects[0].name)
+        }
+
+    }, [subjects, task, subject])
 
 
     return (
@@ -150,16 +161,24 @@ function AddTaskModal({ onClose, task }: AddTaskModalProps) {
                         </label>
 
                         <select
-                            id="task-subject"
                             value={subject}
                             onChange={(event) =>
                                 setSubject(event.target.value)
                             }
+                            required
                         >
-                            <option>AP Chemistry</option>
-                            <option>AP Calculus BC</option>
-                            <option>AP Language</option>
-                            <option>AP Psychology</option>
+                            <option value="" disabled>
+                                Select a subject
+                            </option>
+
+                            {subjects.map((subjectOption) => (
+                                <option
+                                    key={subjectOption.id}
+                                    value={subjectOption.name}
+                                >
+                                    {subjectOption.name}
+                                </option>
+                            ))}
                         </select>
 
                     </div>

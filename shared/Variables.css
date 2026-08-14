@@ -15,6 +15,12 @@
   --completed: #4f7d62;
   --incomplete: #b45353;
 
+  --status-ready: #d97706;
+  --status-flight: #e7a518;
+  --status-landed: #16a34a;
+  --status-delayed: #dc2626;
+  --status-ahead: #5680d9;
+
   --radius-sm: 8px;
   --radius-md: 14px;
   --radius-lg: 24px;

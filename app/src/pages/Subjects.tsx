@@ -1,4 +1,25 @@
+import { useState } from "react"
+
+import { useSubjects } from "../context/SubjectContext"
+import AddSubjectModal from "../components/AddSubjectModal"
+
+import { useTasks } from "../context/TaskContext"
+import {
+    getSubjectStatus,
+    getSubjectProgress,
+} from "../utils/subjectStatus"
+
+
 function Subjects() {
+
+    const { subjects, deleteSubject } = useSubjects()
+
+    const { tasks } = useTasks()
+
+    const [showAddSubject, setShowAddSubject] =
+        useState(false)
+
+
     return (
         <section className="subjects">
 
@@ -6,17 +27,29 @@ function Subjects() {
 
             <div className="subjects-header">
 
-                <span className="subjects-label">
-                    DESTINATIONS
-                </span>
+                <div className="subjects-header-content">
 
-                <h1>
-                    Your subjects.
-                </h1>
+                    <span className="subjects-label">
+                        DESTINATIONS
+                    </span>
 
-                <p>
-                    Everything you're studying, cleared for takeoff.
-                </p>
+                    <h1>
+                        Your subjects.
+                    </h1>
+
+                    <p>
+                        Everything you're studying, cleared for takeoff.
+                    </p>
+
+                </div>
+
+
+                <button
+                    className="add-subject"
+                    onClick={() => setShowAddSubject(true)}
+                >
+                    + Add subject
+                </button>
 
             </div>
 
@@ -25,233 +58,213 @@ function Subjects() {
 
             <div className="subject-grid">
 
+                {subjects.map((subject) => {
 
-                {/* CHEMISTRY */}
+                    const status = getSubjectStatus(
+                        tasks,
+                        subject.name
+                    )
 
-                <div className="subject-card">
+                    const progress = getSubjectProgress(
+                        tasks,
+                        subject.name
+                    )
 
-                    <div className="subject-card-top">
+                    const subjectTasks = tasks.filter(
+                        (task) =>
+                            task.subject === subject.name
+                    )
 
-                        <span className="subject-code">
-                            AP CHEMISTRY
-                        </span>
+                    const activeTasks =
+                        subjectTasks.filter(
+                            (task) => !task.completed
+                        ).length
 
-                        <span className="subject-status">
-                            ON COURSE
-                        </span>
+                    const upcomingTasks =
+                        subjectTasks.filter(
+                            (task) => !task.completed
+                        ).length
 
-                    </div>
-
-                    <h2>
-                        Chemistry
-                    </h2>
-
-                    <p>
-                        4 active tasks
-                    </p>
+                    const levelLabel =
+                        subject.level === "ap"
+                            ? "ADVANCED PLACEMENT"
+                            : subject.level === "honors"
+                                ? "HONORS / ACCELERATED"
+                                : "REGULAR"
 
 
-                    <div className="subject-progress">
+                    return (
 
-                        <div className="progress-track">
-                            <div
-                                className="progress-fill"
-                                style={{ width: "72%" }}
-                            />
+                        <div
+                            className="subject-card"
+                            key={subject.id}
+                        >
+
+                            {/* TOP */}
+
+                            <div className="subject-card-top">
+
+                                <span className="subject-code">
+                                    {levelLabel}
+                                </span>
+
+                                <span
+                                    className={`subject-status ${status
+                                        .toLowerCase()
+                                        .replaceAll(" ", "-")
+                                        }`}
+                                >
+                                    {status}
+                                </span>
+
+                                <button
+                                    type="button"
+                                    className="subject-delete-button"
+                                    onClick={() => {
+
+                                        const confirmed =
+                                            window.confirm(
+                                                `Remove ${subject.name} from your subjects?`
+                                            )
+
+                                        if (confirmed) {
+                                            deleteSubject(subject.id)
+                                        }
+
+                                    }}
+                                    aria-label={`Remove ${subject.name}`}
+                                >
+                                    ×
+                                </button>
+
+                            </div>
+
+
+                            {/* NAME */}
+
+                            <h2>
+                                {subject.name}
+                            </h2>
+
+
+                            {/* TASK COUNT */}
+
+                            <p>
+                                {activeTasks} active{" "}
+                                {activeTasks === 1
+                                    ? "task"
+                                    : "tasks"}
+                            </p>
+
+
+                            {/* PROGRESS */}
+
+                            <div className="subject-progress">
+
+                                <div className="progress-track">
+
+                                    <div
+                                        className="progress-fill"
+                                        style={{
+                                            width: `${progress}%`,
+                                        }}
+                                    />
+
+                                </div>
+
+
+                                <span>
+                                    {progress}%
+                                </span>
+
+                            </div>
+
+
+                            {/* FOOTER */}
+
+                            <div className="subject-footer">
+
+                                <span>
+                                    {progress === 100
+                                        ? "All caught up"
+                                        : "Keep moving"}
+                                </span>
+
+                                <span>
+                                    {upcomingTasks} upcoming
+                                </span>
+
+                            </div>
+
+
+                            {/* DUAL ENROLLMENT */}
+
+                            {subject.dualEnrollment && (
+
+                                <div className="subject-designation">
+                                    DUAL ENROLLMENT
+                                </div>
+
+                            )}
+
                         </div>
 
-                        <span>
-                            72%
+                    )
+                })}
+
+
+                {/* EMPTY STATE */}
+
+                {subjects.length === 0 && (
+
+                    <div className="subjects-empty">
+
+                        <span className="subjects-label">
+                            NO DESTINATIONS
                         </span>
+
+                        <h2>
+                            Nothing on your schedule yet.
+                        </h2>
+
+                        <p>
+                            Add your first subject to get started.
+                        </p>
 
                     </div>
 
-
-                    <div className="subject-footer">
-                        <span>
-                            Stoichiometry
-                        </span>
-
-                        <span>
-                            2 upcoming
-                        </span>
-                    </div>
-
-                </div>
-
-
-                {/* CALCULUS */}
-
-                <div className="subject-card">
-
-                    <div className="subject-card-top">
-
-                        <span className="subject-code">
-                            AP CALCULUS BC
-                        </span>
-
-                        <span className="subject-status">
-                            IN FLIGHT
-                        </span>
-
-                    </div>
-
-                    <h2>
-                        Calculus BC
-                    </h2>
-
-                    <p>
-                        6 active tasks
-                    </p>
-
-
-                    <div className="subject-progress">
-
-                        <div className="progress-track">
-                            <div
-                                className="progress-fill"
-                                style={{ width: "58%" }}
-                            />
-                        </div>
-
-                        <span>
-                            58%
-                        </span>
-
-                    </div>
-
-
-                    <div className="subject-footer">
-                        <span>
-                            Derivatives
-                        </span>
-
-                        <span>
-                            3 upcoming
-                        </span>
-                    </div>
-
-                </div>
-
-
-                {/* LANGUAGE */}
-
-                <div className="subject-card">
-
-                    <div className="subject-card-top">
-
-                        <span className="subject-code">
-                            AP LANGUAGE
-                        </span>
-
-                        <span className="subject-status">
-                            BOARDING
-                        </span>
-
-                    </div>
-
-                    <h2>
-                        English Language
-                    </h2>
-
-                    <p>
-                        2 active tasks
-                    </p>
-
-
-                    <div className="subject-progress">
-
-                        <div className="progress-track">
-                            <div
-                                className="progress-fill"
-                                style={{ width: "41%" }}
-                            />
-                        </div>
-
-                        <span>
-                            41%
-                        </span>
-
-                    </div>
-
-
-                    <div className="subject-footer">
-                        <span>
-                            Essay draft
-                        </span>
-
-                        <span>
-                            1 upcoming
-                        </span>
-                    </div>
-
-                </div>
-
-
-                {/* PSYCHOLOGY */}
-
-                <div className="subject-card">
-
-                    <div className="subject-card-top">
-
-                        <span className="subject-code">
-                            AP PSYCHOLOGY
-                        </span>
-
-                        <span className="subject-status">
-                            ON COURSE
-                        </span>
-
-                    </div>
-
-                    <h2>
-                        Psychology
-                    </h2>
-
-                    <p>
-                        3 active tasks
-                    </p>
-
-
-                    <div className="subject-progress">
-
-                        <div className="progress-track">
-                            <div
-                                className="progress-fill"
-                                style={{ width: "64%" }}
-                            />
-                        </div>
-
-                        <span>
-                            64%
-                        </span>
-
-                    </div>
-
-
-                    <div className="subject-footer">
-                        <span>
-                            Unit 1 review
-                        </span>
-
-                        <span>
-                            2 upcoming
-                        </span>
-                    </div>
-
-                </div>
+                )}
 
             </div>
 
 
             {/* ADD SUBJECT */}
 
-            <button className="add-subject">
+            <button
+                className="add-subject"
+                onClick={() =>
+                    setShowAddSubject(true)
+                }
+            >
                 + Add subject
             </button>
+
+
+            {/* MODAL */}
+
+            {showAddSubject && (
+
+                <AddSubjectModal
+                    onClose={() =>
+                        setShowAddSubject(false)
+                    }
+                />
+
+            )}
 
         </section>
     )
 }
+
 
 export default Subjects
