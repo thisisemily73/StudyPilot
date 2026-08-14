@@ -1,8 +1,25 @@
+import { useState } from "react"
+
 import { useTasks } from "../context/TaskContext"
+import AddTaskModal from "../components/AddTaskModal"
+import type { Task } from "../types/Task"
+
 
 function Todo() {
 
-    const { tasks, toggleTask } = useTasks()
+    const [showAddTask, setShowAddTask] =
+        useState(false)
+
+    const [selectedTask, setSelectedTask] =
+        useState<Task | null>(null)
+
+
+    const {
+        tasks,
+        toggleTask,
+        deleteTask,
+    } = useTasks()
+
 
     const incompleteTasks = tasks.filter(
         (task) => !task.completed
@@ -12,12 +29,16 @@ function Todo() {
         (task) => task.completed
     )
 
+
     return (
         <section className="todo">
+
+            {/* HEADER */}
 
             <div className="todo-header">
 
                 <div>
+
                     <span className="planner-label">
                         FLIGHT DECK
                     </span>
@@ -29,10 +50,23 @@ function Todo() {
                     <p>
                         Stay organized for a smooth flight.
                     </p>
+
                 </div>
+
+
+                <button
+                    className="add-subject"
+                    onClick={() =>
+                        setShowAddTask(true)
+                    }
+                >
+                    + Add task
+                </button>
 
             </div>
 
+
+            {/* ACTIVE TASKS */}
 
             <section className="todo-section">
 
@@ -58,12 +92,19 @@ function Todo() {
                             key={task.id}
                         >
 
+                            {/* CHECKBOX */}
+
                             <button
                                 type="button"
                                 className="todo-checkbox"
-                                onClick={() => toggleTask(task.id)}
+                                onClick={() =>
+                                    toggleTask(task.id)
+                                }
                                 aria-label={`Complete ${task.title}`}
                             />
+
+
+                            {/* INFO */}
 
                             <div className="todo-task-info">
 
@@ -77,6 +118,9 @@ function Todo() {
 
                             </div>
 
+
+                            {/* META + ACTIONS */}
+
                             <div className="todo-task-meta">
 
                                 <span>
@@ -87,16 +131,67 @@ function Todo() {
                                     {task.dueDate}
                                 </span>
 
+
+                                <button
+                                    type="button"
+                                    className="todo-edit-button"
+                                    onClick={() =>
+                                        setSelectedTask(task)
+                                    }
+                                >
+                                    Edit
+                                </button>
+
+
+                                <button
+                                    type="button"
+                                    className="todo-delete-button"
+                                    onClick={() => {
+
+                                        const confirmed =
+                                            window.confirm(
+                                                `Delete "${task.title}"?`
+                                            )
+
+                                        if (confirmed) {
+                                            deleteTask(task.id)
+                                        }
+
+                                    }}
+                                    aria-label={`Delete ${task.title}`}
+                                >
+                                    ×
+                                </button>
+
                             </div>
 
                         </div>
 
                     ))}
 
+
+                    {incompleteTasks.length === 0 && (
+
+                        <div className="todo-empty">
+
+                            <span>
+                                ALL CLEAR
+                            </span>
+
+                            <p>
+                                You've landed everything on your list.
+                            </p>
+
+                        </div>
+
+                    )}
+
                 </div>
 
             </section>
 
+
+            {/* COMPLETED TASKS */}
 
             {completedTasks.length > 0 && (
 
@@ -124,14 +219,21 @@ function Todo() {
                                 key={task.id}
                             >
 
+                                {/* CHECKBOX */}
+
                                 <button
                                     type="button"
                                     className="todo-checkbox checked"
-                                    onClick={() => toggleTask(task.id)}
+                                    onClick={() =>
+                                        toggleTask(task.id)
+                                    }
                                     aria-label={`Mark ${task.title} incomplete`}
                                 >
                                     ✓
                                 </button>
+
+
+                                {/* INFO */}
 
                                 <div className="todo-task-info">
 
@@ -145,6 +247,9 @@ function Todo() {
 
                                 </div>
 
+
+                                {/* META + ACTIONS */}
+
                                 <div className="todo-task-meta">
 
                                     <span>
@@ -154,6 +259,38 @@ function Todo() {
                                     <span>
                                         {task.dueDate}
                                     </span>
+
+
+                                    <button
+                                        type="button"
+                                        className="todo-edit-button"
+                                        onClick={() =>
+                                            setSelectedTask(task)
+                                        }
+                                    >
+                                        Edit
+                                    </button>
+
+
+                                    <button
+                                        type="button"
+                                        className="todo-delete-button"
+                                        onClick={() => {
+
+                                            const confirmed =
+                                                window.confirm(
+                                                    `Delete "${task.title}"?`
+                                                )
+
+                                            if (confirmed) {
+                                                deleteTask(task.id)
+                                            }
+
+                                        }}
+                                        aria-label={`Delete ${task.title}`}
+                                    >
+                                        ×
+                                    </button>
 
                                 </div>
 
@@ -167,8 +304,36 @@ function Todo() {
 
             )}
 
+
+            {/* ADD TASK */}
+
+            {showAddTask && (
+
+                <AddTaskModal
+                    onClose={() =>
+                        setShowAddTask(false)
+                    }
+                />
+
+            )}
+
+
+            {/* EDIT TASK */}
+
+            {selectedTask && (
+
+                <AddTaskModal
+                    task={selectedTask}
+                    onClose={() =>
+                        setSelectedTask(null)
+                    }
+                />
+
+            )}
+
         </section>
     )
 }
+
 
 export default Todo
