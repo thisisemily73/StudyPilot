@@ -1,4 +1,78 @@
+import { useTasks } from "../context/TaskContext"
+import { useSubjects } from "../context/SubjectContext"
+
+import {
+    startOfWeek,
+    addDays,
+    formatDateKey,
+} from "../utils/dateUtils"
+
+import { getSubjectProgress } from "../utils/subjectStatus"
+
+
 function Progress() {
+
+    const { tasks } = useTasks()
+    const { subjects } = useSubjects()
+
+    const today = new Date()
+
+    const weekStart = startOfWeek(today)
+
+    const weekDates = Array.from(
+        { length: 7 },
+        (_, index) =>
+            formatDateKey(
+                addDays(weekStart, index)
+            )
+    )
+
+
+    /* WEEKLY TASKS */
+
+    const weekTasks = tasks.filter(
+        (task) =>
+            weekDates.includes(task.dueDate)
+    )
+
+    const completedThisWeek =
+        weekTasks.filter(
+            (task) => task.completed
+        )
+
+
+    const completedCount =
+        completedThisWeek.length
+
+
+    /* STUDY TIME */
+
+    const studyMinutes =
+        completedThisWeek.reduce(
+            (total, task) =>
+                total + task.estimatedMinutes,
+            0
+        )
+
+    const studyHours =
+        Math.floor(studyMinutes / 60)
+
+    const remainingMinutes =
+        studyMinutes % 60
+
+
+    /* COMPLETION RATE */
+
+    const completionRate =
+        weekTasks.length === 0
+            ? 0
+            : Math.round(
+                (completedCount /
+                    weekTasks.length) *
+                100
+            )
+
+
     return (
         <section className="progress-page">
 
@@ -32,7 +106,7 @@ function Progress() {
                     </span>
 
                     <strong>
-                        12
+                        {completedCount}
                     </strong>
 
                     <small>
@@ -49,7 +123,7 @@ function Progress() {
                     </span>
 
                     <strong>
-                        4h 35m
+                        {studyHours}h {remainingMinutes}m
                     </strong>
 
                     <small>
@@ -66,7 +140,7 @@ function Progress() {
                     </span>
 
                     <strong>
-                        92%
+                        {completionRate}%
                     </strong>
 
                     <small>
@@ -85,6 +159,7 @@ function Progress() {
                 <div className="progress-section-header">
 
                     <div>
+
                         <span>
                             THIS WEEK
                         </span>
@@ -92,6 +167,7 @@ function Progress() {
                         <h2>
                             Weekly momentum
                         </h2>
+
                     </div>
 
                     <small>
@@ -115,45 +191,79 @@ function Progress() {
 
                     <div className="chart-bars">
 
-                        <div className="chart-day">
-                            <div
-                                className="chart-bar"
-                                style={{ height: "35%" }}
-                            />
-                            <span>MON</span>
-                        </div>
+                        {Array.from(
+                            { length: 5 },
+                            (_, index) => {
 
-                        <div className="chart-day">
-                            <div
-                                className="chart-bar"
-                                style={{ height: "55%" }}
-                            />
-                            <span>TUE</span>
-                        </div>
+                                const date =
+                                    addDays(
+                                        weekStart,
+                                        index
+                                    )
 
-                        <div className="chart-day">
-                            <div
-                                className="chart-bar"
-                                style={{ height: "80%" }}
-                            />
-                            <span>WED</span>
-                        </div>
+                                const dateKey =
+                                    formatDateKey(
+                                        date
+                                    )
 
-                        <div className="chart-day">
-                            <div
-                                className="chart-bar"
-                                style={{ height: "65%" }}
-                            />
-                            <span>THU</span>
-                        </div>
+                                const dayTasks =
+                                    tasks.filter(
+                                        (task) =>
+                                            task.dueDate ===
+                                            dateKey
+                                    )
 
-                        <div className="chart-day">
-                            <div
-                                className="chart-bar"
-                                style={{ height: "40%" }}
-                            />
-                            <span>FRI</span>
-                        </div>
+                                const completed =
+                                    dayTasks.filter(
+                                        (task) =>
+                                            task.completed
+                                    ).length
+
+                                const height =
+                                    dayTasks.length === 0
+                                        ? 0
+                                        : Math.max(
+                                            8,
+                                            Math.round(
+                                                (completed /
+                                                    dayTasks.length) *
+                                                100
+                                            )
+                                        )
+
+                                const dayNames = [
+                                    "MON",
+                                    "TUE",
+                                    "WED",
+                                    "THU",
+                                    "FRI",
+                                ]
+
+                                return (
+
+                                    <div
+                                        className="chart-day"
+                                        key={dateKey}
+                                    >
+
+                                        <div
+                                            className="chart-bar"
+                                            style={{
+                                                height:
+                                                    `${height}%`,
+                                            }}
+                                        />
+
+                                        <span>
+                                            {dayNames[index]}
+                                        </span>
+
+                                    </div>
+
+                                )
+
+                            }
+                        )}
 
                     </div>
 
@@ -169,6 +279,7 @@ function Progress() {
                 <div className="progress-section-header">
 
                     <div>
+
                         <span>
                             SUBJECTS
                         </span>
@@ -176,6 +287,7 @@ function Progress() {
                         <h2>
                             Your destinations
                         </h2>
+
                     </div>
 
                     <small>
@@ -187,109 +299,68 @@ function Progress() {
 
                 <div className="subject-progress-list">
 
+                    {subjects.map((subject) => {
 
-                    <div className="subject-progress-row">
+                        const progress =
+                            getSubjectProgress(
+                                tasks,
+                                subject.name
+                            )
 
-                        <div className="subject-progress-name">
-
-                            <strong>
-                                AP Chemistry
-                            </strong>
-
-                            <span>
-                                72%
-                            </span>
-
-                        </div>
-
-                        <div className="subject-progress-track">
+                        return (
 
                             <div
-                                className="subject-progress-fill"
-                                style={{ width: "72%" }}
-                            />
+                                className="subject-progress-row"
+                                key={subject.id}
+                            >
 
-                        </div>
+                                <div className="subject-progress-name">
 
-                    </div>
+                                    <strong>
+                                        {subject.name}
+                                    </strong>
 
+                                    <span>
+                                        {progress}%
+                                    </span>
 
-                    <div className="subject-progress-row">
-
-                        <div className="subject-progress-name">
-
-                            <strong>
-                                AP Calculus BC
-                            </strong>
-
-                            <span>
-                                58%
-                            </span>
-
-                        </div>
-
-                        <div className="subject-progress-track">
-
-                            <div
-                                className="subject-progress-fill"
-                                style={{ width: "58%" }}
-                            />
-
-                        </div>
-
-                    </div>
+                                </div>
 
 
-                    <div className="subject-progress-row">
+                                <div className="subject-progress-track">
 
-                        <div className="subject-progress-name">
+                                    <div
+                                        className="subject-progress-fill"
+                                        style={{
+                                            width:
+                                                `${progress}%`,
+                                        }}
+                                    />
 
-                            <strong>
-                                AP Language
-                            </strong>
+                                </div>
+
+                            </div>
+
+                        )
+
+                    })}
+
+
+                    {subjects.length === 0 && (
+
+                        <div className="progress-empty">
 
                             <span>
-                                41%
+                                NO DESTINATIONS
                             </span>
 
-                        </div>
-
-                        <div className="subject-progress-track">
-
-                            <div
-                                className="subject-progress-fill"
-                                style={{ width: "41%" }}
-                            />
+                            <p>
+                                Add a subject to start tracking your progress.
+                            </p>
 
                         </div>
 
-                    </div>
-
-
-                    <div className="subject-progress-row">
-
-                        <div className="subject-progress-name">
-
-                            <strong>
-                                AP Psychology
-                            </strong>
-
-                            <span>
-                                64%
-                            </span>
-
-                        </div>
-
-                        <div className="subject-progress-track">
-
-                            <div
-                                className="subject-progress-fill"
-                                style={{ width: "64%" }}
-                            />
-
-                        </div>
-
-                    </div>
+                    )}
 
                 </div>
 
@@ -301,17 +372,19 @@ function Progress() {
             <div className="progress-status">
 
                 <div>
+
                     <span>
                         FLIGHT STATUS
                     </span>
 
                     <h2>
-                        On course.
+                        You're on course.
                     </h2>
 
                     <p>
-                        You're keeping pace with your weekly plan.
+                        Keep completing your tasks to stay on schedule.
                     </p>
+
                 </div>
 
             </div>
@@ -319,5 +392,6 @@ function Progress() {
         </section>
     )
 }
+
 
 export default Progress

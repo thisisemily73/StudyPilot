@@ -65,15 +65,24 @@ function Subjects() {
                         subject.name
                     )
 
-                    const progress = getSubjectProgress(
-                        tasks,
-                        subject.name
-                    )
-
                     const subjectTasks = tasks.filter(
                         (task) =>
                             task.subject === subject.name
                     )
+
+                    const completedTasks =
+                        subjectTasks.filter(
+                            (task) => task.completed
+                        )
+
+                    const progress =
+                        subjectTasks.length === 0
+                            ? 0
+                            : Math.round(
+                                (completedTasks.length /
+                                    subjectTasks.length) *
+                                100
+                            )
 
                     const activeTasks =
                         subjectTasks.filter(

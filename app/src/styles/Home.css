@@ -180,3 +180,28 @@
 
   color: var(--text-muted);
 }
+
+.home-empty {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+
+    margin-left: 20px;
+
+    padding: 16px 0;
+
+    color: var(--text-muted);
+}
+
+.home-empty strong {
+    font-size: 0.75rem;
+    color: var(--navy);
+}
+
+.home-empty span {
+    font-size: 0.68rem;
+}
+
+.review-section {
+    margin-top: 28px;
+}
