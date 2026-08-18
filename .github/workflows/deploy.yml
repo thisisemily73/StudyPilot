@@ -37,7 +37,9 @@ jobs:
 
       - name: Build app
         working-directory: ./app
-        run: npm run build
+        run: |
+          cp -r ../shared ./shared
+          npm run build
 
       - name: Add app to landing build
         run: |
