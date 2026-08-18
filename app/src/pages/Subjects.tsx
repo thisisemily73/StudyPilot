@@ -6,7 +6,7 @@ import AddSubjectModal from "../components/AddSubjectModal"
 import { useTasks } from "../context/TaskContext"
 import {
     getSubjectStatus,
-    getSubjectProgress,
+    //getSubjectProgress,
 } from "../utils/subjectStatus"
 
 

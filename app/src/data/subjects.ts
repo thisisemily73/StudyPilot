@@ -1,4 +1,4 @@
-import type { Subject } from "../types/Subject"
+//import type { Subject } from "../types/Subject"
 
 export const subjectOptions = [
     // Mathematics

@@ -15,12 +15,12 @@ import {
 } from "../utils/dateUtils"
 
 import UpcomingTasks from "../components/UpcomingTasks.tsx"
-import { useSubjects } from "../context/SubjectContext"
+//import { useSubjects } from "../context/SubjectContext"
 import { getSubjectStatus } from "../utils/subjectStatus"
 
 function Planner() {
     const { tasks, toggleTask } = useTasks()
-    const { subjects } = useSubjects()
+    //const { subjects } = useSubjects()
 
     const [showAddTask, setShowAddTask] = useState(false)
     const [selectedTask, setSelectedTask] = useState<Task | null>(null)
@@ -203,10 +203,10 @@ function Planner() {
 
                                 {dayTasks.map((task) => {
 
-                                    const status = getSubjectStatus(
+                                    /*const status = getSubjectStatus(
                                         tasks,
                                         task.subject
-                                    )
+                                    )*/
 
                                     return (
                                         <TaskCard
@@ -315,10 +315,10 @@ function Planner() {
 
                                     {dayTasks.map((task) => {
 
-                                        const status = getSubjectStatus(
+                                        /*const status = getSubjectStatus(
                                             tasks,
                                             task.subject
-                                        )
+                                        )*/
 
                                         return (
                                             <TaskCard
