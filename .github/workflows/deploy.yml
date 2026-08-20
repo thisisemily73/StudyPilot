@@ -36,7 +36,6 @@ jobs:
       - name: Build app
         working-directory: ./app
         run: |
-          cd app
           npm run build
 
       - # Deploy everything
