@@ -57,6 +57,9 @@ function Home() {
             <div className="home-section study-plan-section">
                 <div className="home-section-header">
                     <div>
+                        <button className="manage-study-time-button">
+                            Manage study time
+                        </button>
                         <span className="home-label">
                             ✦ GENERATED FOR YOU
                         </span>
@@ -68,6 +71,7 @@ function Home() {
                         <p>
                             Here's where I'd focus your time today.
                         </p>
+
                     </div>
                 </div>
 
