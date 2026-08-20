@@ -4,6 +4,7 @@ import ReactDOM from 'react-dom/client'
 import App from './App'
 import { TaskProvider } from './context/TaskContext'
 import { SubjectProvider } from "./context/SubjectContext"
+import { StudyTimeProvider } from "./context/StudyTimeContext"
 
 import '@shared/Variables.css'
 import './styles/Global.css'
@@ -25,7 +26,9 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
     <TaskProvider>
       <SubjectProvider>
-        <App />
+        <StudyTimeProvider>
+          <App />
+        </StudyTimeProvider>
       </SubjectProvider>
     </TaskProvider>
   </React.StrictMode>,

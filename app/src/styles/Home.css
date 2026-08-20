@@ -182,26 +182,127 @@
 }
 
 .home-empty {
-    display: flex;
-    flex-direction: column;
-    gap: 3px;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
 
-    margin-left: 20px;
+  margin-left: 20px;
 
-    padding: 16px 0;
+  padding: 16px 0;
 
-    color: var(--text-muted);
+  color: var(--text-muted);
 }
 
 .home-empty strong {
-    font-size: 0.75rem;
-    color: var(--navy);
+  font-size: 0.75rem;
+  color: var(--navy);
 }
 
 .home-empty span {
-    font-size: 0.68rem;
+  font-size: 0.68rem;
 }
 
 .review-section {
-    margin-top: 28px;
+  margin-top: 28px;
+}
+
+/* GENERATED STUDY PLAN */
+
+.study-plan-section {
+  position: relative;
+}
+
+.study-plan-section .home-section-header {
+  align-items: flex-start;
+}
+
+.study-plan-section .home-section-header p {
+  margin: 6px 0 0;
+  font-size: 14px;
+  color: var(--text-muted);
+}
+
+.study-plan {
+  display: flex;
+  flex-direction: column;
+  margin-top: 20px;
+}
+
+/* Individual study block */
+
+.study-plan-item {
+  display: grid;
+  grid-template-columns: 65px 1fr;
+  gap: 18px;
+  padding: 18px 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.study-plan-item:first-child {
+  padding-top: 0;
+}
+
+.study-plan-item:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+/* Time */
+
+.study-plan-time {
+  padding-top: 3px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+/* Content */
+
+.study-plan-content {
+  min-width: 0;
+}
+
+.study-plan-content .task-subject {
+  display: block;
+  margin-bottom: 4px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.study-plan-content h3 {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 1.35;
+  color: var(--text-primary);
+}
+
+.study-plan-reason {
+  display: block;
+  margin-top: 6px;
+  font-size: 13px;
+  color: var(--text-muted);
+}
+
+/* Empty state */
+
+.study-plan-empty {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  padding: 22px 0;
+}
+
+.study-plan-empty strong {
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.study-plan-empty span {
+  font-size: 13px;
+  color: var(--text-muted);
 }
