@@ -38,6 +38,13 @@ jobs:
         run: |
           npm run build
 
+      - name: Merge builds
+        run: |
+          mkdir -p combined
+          cp -r landing/dist/* combined/
+          mkdir -p combined/app
+          cp -r app/dist/* combined/app/
+
       - # Deploy everything
         name: Setup Pages
         uses: actions/configure-pages@v5
