@@ -5,7 +5,7 @@ import App from './App'
 import { TaskProvider } from './context/TaskContext'
 import { SubjectProvider } from "./context/SubjectContext"
 
-//import '@/shared/Variables.css'
+import '@/shared/Variables.css'
 import './styles/Global.css'
 
 import './styles/Sidebar.css'
