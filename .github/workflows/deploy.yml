@@ -28,10 +28,6 @@ jobs:
           cd landing
           npm run build
 
-      - name: Save landing build
-        run: |
-          mkdir -p combined
-          cp -r dist/. combined/
       - # Build app
         name: Install app dependencies
         working-directory: ./app
@@ -43,10 +39,6 @@ jobs:
           cd app
           npm run build
 
-      - name: Add app to landing build
-        run: |
-          mkdir -p combined/app
-          cp -r app/dist/. combined/app/
       - # Deploy everything
         name: Setup Pages
         uses: actions/configure-pages@v5
