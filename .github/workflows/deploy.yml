@@ -38,6 +38,7 @@ jobs:
       - name: Build app
         working-directory: ./app
         run: |
+          cd app
           cp -r ../shared ./shared
           npm run build
 
