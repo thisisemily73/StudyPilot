@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom/client';
 
 import App from './App';
 
-import '@/shared/Variables.css'; // CHECK
+import '@shared/Variables.css'; // CHECK
 import './styles/Global.css';
 import './styles/Navbar.css';
 import './styles/Hero.css';
