@@ -85,7 +85,7 @@ function Progress() {
                 </span>
 
                 <h1>
-                    You're on course.
+                    Monitor your course.
                 </h1>
 
                 <p>
