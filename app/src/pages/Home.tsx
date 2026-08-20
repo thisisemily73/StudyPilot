@@ -1,5 +1,6 @@
 import { useTasks } from "../context/TaskContext"
 import { getTodaysReview } from "../utils/todaysReview"
+import StudyPlan from "../components/StudyPlan"
 
 function Home() {
 
@@ -50,6 +51,27 @@ function Home() {
                     Here's what you have lined up for today.
                 </p>
 
+            </div>
+
+            {/* GENERATED STUDY PLAN */}
+            <div className="home-section study-plan-section">
+                <div className="home-section-header">
+                    <div>
+                        <span className="home-label">
+                            ✦ GENERATED FOR YOU
+                        </span>
+
+                        <h2>
+                            Your study plan
+                        </h2>
+
+                        <p>
+                            Here's where I'd focus your time today.
+                        </p>
+                    </div>
+                </div>
+
+                <StudyPlan tasks={tasks} />
             </div>
 
 
