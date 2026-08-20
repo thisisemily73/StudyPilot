@@ -20,9 +20,7 @@ export function generateStudyPlan(
     .split("T")[0]
 
   const incompleteTasks = tasks.filter(
-    (task) =>
-      !task.completed &&
-      task.dueDate >= today
+    (task) => !task.completed
   )
 
   const scoredTasks = incompleteTasks.map((task) => {
