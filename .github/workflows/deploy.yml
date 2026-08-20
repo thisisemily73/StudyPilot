@@ -24,7 +24,9 @@ jobs:
         run: npm ci
 
       - name: Build landing page
-        run: npm run build
+        run: |
+          cd landing
+          npm run build
 
       - name: Save landing build
         run: |
