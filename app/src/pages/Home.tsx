@@ -50,16 +50,15 @@ function Home() {
                 <p>
                     Here's what you have lined up for today.
                 </p>
-
+                <button className="manage-study-time-button">
+                    Manage study time
+                </button>
             </div>
 
             {/* GENERATED STUDY PLAN */}
             <div className="home-section study-plan-section">
                 <div className="home-section-header">
                     <div>
-                        <button className="manage-study-time-button">
-                            Manage study time
-                        </button>
                         <span className="home-label">
                             ✦ GENERATED FOR YOU
                         </span>
