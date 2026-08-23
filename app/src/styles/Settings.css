@@ -313,6 +313,44 @@
   background: rgba(180, 35, 24, 0.04);
 }
 
+/* SCHEDULE TIME SETTINGS */
+
+.schedule-time-settings {
+    display: inline-flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 8px;
+
+    white-space: nowrap;
+}
+
+.schedule-time-settings input {
+    width: 105px;
+    height: 34px;
+    box-sizing: border-box;
+
+    padding: 7px 9px;
+
+    border: 1px solid var(--border);
+    border-radius: 8px;
+
+    background: var(--surface);
+    color: var(--navy);
+
+    font-family: inherit;
+    font-size: 0.72rem;
+
+    cursor: pointer;
+}
+
+.schedule-time-settings span {
+    flex: 0 0 auto;
+
+    font-size: 0.7rem;
+    color: var(--text-muted);
+}
+
 
 /* MOBILE */
 

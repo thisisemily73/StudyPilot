@@ -175,7 +175,7 @@ function Todo() {
                         <div className="todo-empty">
 
                             <span>
-                                ALL CLEAR
+                                Clear skies.
                             </span>
 
                             <p>

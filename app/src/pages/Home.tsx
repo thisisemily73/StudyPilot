@@ -1,3 +1,4 @@
+import { useState } from "react"
 import { useTasks } from "../context/TaskContext"
 import { getTodaysReview } from "../utils/todaysReview"
 import StudyPlan from "../components/StudyPlan"
@@ -31,6 +32,8 @@ function Home() {
     const todaysReview =
         getTodaysReview(tasks)
 
+    const [showStudyTimeModal, setShowStudyTimeModal] =
+        useState(false)
 
     return (
         <section className="home">
@@ -50,9 +53,6 @@ function Home() {
                 <p>
                     Here's what you have lined up for today.
                 </p>
-                <button className="manage-study-time-button">
-                    Manage study time
-                </button>
             </div>
 
             {/* GENERATED STUDY PLAN */}
@@ -270,7 +270,6 @@ function Home() {
                 </div>
 
             </div>
-
         </section>
     )
 }

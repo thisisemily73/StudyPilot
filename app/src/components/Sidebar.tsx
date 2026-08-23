@@ -10,31 +10,35 @@ function Sidebar() {
 
             <nav className="sidebar-nav">
 
-                <NavLink to="/" end className="sidebar-link">
+                <NavLink to="StudyPilot/app/" end className="sidebar-link">
                     Flight Plan
                 </NavLink>
 
-                <NavLink to="/todo" className="sidebar-link">
+                <NavLink to="StudyPilot/app/todo" className="sidebar-link">
                     To-Do
                 </NavLink>
 
-                <NavLink to="/planner" className="sidebar-link">
+                <NavLink to="StudyPilot/app/planner" className="sidebar-link">
                     Planner
                 </NavLink>
 
-                <NavLink to="/subjects" className="sidebar-link">
+                <NavLink to="StudyPilot/app/schedule" className="sidebar-link">
+                    Schedule
+                </NavLink>
+
+                <NavLink to="StudyPilot/app/subjects" className="sidebar-link">
                     Subjects
                 </NavLink>
 
-                <NavLink to="/progress" className="sidebar-link">
+                <NavLink to="StudyPilot/app/progress" className="sidebar-link">
                     Progress
                 </NavLink>
 
             </nav>
 
-            <div className="sidebar-bottom">
+            <div className="sidebar-nav sidebar-bottom">
 
-                <NavLink to="/settings" className="sidebar-link">
+                <NavLink to="StudyPilot/app/settings" className="sidebar-link">
                     Settings
                 </NavLink>
 

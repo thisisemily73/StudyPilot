@@ -1,4 +1,14 @@
+import { useScheduleSettings } from "../context/ScheduleSettingsContext"
+
 function Settings() {
+
+    const {
+        dayStart,
+        dayEnd,
+        setDayStart,
+        setDayEnd,
+    } = useScheduleSettings()
+
     return (
         <section className="settings-page">
 
@@ -113,6 +123,46 @@ function Settings() {
 
                     <div className="settings-divider" />
 
+                    <div className="settings-row">
+
+                        <div>
+                            <strong>
+                                Down time
+                            </strong>
+
+                            <span>
+                                Set the hours your day normally starts and ends.
+                                Your schedule will adjust automatically.
+                            </span>
+                        </div>
+
+                        <div className="schedule-time-settings">
+
+                            <input
+                                type="time"
+                                value={dayStart}
+                                onChange={(event) =>
+                                    setDayStart(event.target.value)
+                                }
+                            />
+
+                            <span>
+                                to
+                            </span>
+
+                            <input
+                                type="time"
+                                value={dayEnd}
+                                onChange={(event) =>
+                                    setDayEnd(event.target.value)
+                                }
+                            />
+
+                        </div>
+
+                    </div>
+
+                    <div className="settings-divider" />
 
                     <div className="settings-row">
 

@@ -10,6 +10,8 @@ import Progress from './pages/Progress'
 import Settings from './pages/Settings'
 import Todo from './pages/Todo'
 
+import Schedule from './pages/Schedule'
+
 function App() {
     return (
         <BrowserRouter>
@@ -25,17 +27,19 @@ function App() {
                     <main>
                         <Routes>
 
-                            <Route path="/" element={<Home />} />
+                            <Route path="StudyPilot/app/" element={<Home />} />
 
-                            <Route path="/todo" element={<Todo />} />
+                            <Route path="StudyPilot/app/todo" element={<Todo />} />
 
-                            <Route path="/planner" element={<Planner />} />
+                            <Route path="StudyPilot/app/planner" element={<Planner />} />
 
-                            <Route path="/subjects" element={<Subjects />} />
+                            <Route path="StudyPilot/app/schedule" element={<Schedule />} />
 
-                            <Route path="/progress" element={<Progress />} />
+                            <Route path="StudyPilot/app/subjects" element={<Subjects />} />
 
-                            <Route path="/settings" element={<Settings />} />
+                            <Route path="StudyPilot/app/progress" element={<Progress />} />
+
+                            <Route path="StudyPilot/app/settings" element={<Settings />} />
 
                         </Routes>
                     </main>

@@ -15,17 +15,12 @@ import {
 } from "../utils/dateUtils"
 
 import UpcomingTasks from "../components/UpcomingTasks.tsx"
-//import { useSubjects } from "../context/SubjectContext"
-//import { getSubjectStatus } from "../utils/subjectStatus"
 
 function Planner() {
     const { tasks, toggleTask } = useTasks()
-    //const { subjects } = useSubjects()
 
     const [showAddTask, setShowAddTask] = useState(false)
     const [selectedTask, setSelectedTask] = useState<Task | null>(null)
-
-    {/* WEEK OFFSET */ }
     const [weekOffset, setWeekOffset] = useState(0)
 
     const today = new Date()
@@ -42,15 +37,10 @@ function Planner() {
         6
     )
 
-    {/* GENERATE WEEKDAYS AND WEEKEND DAYS */ }
     const weekDays = Array.from(
-        { length: 5 },
-        (_, index) => addDays(displayedWeekStart, index)
-    )
-
-    const weekendDays = Array.from(
-        { length: 2 },
-        (_, index) => addDays(displayedWeekStart, index + 5)
+        { length: 7 },
+        (_, index) =>
+            addDays(displayedWeekStart, index)
     )
 
     return (
@@ -79,38 +69,17 @@ function Planner() {
                     <button
                         className="planner-action"
                         onClick={() =>
-                            document
-                                .getElementById("upcoming")
-                                ?.scrollIntoView({
-                                    behavior: "smooth",
-                                    block: "start",
-                                })
+                            setWeekOffset(0)
                         }
                     >
-                        Upcoming tasks
-                        <span>↓</span>
+                        Today
                     </button>
-
-
-                    <button
-                        className="planner-action"
-                        onClick={() =>
-                            document
-                                .getElementById("weekend")
-                                ?.scrollIntoView({
-                                    behavior: "smooth",
-                                    block: "start",
-                                })
-                        }
-                    >
-                        Weekend
-                        <span>↓</span>
-                    </button>
-
 
                     <button
                         className="add-task-trigger"
-                        onClick={() => setShowAddTask(true)}
+                        onClick={() =>
+                            setShowAddTask(true)
+                        }
                     >
                         Add task
                     </button>
@@ -119,14 +88,18 @@ function Planner() {
 
                 {showAddTask && (
                     <AddTaskModal
-                        onClose={() => setShowAddTask(false)}
+                        onClose={() =>
+                            setShowAddTask(false)
+                        }
                     />
                 )}
 
                 {selectedTask && (
                     <AddTaskModal
                         task={selectedTask}
-                        onClose={() => setSelectedTask(null)}
+                        onClose={() =>
+                            setSelectedTask(null)
+                        }
                     />
                 )}
 
@@ -139,18 +112,28 @@ function Planner() {
 
                 <button
                     className="week-arrow"
-                    onClick={() => setWeekOffset((offset) => offset - 1)}
+                    onClick={() =>
+                        setWeekOffset(
+                            (offset) => offset - 1
+                        )
+                    }
                 >
                     ←
                 </button>
 
                 <span>
-                    {formatWeekRange(displayedWeekStart)}
+                    {formatWeekRange(
+                        displayedWeekStart
+                    )}
                 </span>
 
                 <button
                     className="week-arrow"
-                    onClick={() => setWeekOffset((offset) => offset + 1)}
+                    onClick={() =>
+                        setWeekOffset(
+                            (offset) => offset + 1
+                        )
+                    }
                 >
                     →
                 </button>
@@ -158,29 +141,33 @@ function Planner() {
             </div>
 
 
-            {/* WEEK */}
+            {/* CALENDAR */}
 
-            <div className="planner-week">
+            <div className="calendar">
 
-                {weekDays.map((date) => {
+                {/* DAY HEADERS */}
 
-                    const dateKey = formatDateKey(date)
+                <div className="calendar-header">
 
-                    const dayTasks = tasks.filter(
-                        (task) => task.dueDate === dateKey
-                    )
+                    <div className="calendar-time-column" />
 
-                    const isToday =
-                        dateKey === formatDateKey(today)
+                    {weekDays.map((date) => {
 
-                    return (
+                        const dateKey =
+                            formatDateKey(date)
 
-                        <div
-                            className={`planner-day ${isToday ? "today" : ""}`}
-                            key={dateKey}
-                        >
+                        const isToday =
+                            dateKey ===
+                            formatDateKey(today)
 
-                            <div className="day-header">
+                        return (
+                            <div
+                                className={`calendar-day-header ${isToday
+                                        ? "today"
+                                        : ""
+                                    }`}
+                                key={dateKey}
+                            >
 
                                 <span>
                                     {formatDayName(date)}
@@ -197,42 +184,87 @@ function Planner() {
                                 )}
 
                             </div>
+                        )
+                    })}
+
+                </div>
 
 
-                            <div className="day-tasks">
+                {/* TIME GRID */}
 
-                                {dayTasks.map((task) => {
+                <div className="calendar-body">
 
-                                    /*const status = getSubjectStatus(
-                                        tasks,
-                                        task.subject
-                                    )*/
+                    {Array.from(
+                        { length: 14 },
+                        (_, index) => {
 
-                                    return (
-                                        <TaskCard
-                                            key={task.id}
-                                            task={task}
-                                            onToggle={() => toggleTask(task.id)}
-                                            onEdit={() => setSelectedTask(task)}
-                                        />
-                                    )
+                            const hour = index + 8
 
-                                })}
+                            return (
+                                <div
+                                    className="calendar-row"
+                                    key={hour}
+                                >
 
-
-                                {dayTasks.length === 0 && (
-                                    <div className="day-empty">
-                                        Clear skies.
+                                    <div className="calendar-time">
+                                        {formatHour(hour)}
                                     </div>
-                                )}
 
-                            </div>
+                                    {weekDays.map(
+                                        (date) => {
 
-                        </div>
+                                            const dateKey =
+                                                formatDateKey(
+                                                    date
+                                                )
 
-                    )
+                                            const dayTasks =
+                                                tasks.filter(
+                                                    (task) =>
+                                                        task.dueDate ===
+                                                        dateKey
+                                                )
 
-                })}
+                                            return (
+                                                <div
+                                                    className="calendar-cell"
+                                                    key={dateKey}
+                                                >
+
+                                                    {hour === 8 &&
+                                                        dayTasks.map((task) => (
+                                                            <div
+                                                                className="calendar-task"
+                                                                key={task.id}
+                                                                onClick={() =>
+                                                                    setSelectedTask(task)
+                                                                }
+                                                            >
+                                                                <span>
+                                                                    {task.subject}
+                                                                </span>
+
+                                                                <strong>
+                                                                    {task.title}
+                                                                </strong>
+
+                                                                <small>
+                                                                    {task.estimatedMinutes} min
+                                                                </small>
+                                                            </div>
+                                                        ))}
+
+                                                </div>
+                                            )
+                                        }
+                                    )}
+
+                                </div>
+                            )
+                        }
+                    )}
+
+                </div>
 
             </div>
 
@@ -246,109 +278,27 @@ function Planner() {
                 </span>
 
                 <strong>
-                    6 tasks
-                </strong>
+                    {tasks.filter((task) => {
+                        const date =
+                            new Date(
+                                task.dueDate +
+                                "T00:00:00"
+                            )
 
-                <small>
-                    2 hr 15 min planned
-                </small>
+                        return (
+                            date >=
+                            displayedWeekStart &&
+                            date <=
+                            displayedWeekEnd
+                        )
+                    }).length}{" "}
+                    tasks
+                </strong>
 
             </div>
 
-            <section
-                className="weekend"
-                id="weekend"
-            >
 
-                <div className="weekend-header">
-
-                    <div>
-                        <span className="planner-label">
-                            WEEKEND
-                        </span>
-
-                        <h2>
-                            Saturday & Sunday.
-                        </h2>
-
-                        <p>
-                            Anything waiting for you after the school week.
-                        </p>
-                    </div>
-
-                </div>
-
-
-                {/* WEEKEND GRID */}
-
-                <div className="weekend-grid">
-
-                    {weekendDays.map((date) => {
-
-                        const dateKey = formatDateKey(date)
-
-                        const dayTasks = tasks.filter(
-                            (task) => task.dueDate === dateKey
-                        )
-
-                        return (
-
-                            <div
-                                className="weekend-day"
-                                key={dateKey}
-                            >
-
-                                <div className="day-header">
-
-                                    <span>
-                                        {formatDayName(date)}
-                                    </span>
-
-                                    <strong>
-                                        {formatDayNumber(date)}
-                                    </strong>
-
-                                </div>
-
-
-                                <div className="day-tasks">
-
-                                    {dayTasks.map((task) => {
-
-                                        /*const status = getSubjectStatus(
-                                            tasks,
-                                            task.subject
-                                        )*/
-
-                                        return (
-                                            <TaskCard
-                                                key={task.id}
-                                                task={task}
-                                                onToggle={() => toggleTask(task.id)}
-                                                onEdit={() => setSelectedTask(task)}
-                                            />
-                                        )
-
-                                    })}
-
-
-                                    {dayTasks.length === 0 && (
-                                        <div className="day-empty">
-                                            Clear skies.
-                                        </div>
-                                    )}
-
-                                </div>
-
-                            </div>
-
-                        )
-
-                    })}
-
-                </div>
-
-            </section>
+            {/* UPCOMING */}
 
             <UpcomingTasks
                 weekEnd={displayedWeekEnd}
@@ -356,9 +306,20 @@ function Planner() {
             />
 
         </section>
-
-
     )
+}
+
+function formatHour(hour: number) {
+
+    const suffix =
+        hour >= 12
+            ? "PM"
+            : "AM"
+
+    const displayHour =
+        hour % 12 || 12
+
+    return `${displayHour} ${suffix}`
 }
 
 export default Planner
