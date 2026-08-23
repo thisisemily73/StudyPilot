@@ -351,6 +351,120 @@
     color: var(--text-muted);
 }
 
+/* SCHOOL SCHEDULE */
+
+.school-schedule-row {
+    padding: 20px 22px;
+}
+
+.school-schedule-label {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    margin-bottom: 16px;
+}
+
+.school-schedule-label strong {
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: var(--navy);
+}
+
+.school-schedule-label span {
+    font-size: 0.72rem;
+    color: var(--text-secondary);
+}
+
+
+/* SCHOOL HOURS */
+
+.schedule-time-settings {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.schedule-time-settings input {
+    width: 105px;
+    height: 34px;
+    box-sizing: border-box;
+
+    padding: 7px 9px;
+
+    border: 1px solid var(--border);
+    border-radius: 8px;
+
+    background: var(--surface);
+    color: var(--navy);
+
+    font-family: inherit;
+    font-size: 0.72rem;
+
+    cursor: pointer;
+}
+
+.schedule-time-settings span {
+    flex: 0 0 auto;
+
+    font-size: 0.7rem;
+    color: var(--text-muted);
+}
+
+
+/* SCHOOL DAYS */
+
+.school-days-setting {
+    padding: 18px 22px;
+}
+
+.school-days-label {
+    margin-bottom: 12px;
+
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: var(--navy);
+}
+
+.school-day-selector {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 6px;
+    width: 100%;
+}
+
+.school-day-selector button {
+    height: 34px;
+
+    border: 1px solid var(--border);
+    border-radius: 8px;
+
+    background: var(--surface);
+    color: var(--text-secondary);
+
+    font-family: inherit;
+    font-size: 0.62rem;
+    font-weight: 700;
+    letter-spacing: 0.03em;
+
+    cursor: pointer;
+
+    transition:
+        background 0.15s ease,
+        color 0.15s ease,
+        border-color 0.15s ease;
+}
+
+.school-day-selector button:hover {
+    border-color: rgba(15, 23, 42, 0.3);
+    color: var(--navy);
+}
+
+.school-day-selector button.selected {
+    background: var(--navy);
+    border-color: var(--navy);
+    color: var(--surface);
+}
+
 
 /* MOBILE */
 

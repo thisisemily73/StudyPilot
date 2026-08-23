@@ -1,0 +1,361 @@
+/* SUBJECT DETAILS */
+
+.subject-details {
+    width: min(100% - 72px, 850px);
+    margin: 0 auto;
+    padding: 55px 0 100px;
+}
+
+
+/* HEADER */
+
+/* HEADER */
+
+.subject-details-header {
+    margin-bottom: 55px;
+}
+
+.subject-back {
+    display: block;
+    margin-bottom: 28px;
+    padding: 0;
+    border: none;
+    background: none;
+    color: var(--text-secondary);
+    font-family: inherit;
+    font-size: 0.72rem;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.subject-back:hover {
+    color: var(--navy);
+}
+
+.subject-details-header .subjects-label {
+    display: block;
+}
+
+.subject-details-header h1 {
+    margin: 12px 0 0;
+    font-size: clamp(2.5rem, 5vw, 3.8rem);
+    line-height: 1;
+    letter-spacing: -0.055em;
+    color: var(--navy);
+}
+
+.subject-details-header p {
+    margin: 18px 0 0;
+    font-size: 1rem;
+    color: var(--text-secondary);
+}
+
+
+/* SECTION */
+
+.subject-details-section {
+    margin-bottom: 45px;
+}
+
+.subject-details-heading {
+    margin-bottom: 15px;
+}
+
+.subject-details-heading h2 {
+    margin: 0;
+    font-size: 1.05rem;
+    font-weight: 650;
+    letter-spacing: -0.02em;
+    color: var(--navy);
+}
+
+.subject-details-heading p {
+    margin: 6px 0 0;
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+}
+
+
+/* CARD */
+
+.subject-details-card {
+    padding: 22px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    background: var(--surface);
+}
+
+.subject-details-card > p {
+    margin: 0;
+    font-size: 0.78rem;
+    line-height: 1.6;
+    color: var(--text-secondary);
+}
+
+.subject-details-card > p + p {
+    margin-top: 8px;
+}
+
+
+/* CLASS DAYS */
+
+.class-day-selector {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 8px;
+}
+
+.class-day-selector button {
+    height: 42px;
+    border: 1px solid var(--border);
+    border-radius: 9px;
+    background: var(--surface);
+    color: var(--text-secondary);
+    font-family: inherit;
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    cursor: pointer;
+    transition:
+        background 0.15s ease,
+        color 0.15s ease,
+        border-color 0.15s ease;
+}
+
+.class-day-selector button:hover {
+    border-color: rgba(15, 23, 42, 0.3);
+    color: var(--navy);
+}
+
+.class-day-selector button.selected {
+    border-color: var(--navy);
+    background: var(--navy);
+    color: var(--surface);
+}
+
+
+/* CLASS TIMES */
+
+.class-period-times {
+    display: flex;
+    align-items: flex-end;
+    gap: 12px;
+    margin-top: 20px;
+}
+
+.class-time-field {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+}
+
+.class-time-field label {
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 0.07em;
+    color: var(--text-muted);
+}
+
+.class-time-field input {
+    width: 100%;
+    height: 40px;
+    box-sizing: border-box;
+    padding: 8px 10px;
+    border: 1px solid var(--border);
+    border-radius: 9px;
+    background: var(--surface);
+    color: var(--navy);
+    font-family: inherit;
+    font-size: 0.75rem;
+}
+
+.class-time-field input:focus {
+    outline: none;
+    border-color: rgba(15, 23, 42, 0.4);
+}
+
+.class-time-field span {
+    font-size: 0.68rem;
+    color: var(--text-muted);
+}
+
+.class-period-to {
+    padding-bottom: 12px;
+    font-size: 0.72rem;
+    color: var(--text-muted);
+}
+
+
+/* ADD PERIOD */
+
+.add-class-period {
+    width: 100%;
+    margin-top: 18px;
+    padding: 10px 14px;
+    border: 1px solid var(--border);
+    border-radius: 9px;
+    background: var(--navy);
+    color: var(--surface);
+    font-family: inherit;
+    font-size: 0.72rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition:
+        opacity 0.15s ease,
+        transform 0.15s ease;
+}
+
+.add-class-period:hover:not(:disabled) {
+    transform: translateY(-1px);
+}
+
+.add-class-period:disabled {
+    opacity: 0.35;
+    cursor: not-allowed;
+}
+
+
+/* CLASS PERIOD LIST */
+
+.class-period-list {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+    margin-top: 18px;
+    padding-top: 18px;
+    border-top: 1px solid var(--border);
+}
+
+.class-period {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    min-height: 48px;
+    padding: 9px 12px;
+    border: 1px solid var(--border);
+    border-radius: 9px;
+    background: rgba(15, 23, 42, 0.018);
+}
+
+.class-period > div {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.class-period strong {
+    min-width: 38px;
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    color: var(--navy);
+}
+
+.class-period span {
+    font-size: 0.72rem;
+    color: var(--text-secondary);
+}
+
+.class-period button {
+    width: 25px;
+    height: 25px;
+    padding: 0;
+    border: none;
+    border-radius: 6px;
+    background: transparent;
+    color: var(--text-muted);
+    font-family: inherit;
+    font-size: 1rem;
+    cursor: pointer;
+}
+
+.class-period button:hover {
+    background: rgba(180, 35, 24, 0.05);
+    color: #b42318;
+}
+
+
+/* FORMAT */
+
+.format-options {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+}
+
+.format-options button,
+.deadline-options button {
+    min-height: 44px;
+    padding: 10px 14px;
+    border: 1px solid var(--border);
+    border-radius: 9px;
+    background: var(--surface);
+    color: var(--text-secondary);
+    font-family: inherit;
+    font-size: 0.72rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition:
+        background 0.15s ease,
+        color 0.15s ease,
+        border-color 0.15s ease;
+}
+
+.format-options button:hover,
+.deadline-options button:hover {
+    border-color: rgba(15, 23, 42, 0.3);
+    color: var(--navy);
+}
+
+.format-options button.selected,
+.deadline-options button.selected {
+    border-color: var(--navy);
+    background: var(--navy);
+    color: var(--surface);
+}
+
+
+/* DEADLINES */
+
+.deadline-options {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8px;
+}
+
+
+/* MOBILE */
+
+@media (max-width: 650px) {
+
+    .subject-details {
+        width: min(100% - 40px, 850px);
+    }
+
+    .class-day-selector {
+        grid-template-columns: repeat(5, 1fr);
+    }
+
+    .class-period-times {
+        align-items: stretch;
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .class-period-to {
+        padding: 0;
+        text-align: center;
+    }
+
+    .deadline-options {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .class-period > div {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 3px;
+    }
+
+}

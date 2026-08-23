@@ -8,20 +8,20 @@ import {
 
 import type { Subject } from "../types/Subject"
 
-
 type NewSubject = Omit<Subject, "id">
-
 
 type SubjectContextType = {
     subjects: Subject[]
     addSubject: (subject: NewSubject) => void
+    updateSubject: (
+        id: string,
+        updates: Partial<Subject>
+    ) => void
     deleteSubject: (id: string) => void
 }
 
-
 const SubjectContext =
     createContext<SubjectContextType | undefined>(undefined)
-
 
 export function SubjectProvider({
     children,
@@ -76,6 +76,24 @@ export function SubjectProvider({
     }
 
 
+    function updateSubject(
+        id: string,
+        updates: Partial<Subject>
+    ) {
+
+        setSubjects((currentSubjects) =>
+            currentSubjects.map((subject) =>
+                subject.id === id
+                    ? {
+                        ...subject,
+                        ...updates,
+                    }
+                    : subject
+            )
+        )
+    }
+
+
     function deleteSubject(id: string) {
 
         setSubjects((currentSubjects) =>
@@ -91,6 +109,7 @@ export function SubjectProvider({
             value={{
                 subjects,
                 addSubject,
+                updateSubject,
                 deleteSubject,
             }}
         >

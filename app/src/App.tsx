@@ -7,10 +7,11 @@ import Home from './pages/Home'
 import Planner from './pages/Planner'
 import Subjects from './pages/Subjects'
 import Progress from './pages/Progress'
+import Schedule from './pages/Schedule'
 import Settings from './pages/Settings'
 import Todo from './pages/Todo'
 
-import Schedule from './pages/Schedule'
+import SubjectDetails from "./pages/SubjectDetails"
 
 function App() {
     return (
@@ -36,6 +37,8 @@ function App() {
                             <Route path="StudyPilot/app/schedule" element={<Schedule />} />
 
                             <Route path="StudyPilot/app/subjects" element={<Subjects />} />
+
+                            <Route path="StudyPilot/app/subjects/:subjectId" element={<SubjectDetails />} />
 
                             <Route path="StudyPilot/app/progress" element={<Progress />} />
 

@@ -1,4 +1,5 @@
 import { useState } from "react"
+import { useNavigate } from "react-router-dom"
 
 import { useSubjects } from "../context/SubjectContext"
 import AddSubjectModal from "../components/AddSubjectModal"
@@ -11,6 +12,8 @@ import {
 
 
 function Subjects() {
+
+    const navigate = useNavigate()
 
     const { subjects, deleteSubject } = useSubjects()
 
@@ -107,6 +110,11 @@ function Subjects() {
                         <div
                             className="subject-card"
                             key={subject.id}
+                            onClick={() =>
+                                navigate(
+                                    `/StudyPilot/app/subjects/${subject.id}`
+                                )
+                            }
                         >
 
                             {/* TOP */}
@@ -129,7 +137,9 @@ function Subjects() {
                                 <button
                                     type="button"
                                     className="subject-delete-button"
-                                    onClick={() => {
+                                    onClick={(event) => {
+
+                                        event.stopPropagation()
 
                                         const confirmed =
                                             window.confirm(
@@ -196,7 +206,7 @@ function Subjects() {
                                 <span>
                                     {progress === 100
                                         ? "All caught up"
-                                        : "Keep moving"}
+                                        : "Keep flying"}
                                 </span>
 
                                 <span>
@@ -245,18 +255,6 @@ function Subjects() {
                 )}
 
             </div>
-
-
-            {/* ADD SUBJECT */}
-
-            <button
-                className="add-subject"
-                onClick={() =>
-                    setShowAddSubject(true)
-                }
-            >
-                + Add subject
-            </button>
 
 
             {/* MODAL */}
