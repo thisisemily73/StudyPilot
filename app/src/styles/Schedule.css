@@ -205,6 +205,9 @@
 
 .schedule-calendar-body {
     position: relative;
+    max-height: 420px;
+    overflow-y: auto;
+    overflow-x: hidden;
 }
 
 .schedule-events-layer {
