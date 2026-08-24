@@ -1,4 +1,4 @@
-import { useState } from "react"
+// import { useState } from "react"
 import { useTasks } from "../context/TaskContext"
 import { getTodaysReview } from "../utils/todaysReview"
 import StudyPlan from "../components/StudyPlan"
@@ -32,8 +32,8 @@ function Home() {
     const todaysReview =
         getTodaysReview(tasks)
 
-    const [showStudyTimeModal, setShowStudyTimeModal] =
-        useState(false)
+    // const [showStudyTimeModal, setShowStudyTimeModal] =
+    //     useState(false)
 
     return (
         <section className="home">
