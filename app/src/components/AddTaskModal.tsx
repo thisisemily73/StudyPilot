@@ -2,7 +2,11 @@ import { useEffect, useState } from "react"
 import { useTasks } from "../context/TaskContext"
 import { useSubjects } from "../context/SubjectContext"
 
-import type { Task } from "../types/Task"
+import type {
+    Task,
+    TaskType,
+    AssessmentType,
+} from "../types/Task"
 
 type AddTaskModalProps = {
     onClose: () => void
@@ -25,6 +29,71 @@ function AddTaskModal({ onClose, task }: AddTaskModalProps) {
         String(task?.estimatedMinutes ?? 30)
     )
 
+    const [dueTime, setDueTime] = useState(
+        task?.dueTime ?? "23:59"
+    )
+
+    const [type, setType] = useState<TaskType>(
+        task?.type ?? "homework"
+    )
+
+    const [assessmentType, setAssessmentType] =
+        useState<AssessmentType>(
+            task?.assessmentType ?? "test"
+        )
+
+    function getDefaultDueTime() {
+
+        const selectedSubject =
+            subjects.find(
+                (subjectOption) =>
+                    subjectOption.name === subject
+            )
+
+        if (!selectedSubject) {
+            return "23:59"
+        }
+
+        const deadline =
+            selectedSubject.assignmentDeadline
+
+        if (!deadline) {
+            return "23:59"
+        }
+
+        if (deadline.type === "endOfDay") {
+            return "23:59"
+        }
+
+        if (deadline.type === "custom") {
+            return deadline.time ?? "23:59"
+        }
+
+        const periods =
+            selectedSubject.classPeriods ?? []
+
+        const matchingPeriod =
+            periods.find(
+                (period) =>
+                    period.day ===
+                    new Date(`${dueDate}T12:00:00`).getDay()
+            )
+
+        if (!matchingPeriod) {
+            return "23:59"
+        }
+
+        if (deadline.type === "startOfPeriod") {
+            return matchingPeriod.startTime
+        }
+
+        if (deadline.type === "endOfPeriod") {
+            return matchingPeriod.endTime
+        }
+
+        return "23:59"
+    }
+
     function handleSubmit(event: React.FormEvent) {
 
         event.preventDefault()
@@ -33,13 +102,22 @@ function AddTaskModal({ onClose, task }: AddTaskModalProps) {
             return
         }
 
+        const calculatedDueTime =
+            getDefaultDueTime()
+
         if (task) {
 
             updateTask({
                 ...task,
                 title: title.trim(),
                 subject,
+                type,
+                assessmentType:
+                    type === "assessment"
+                        ? assessmentType
+                        : undefined,
                 dueDate,
+                dueTime: calculatedDueTime,
                 estimatedMinutes: Number(estimatedMinutes),
             })
 
@@ -49,7 +127,13 @@ function AddTaskModal({ onClose, task }: AddTaskModalProps) {
                 id: crypto.randomUUID(),
                 title: title.trim(),
                 subject,
+                type,
+                assessmentType:
+                    type === "assessment"
+                        ? assessmentType
+                        : undefined,
                 dueDate,
+                dueTime: calculatedDueTime,
                 estimatedMinutes: Number(estimatedMinutes),
                 completed: false,
             })
@@ -183,6 +267,90 @@ function AddTaskModal({ onClose, task }: AddTaskModalProps) {
 
                     </div>
 
+                    <div className="form-field">
+
+                        <label>
+                            Type
+                        </label>
+
+                        <div className="task-type-options">
+
+                            {[
+                                ["assessment", "Assessment"],
+                                ["homework", "Homework"],
+                                ["classwork", "Classwork"],
+                                ["study", "Study"],
+                            ].map(([value, label]) => (
+
+                                <button
+                                    key={value}
+                                    type="button"
+                                    className={
+                                        type === value
+                                            ? "task-type-option selected"
+                                            : "task-type-option"
+                                    }
+                                    onClick={() => {
+                                        setType(value as TaskType)
+
+                                        if (value !== "assessment") {
+                                            setAssessmentType("test")
+                                        }
+                                    }}
+                                >
+                                    {label}
+                                </button>
+
+                            ))}
+
+                        </div>
+
+                    </div>
+
+                    {type === "assessment" && (
+
+                        <div className="form-field">
+
+                            <label>
+                                Assessment type
+                            </label>
+
+                            <div className="assessment-type-options">
+
+                                {[
+                                    ["test", "Test"],
+                                    ["quiz", "Quiz"],
+                                    ["midterm", "Midterm"],
+                                    ["final", "Final"],
+                                    ["benchmark", "Benchmark"],
+                                    ["other", "Other"],
+                                ].map(([value, label]) => (
+
+                                    <button
+                                        key={value}
+                                        type="button"
+                                        className={
+                                            assessmentType === value
+                                                ? "assessment-type-option selected"
+                                                : "assessment-type-option"
+                                        }
+                                        onClick={() =>
+                                            setAssessmentType(
+                                                value as AssessmentType
+                                            )
+                                        }
+                                    >
+                                        {label}
+                                    </button>
+
+                                ))}
+
+                            </div>
+
+                        </div>
+
+                    )}
+
 
                     {/* DATE + TIME */}
 
@@ -294,6 +462,7 @@ function AddTaskModal({ onClose, task }: AddTaskModalProps) {
             </div>
 
         </div>
+
     )
 }
 

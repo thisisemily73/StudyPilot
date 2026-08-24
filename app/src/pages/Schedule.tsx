@@ -1,5 +1,8 @@
 import { useState } from "react"
 
+import { useTasks } from "../context/TaskContext"
+import { useSubjects } from "../context/SubjectContext"
+
 import { useScheduleSettings } from "../context/ScheduleSettingsContext"
 import { useStudyTime } from "../context/StudyTimeContext"
 
@@ -57,8 +60,75 @@ function getSlotKey(
     return `${day}-${minutes}`
 }
 
+function getMonday(date: Date) {
+
+    const current = new Date(date)
+
+    const day = current.getDay()
+
+    const difference =
+        day === 0
+            ? -6
+            : 1 - day
+
+    current.setDate(
+        current.getDate() + difference
+    )
+
+    current.setHours(0, 0, 0, 0)
+
+    return current
+}
+
+
+function formatDateKey(date: Date) {
+
+    const year =
+        date.getFullYear()
+
+    const month =
+        String(date.getMonth() + 1)
+            .padStart(2, "0")
+
+    const day =
+        String(date.getDate())
+            .padStart(2, "0")
+
+    return `${year}-${month}-${day}`
+}
+
 
 function Schedule() {
+
+    const { tasks } = useTasks()
+    const { subjects } = useSubjects()
+
+    const [weekOffset, setWeekOffset] =
+        useState(0)
+
+    const weekStart = (() => {
+        const date = getMonday(new Date())
+
+        date.setDate(
+            date.getDate() +
+            weekOffset * 7
+        )
+
+        return date
+    })()
+
+    const weekDates =
+        days.map((_, index) => {
+
+            const date =
+                new Date(weekStart)
+
+            date.setDate(
+                weekStart.getDate() + index
+            )
+
+            return date
+        })
 
     const {
         dayStart,
@@ -410,15 +480,38 @@ function Schedule() {
 
             <div className="schedule-controls">
 
-                <button className="schedule-arrow">
+                <button
+                    className="schedule-arrow"
+                    onClick={() =>
+                        setWeekOffset(
+                            (current) => current - 1
+                        )
+                    }
+                >
                     ←
                 </button>
 
                 <span>
-                    THIS WEEK
+                    {weekOffset === 0
+                        ? "THIS WEEK"
+                        : weekStart.toLocaleDateString(
+                            "en-US",
+                            {
+                                month: "long",
+                                day: "numeric",
+                            }
+                        ).toUpperCase()
+                    }
                 </span>
 
-                <button className="schedule-arrow">
+                <button
+                    className="schedule-arrow"
+                    onClick={() =>
+                        setWeekOffset(
+                            (current) => current + 1
+                        )
+                    }
+                >
                     →
                 </button>
 
@@ -435,13 +528,21 @@ function Schedule() {
 
                     <div className="schedule-time-column" />
 
-                    {days.map((day) => (
+                    {days.map((day, index) => (
 
                         <div
                             className="schedule-day-header"
                             key={day}
                         >
-                            {day}
+
+                            <span>
+                                {day}
+                            </span>
+
+                            <strong>
+                                {weekDates[index].getDate()}
+                            </strong>
+
                         </div>
 
                     ))}
@@ -529,7 +630,7 @@ function Schedule() {
                                                                             : "",
 
                                                                         selected &&
-                                                                        editingStudyTime
+                                                                            editingStudyTime
                                                                             ? "study-time-selected"
                                                                             : "",
                                                                     ]

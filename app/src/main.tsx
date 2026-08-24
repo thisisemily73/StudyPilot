@@ -21,7 +21,7 @@ import './styles/Subjects.css'
 import './styles/Progress.css'
 import './styles/Settings.css'
 import './styles/Subjects.css'
-import './styles/Todo.css'
+import './styles/Tasks.css'
 
 import './styles/SubjectDetails.css'
 

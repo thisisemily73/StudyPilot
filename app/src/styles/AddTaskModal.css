@@ -207,3 +207,84 @@
 .delete-task-button:hover {
     color: #8e2f2f;
 }
+
+/* TASK TYPE */
+
+.task-type-options,
+.assessment-type-options {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 7px;
+}
+
+.task-type-option,
+.assessment-type-option {
+    padding: 9px 13px;
+    border: 1px solid var(--border);
+    border-radius: 9px;
+    background: var(--surface);
+    color: var(--text-secondary);
+    font-family: inherit;
+    font-size: 0.72rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition:
+        background 0.15s ease,
+        color 0.15s ease,
+        border-color 0.15s ease,
+        transform 0.15s ease;
+}
+
+.task-type-option:hover,
+.assessment-type-option:hover {
+    border-color: rgba(15, 23, 42, 0.3);
+    color: var(--navy);
+}
+
+.task-type-option.selected,
+.assessment-type-option.selected {
+    background: var(--navy);
+    border-color: var(--navy);
+    color: white;
+}
+
+.task-type-option:active,
+.assessment-type-option:active {
+    transform: translateY(1px);
+}
+
+
+/* ASSESSMENT TYPE */
+
+.assessment-type-options {
+    margin-top: 2px;
+}
+
+
+/* TASK MODAL FIELD SPACING */
+
+.task-modal .form-field + .form-field {
+    margin-top: 20px;
+}
+
+.task-modal .form-row {
+    margin-top: 20px;
+}
+
+
+/* MOBILE */
+
+@media (max-width: 600px) {
+
+    .task-type-options,
+    .assessment-type-options {
+        gap: 6px;
+    }
+
+    .task-type-option,
+    .assessment-type-option {
+        flex: 1 1 auto;
+        text-align: center;
+    }
+
+}

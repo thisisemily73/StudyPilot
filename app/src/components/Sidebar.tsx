@@ -14,12 +14,8 @@ function Sidebar() {
                     Flight Plan
                 </NavLink>
 
-                <NavLink to="StudyPilot/app/todo" className="sidebar-link">
-                    To-Do
-                </NavLink>
-
-                <NavLink to="StudyPilot/app/planner" className="sidebar-link">
-                    Planner
+                <NavLink to="StudyPilot/app/tasks" className="sidebar-link">
+                    Tasks
                 </NavLink>
 
                 <NavLink to="StudyPilot/app/schedule" className="sidebar-link">

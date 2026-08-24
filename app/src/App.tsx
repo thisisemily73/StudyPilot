@@ -4,12 +4,11 @@ import Sidebar from './components/Sidebar'
 import Topbar from './components/Topbar'
 
 import Home from './pages/Home'
-import Planner from './pages/Planner'
 import Subjects from './pages/Subjects'
 import Progress from './pages/Progress'
 import Schedule from './pages/Schedule'
 import Settings from './pages/Settings'
-import Todo from './pages/Todo'
+import Tasks from './pages/Tasks'
 
 import SubjectDetails from "./pages/SubjectDetails"
 
@@ -30,9 +29,7 @@ function App() {
 
                             <Route path="StudyPilot/app/" element={<Home />} />
 
-                            <Route path="StudyPilot/app/todo" element={<Todo />} />
-
-                            <Route path="StudyPilot/app/planner" element={<Planner />} />
+                            <Route path="StudyPilot/app/tasks" element={<Tasks />} />
 
                             <Route path="StudyPilot/app/schedule" element={<Schedule />} />
 
