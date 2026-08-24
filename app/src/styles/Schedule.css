@@ -204,9 +204,75 @@
 /* CALENDAR BODY */
 
 .schedule-calendar-body {
-    min-width: 760px;
-    max-height: 420px;
-    overflow-y: auto;
+    position: relative;
+}
+
+.schedule-events-layer {
+    position: absolute;
+    top: 0;
+    left: 62px;
+    right: 0;
+
+    display: grid;
+    grid-template-columns:
+        repeat(7, minmax(100px, 1fr));
+
+    height: 100%;
+
+    pointer-events: none;
+
+    z-index: 5;
+}
+
+.schedule-events-column {
+    position: relative;
+    border-right: 1px solid transparent;
+}
+
+/* EVENTS */
+
+.schedule-event {
+    position: absolute;
+    inset: 2px;
+    z-index: 3;
+
+    padding: 7px 8px;
+
+    border-radius: 7px;
+    border: 1px solid rgba(15, 23, 42, 0.08);
+
+    background: #f1f5f9;
+
+    overflow: hidden;
+    pointer-events: none;
+
+    box-sizing: border-box;
+}
+
+.schedule-event strong {
+    display: block;
+
+    font-size: 0.7rem;
+    font-weight: 650;
+
+    color: var(--navy);
+
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.schedule-event span {
+    display: block;
+
+    margin-top: 2px;
+
+    font-size: 0.6rem;
+    color: var(--text-secondary);
+
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 

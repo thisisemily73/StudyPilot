@@ -6,6 +6,11 @@ import { useSubjects } from "../context/SubjectContext"
 import { useScheduleSettings } from "../context/ScheduleSettingsContext"
 import { useStudyTime } from "../context/StudyTimeContext"
 
+
+import type { Event } from "../types/Event"
+import { useEvents } from "../context/EventContext"
+import AddEventModal from "../components/AddEventModal"
+
 const days = [
     "MON",
     "TUE",
@@ -29,6 +34,24 @@ function formatHour(hour: number) {
         hour % 12 || 12
 
     return `${displayHour} ${suffix}`
+}
+
+function formatEventTime(
+    startTime: string,
+    endTime: string
+) {
+    function formatTime(time: string) {
+        const [hours, minutes] = time
+            .split(":")
+            .map(Number)
+
+        const suffix = hours >= 12 ? "PM" : "AM"
+        const displayHour = hours % 12 || 12
+
+        return `${displayHour}:${String(minutes).padStart(2, "0")} ${suffix}`
+    }
+
+    return `${formatTime(startTime)} – ${formatTime(endTime)}`
 }
 
 
@@ -97,8 +120,33 @@ function formatDateKey(date: Date) {
     return `${year}-${month}-${day}`
 }
 
+function getEventForDay(
+    event: Event,
+    dayIndex: number,
+    weekDates: Date[]
+) {
+
+    const dateKey =
+        formatDateKey(
+            weekDates[dayIndex]
+        )
+
+    // One-time event
+    if (!event.recurring) {
+        return event.date === dateKey
+    }
+
+    // Recurring event
+    return event.days?.includes(dayIndex) ?? false
+}
+
 
 function Schedule() {
+
+    const { events } = useEvents()
+
+    const [showEventModal, setShowEventModal] =
+        useState(false)
 
     const { tasks } = useTasks()
     const { subjects } = useSubjects()
@@ -411,6 +459,7 @@ function Schedule() {
 
                     <button
                         className="schedule-button"
+                        onClick={() => setShowEventModal(true)}
                     >
                         + Add event
                     </button>
@@ -554,13 +603,11 @@ function Schedule() {
 
                 <div
                     className="schedule-calendar-body"
-                    onPointerUp={
-                        stopDragging
-                    }
-                    onPointerLeave={
-                        stopDragging
-                    }
+                    onPointerUp={stopDragging}
+                    onPointerLeave={stopDragging}
                 >
+
+                    {/* GRID LINES */}
 
                     {Array.from(
                         {
@@ -584,7 +631,6 @@ function Schedule() {
                                     <div className="schedule-time">
                                         {formatHour(hour)}
                                     </div>
-
 
                                     <div className="schedule-hour-grid">
 
@@ -617,7 +663,6 @@ function Schedule() {
                                                                 selectedSlots.has(
                                                                     key
                                                                 )
-
 
                                                             return (
 
@@ -680,14 +725,118 @@ function Schedule() {
                                     </div>
 
                                 </div>
-
                             )
                         }
                     )}
 
+
+                    {/* EVENTS */}
+
+                    <div className="schedule-events-layer">
+
+                        {days.map((_, dayIndex) => {
+
+                            const dateKey =
+                                formatDateKey(
+                                    weekDates[dayIndex]
+                                )
+
+                            const dayEvents =
+                                events.filter((event) => {
+
+                                    if (event.recurring) {
+                                        return (
+                                            event.days?.includes(
+                                                dayIndex
+                                            ) ?? false
+                                        )
+                                    }
+
+                                    return event.date === dateKey
+                                })
+
+                            return (
+
+                                <div
+                                    className="schedule-events-column"
+                                    key={dayIndex}
+                                >
+
+                                    {dayEvents.map((event) => {
+
+                                        const eventStart =
+                                            timeToMinutes(
+                                                event.startTime
+                                            )
+
+                                        const eventEnd =
+                                            timeToMinutes(
+                                                event.endTime
+                                            )
+
+                                        const top =
+                                            (
+                                                eventStart -
+                                                startHour * 60
+                                            ) *
+                                            (88 / 60)
+
+                                        const height =
+                                            (
+                                                eventEnd -
+                                                eventStart
+                                            ) *
+                                            (88 / 60)
+
+                                        return (
+
+                                            <div
+                                                key={event.id}
+                                                className={`schedule-event schedule-event-${event.type}`}
+                                                style={{
+                                                    top:
+                                                        `${top}px`,
+                                                    height:
+                                                        `${height}px`,
+                                                }}
+                                            >
+
+                                                <strong>
+                                                    {event.title}
+                                                </strong>
+
+                                                <span>
+                                                    {formatEventTime(event.startTime, event.endTime)}
+                                                </span>
+
+                                                {event.location && (
+                                                    <span>
+                                                        {event.location}
+                                                    </span>
+                                                )}
+
+                                            </div>
+
+                                        )
+                                    })}
+
+                                </div>
+                            )
+                        })}
+
+                    </div>
+
                 </div>
 
             </div>
+
+            {showEventModal && (
+                <AddEventModal
+                    onClose={() =>
+                        setShowEventModal(false)
+                    }
+                />
+            )}
 
         </section>
     )

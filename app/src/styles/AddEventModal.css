@@ -1,0 +1,82 @@
+/* EVENT MODAL */
+
+.task-modal {
+    width: min(100% - 32px, 500px);
+    max-height: calc(100vh - 40px);
+    overflow-y: auto;
+    padding: 24px;
+
+    scrollbar-width: thin;
+    scrollbar-color: rgba(15, 23, 42, 0.15) transparent;
+}
+
+/* Slightly tighter spacing inside the modal */
+
+.task-modal-header {
+    margin-bottom: 20px;
+}
+
+.task-modal-title h2 {
+    margin-top: 8px;
+}
+
+.task-modal .form-field {
+    margin-bottom: 14px;
+}
+
+.task-modal .form-row {
+    gap: 12px;
+}
+
+.task-modal-footer {
+    margin-top: 20px;
+}
+
+.task-modal::-webkit-scrollbar {
+    width: 5px;
+}
+
+.task-modal::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.task-modal::-webkit-scrollbar-thumb {
+    background: rgba(15, 23, 42, 0.15);
+    border-radius: 999px;
+}
+
+/* NARROW SCREENS */
+
+@media (max-width: 600px) {
+
+    @media (max-width: 600px) {
+
+        .modal-overlay {
+            padding: 16px;
+            align-items: center;
+            overflow-y: auto;
+        }
+
+        .task-modal {
+            width: 100%;
+            max-width: 440px;
+            max-height: calc(100vh - 32px);
+            padding: 20px;
+            border-radius: 14px;
+        }
+    }
+
+    .task-modal .form-row {
+        flex-direction: column;
+        gap: 0;
+    }
+
+    .task-modal .task-type-options {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .task-modal-footer {
+        gap: 12px;
+    }
+    
+}
