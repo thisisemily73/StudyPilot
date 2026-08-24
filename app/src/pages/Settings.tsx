@@ -1,4 +1,4 @@
-import { useScheduleSettings } from "../context/ScheduleSettingsContext"
+import { useSettings } from "../context/SettingsContext"
 import { useSchoolSchedule } from "../context/SchoolScheduleContext"
 
 function Settings() {
@@ -8,7 +8,22 @@ function Settings() {
         dayEnd,
         setDayStart,
         setDayEnd,
-    } = useScheduleSettings()
+
+        weeklyStart,
+        setWeeklyStart,
+
+        dailyWorkload,
+        setDailyWorkload,
+
+        taskReminders,
+        setTaskReminders,
+
+        dailyOverview,
+        setDailyOverview,
+
+        theme,
+        setTheme,
+    } = useSettings()
 
     const {
         schoolStart,
@@ -106,7 +121,7 @@ function Settings() {
 
                 <div className="settings-card">
 
-                    <div className="settings-row">
+                    {/* <div className="settings-row">
 
                         <div>
                             <strong>
@@ -114,11 +129,18 @@ function Settings() {
                             </strong>
 
                             <span>
-                                Start your planning week on Monday.
+                                Start your planning week on the day you choose.
                             </span>
                         </div>
 
-                        <select defaultValue="monday">
+                        <select
+                            value={weeklyStart}
+                            onChange={(event) =>
+                                setWeeklyStart(
+                                    event.target.value as "monday" | "sunday"
+                                )
+                            }
+                        >
                             <option value="monday">
                                 Monday
                             </option>
@@ -128,18 +150,19 @@ function Settings() {
                             </option>
                         </select>
 
-                    </div>
+                    </div> */}
 
 
                     <div className="settings-divider" />
 
-                    <div className="settings-row">
+                    <div className="school-schedule-row">
+                        <div className="school-schedule-label">
 
-                        <div>
-                            <strong>
-                                Down time
-                            </strong>
-
+                            <div>
+                                <strong>
+                                    Down time
+                                </strong>
+                            </div>
                             <span>
                                 Set the hours your day normally starts and ends.
                                 Your schedule will adjust automatically.
@@ -186,7 +209,14 @@ function Settings() {
                             </span>
                         </div>
 
-                        <select defaultValue="2">
+                        <select
+                            value={dailyWorkload}
+                            onChange={(event) =>
+                                setDailyWorkload(
+                                    event.target.value as "1" | "2" | "3" | "4"
+                                )
+                            }
+                        >
                             <option value="1">
                                 1 hour
                             </option>
@@ -207,111 +237,110 @@ function Settings() {
                     </div>
 
                 </div>
+            </div>
 
-                {/* SCHOOL SCHEDULE */}
+            {/* SCHOOL SCHEDULE */}
 
-                <div className="settings-section">
+            <div className="settings-section">
 
-                    <div className="settings-section-heading">
+                <div className="settings-section-heading">
 
-                        <h2>
-                            School Schedule
-                        </h2>
+                    <h2>
+                        School Schedule
+                    </h2>
 
-                        <p>
-                            Tell StudyPilot when your normal school day takes place.
-                        </p>
+                    <p>
+                        Tell StudyPilot when your normal school day takes place.
+                    </p>
 
-                    </div>
-
-
-                    <div className="settings-card">
-
-                        {/* SCHOOL HOURS */}
-
-                        <div className="school-schedule-row">
-
-                            <div className="school-schedule-label">
-
-                                <strong>
-                                    School hours
-                                </strong>
-
-                                <span>
-                                    Used when setting class periods on your schedule.
-                                </span>
-
-                            </div>
+                </div>
 
 
-                            <div className="schedule-time-settings">
+                <div className="settings-card">
 
-                                <input
-                                    type="time"
-                                    value={schoolStart}
-                                    onChange={(event) =>
-                                        setSchoolStart(event.target.value)
-                                    }
-                                />
+                    {/* SCHOOL HOURS */}
 
-                                <span>
-                                    to
-                                </span>
+                    <div className="school-schedule-row">
 
-                                <input
-                                    type="time"
-                                    value={schoolEnd}
-                                    onChange={(event) =>
-                                        setSchoolEnd(event.target.value)
-                                    }
-                                />
+                        <div className="school-schedule-label">
 
-                            </div>
+                            <strong>
+                                School hours
+                            </strong>
+
+                            <span>
+                                Used when setting class periods on your schedule.
+                            </span>
 
                         </div>
 
 
-                        <div className="settings-divider" />
+                        <div className="schedule-time-settings">
+
+                            <input
+                                type="time"
+                                value={schoolStart}
+                                onChange={(event) =>
+                                    setSchoolStart(event.target.value)
+                                }
+                            />
+
+                            <span>
+                                to
+                            </span>
+
+                            <input
+                                type="time"
+                                value={schoolEnd}
+                                onChange={(event) =>
+                                    setSchoolEnd(event.target.value)
+                                }
+                            />
+
+                        </div>
+
+                    </div>
 
 
-                        {/* SCHOOL DAYS */}
+                    <div className="settings-divider" />
 
-                        <div className="school-days-setting">
 
-                            <div className="school-days-label">
-                                School days
-                            </div>
+                    {/* SCHOOL DAYS */}
 
-                            <div className="school-day-selector">
+                    <div className="school-days-setting">
 
-                                {[
-                                    "MON",
-                                    "TUE",
-                                    "WED",
-                                    "THU",
-                                    "FRI",
-                                    "SAT",
-                                    "SUN",
-                                ].map((day, index) => (
+                        <div className="school-days-label">
+                            School days
+                        </div>
 
-                                    <button
-                                        type="button"
-                                        key={day}
-                                        className={
-                                            schoolDays.includes(index)
-                                                ? "selected"
-                                                : ""
-                                        }
-                                        onClick={() =>
-                                            toggleSchoolDay(index)
-                                        }
-                                    >
-                                        {day}
-                                    </button>
+                        <div className="school-day-selector">
 
-                                ))}
+                            {[
+                                "MON",
+                                "TUE",
+                                "WED",
+                                "THU",
+                                "FRI",
+                                "SAT",
+                                "SUN",
+                            ].map((day, index) => (
 
-                            </div>
+                                <button
+                                    type="button"
+                                    key={day}
+                                    className={
+                                        schoolDays.includes(index)
+                                            ? "selected"
+                                            : ""
+                                    }
+                                    onClick={() =>
+                                        toggleSchoolDay(index)
+                                    }
+                                >
+                                    {day}
+                                </button>
+
+                            ))}
 
                         </div>
 
@@ -321,10 +350,9 @@ function Settings() {
 
             </div>
 
-
             {/* NOTIFICATIONS */}
 
-            <div className="settings-section">
+            < div className="settings-section" >
 
                 <div className="settings-section-heading">
 
@@ -357,7 +385,10 @@ function Settings() {
 
                             <input
                                 type="checkbox"
-                                defaultChecked
+                                checked={taskReminders}
+                                onChange={(event) =>
+                                    setTaskReminders(event.target.checked)
+                                }
                             />
 
                             <span className="toggle-slider" />
@@ -386,7 +417,10 @@ function Settings() {
 
                             <input
                                 type="checkbox"
-                                defaultChecked
+                                checked={dailyOverview}
+                                onChange={(event) =>
+                                    setDailyOverview(event.target.checked)
+                                }
                             />
 
                             <span className="toggle-slider" />
@@ -397,12 +431,12 @@ function Settings() {
 
                 </div>
 
-            </div>
+            </div >
 
 
             {/* APPEARANCE */}
 
-            <div className="settings-section">
+            < div className="settings-section" >
 
                 <div className="settings-section-heading">
 
@@ -431,18 +465,25 @@ function Settings() {
                             </span>
                         </div>
 
-                        <select defaultValue="light">
+                        <select
+                            value={theme}
+                            onChange={(event) =>
+                                setTheme(
+                                    event.target.value as "light" | "system" | "dark"
+                                )
+                            }
+                        >
 
                             <option value="light">
                                 Light
                             </option>
 
-                            <option value="system">
-                                System
-                            </option>
-
                             <option value="dark">
                                 Dark
+                            </option>
+
+                            <option value="system">
+                                System
                             </option>
 
                         </select>
@@ -451,12 +492,12 @@ function Settings() {
 
                 </div>
 
-            </div>
+            </div >
 
 
             {/* ACCOUNT */}
 
-            <div className="settings-section account-section">
+            < div className="settings-section account-section" >
 
                 <div className="settings-section-heading">
 
@@ -479,9 +520,9 @@ function Settings() {
 
                 </div>
 
-            </div>
+            </div >
 
-        </section>
+        </section >
     )
 }
 

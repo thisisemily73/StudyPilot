@@ -286,9 +286,9 @@
 
   border-radius: var(--radius-lg);
 
-  background: var(--navy);
+  background: var(--card);
 
-  color: white;
+  color: var(--text);
 }
 
 .progress-status span {

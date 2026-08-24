@@ -2,7 +2,7 @@ import React from 'react'
 import ReactDOM from 'react-dom/client'
 
 import App from './App'
-import { ScheduleSettingsProvider } from "./context/ScheduleSettingsContext"
+import { SettingsProvider } from "./context/SettingsContext"
 import { TaskProvider } from './context/TaskContext'
 import { SubjectProvider } from "./context/SubjectContext"
 import { StudyTimeProvider } from "./context/StudyTimeContext"
@@ -33,7 +33,7 @@ import './styles/AddEventModal.css'
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
-    <ScheduleSettingsProvider>
+    <SettingsProvider>
       <TaskProvider>
         <SubjectProvider>
           <StudyTimeProvider>
@@ -45,6 +45,6 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
           </StudyTimeProvider>
         </SubjectProvider>
       </TaskProvider>
-    </ScheduleSettingsProvider>
+    </SettingsProvider>
   </React.StrictMode>,
 )

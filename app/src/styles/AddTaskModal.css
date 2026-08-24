@@ -19,7 +19,7 @@
 
 .task-modal {
     width: min(520px, calc(100vw - 32px));
-    background: white;
+    background: var(--background);
     border-radius: 20px;
     padding: 28px;
     box-shadow: 0 24px 70px rgba(0, 0, 0, 0.18);
@@ -101,7 +101,7 @@
 .form-field input:focus,
 .form-field select:focus {
     border-color: #9b9da5;
-    background: white;
+    background: var(--background);
 }
 
 .form-field input::placeholder {
@@ -142,9 +142,9 @@
 }
 
 .duration-option.selected {
-    border-color: #222;
-    background: #222;
-    color: white;
+    border-color: var(--card);
+    background: var(--card);
+    color: var(--card-text-primary);
 }
 
 
@@ -243,9 +243,9 @@
 
 .task-type-option.selected,
 .assessment-type-option.selected {
-    background: var(--navy);
-    border-color: var(--navy);
-    color: white;
+    background: var(--card);
+    border-color: var(--card);
+    color: var(--card-text-primary);
 }
 
 .task-type-option:active,

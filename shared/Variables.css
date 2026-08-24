@@ -21,10 +21,29 @@
   --status-delayed: #dc2626;
   --status-ahead: #5680d9;
 
+  --card: #2d3644;
+  --card-text-primary: #efefef;
+  --card-text-secondary: #d6d6d6;
+
   --radius-sm: 8px;
   --radius-md: 14px;
   --radius-lg: 24px;
   --radius-pill: 999px;
 
   --max-width: 1200px;
+}
+
+
+[data-theme="dark"] {
+    --background: #0f0f14;
+    --surface: #0e0f11;
+    --text: #f8fafc;
+    --text-secondary: #cbd5e1;
+    --text-muted: #94a3b8;
+    --border: #334155;
+
+    --navy: #f8fafc;
+
+    --primary: #92a8db;
+    --primary-dark: #667597;
 }
