@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 
 import { useTasks } from "../context/TaskContext"
 import { useSubjects } from "../context/SubjectContext"
@@ -52,6 +52,22 @@ function formatEventTime(
     }
 
     return `${formatTime(startTime)} – ${formatTime(endTime)}`
+}
+
+function formatTaskTime(time: string) {
+
+    const [hours, minutes] =
+        time.split(":").map(Number)
+
+    const suffix =
+        hours >= 12
+            ? "PM"
+            : "AM"
+
+    const displayHour =
+        hours % 12 || 12
+
+    return `${displayHour}:${String(minutes).padStart(2, "0")} ${suffix}`
 }
 
 
@@ -143,6 +159,8 @@ function getEventForDay(
 
 function Schedule() {
 
+    // DEFINITIONS/CONST
+
     const { events } = useEvents()
 
     const [showEventModal, setShowEventModal] =
@@ -150,6 +168,16 @@ function Schedule() {
 
     const { tasks } = useTasks()
     const { subjects } = useSubjects()
+
+    useEffect(() => {
+        setSubjectFilters(
+            new Set(
+                subjects.map(
+                    (subject) => subject.name
+                )
+            )
+        )
+    }, [subjects])
 
     const [weekOffset, setWeekOffset] =
         useState(0)
@@ -183,11 +211,32 @@ function Schedule() {
         dayEnd,
     } = useScheduleSettings()
 
+    const configuredStartHour =
+        Math.floor(
+            timeToMinutes(dayStart) / 60
+        )
+
+    const configuredEndHour =
+        Math.ceil(
+            timeToMinutes(dayEnd) / 60
+        )
+
+
+    /*
+     * Find the earliest and latest visible
+     * task/event times for this week.
+     */
+
+    const visibleTimes: number[] = []
+
     const {
         studyTime,
         addStudyTime,
         deleteStudyTime,
     } = useStudyTime()
+
+    const [showTasks, setShowTasks] =
+        useState(true)
 
 
     const [editingStudyTime, setEditingStudyTime] =
@@ -202,16 +251,140 @@ function Schedule() {
     const [dragMode, setDragMode] =
         useState<"add" | "remove" | null>(null)
 
+    const [subjectFilters, setSubjectFilters] =
+        useState<Set<string>>(
+            new Set()
+        )
+
+    const [eventFilters, setEventFilters] =
+        useState<Set<Event["type"]>>(
+            new Set([
+                "class",
+                "sport",
+                "club",
+                "activity",
+                "personal",
+                "other",
+            ])
+        )
+
+    // FUNCTIONS
+
+    function isEventVisible(
+        event: Event
+    ) {
+        return eventFilters.has(event.type)
+    }
+
+
+    function isTaskVisible(
+        task: typeof tasks[number]
+    ) {
+        if (!showTasks) {
+            return false
+        }
+
+        return subjectFilters.has(
+            task.subject
+        )
+    }
+
+
+    events.forEach((event) => {
+
+        if (!eventFilters.has(event.type)) {
+            return
+        }
+
+        for (let dayIndex = 0; dayIndex < 7; dayIndex++) {
+
+            if (
+                getEventForDay(
+                    event,
+                    dayIndex,
+                    weekDates
+                )
+            ) {
+                visibleTimes.push(
+                    timeToMinutes(event.startTime)
+                )
+
+                visibleTimes.push(
+                    timeToMinutes(event.endTime)
+                )
+            }
+        }
+    })
+
+
+    if (showTasks) {
+
+        tasks.forEach((task) => {
+
+            if (!isTaskVisible(task)) {
+                return
+            }
+
+            if (
+                task.dueTime &&
+                task.dueDate
+            ) {
+                visibleTimes.push(
+                    timeToMinutes(task.dueTime)
+                )
+
+                visibleTimes.push(
+                    timeToMinutes(task.dueTime) +
+                    task.estimatedMinutes
+                )
+            }
+        })
+    }
+
+
+    const earliestVisibleTime =
+        visibleTimes.length > 0
+            ? Math.min(...visibleTimes)
+            : configuredStartHour * 60
+
+
+    const latestVisibleTime =
+        visibleTimes.length > 0
+            ? Math.max(...visibleTimes)
+            : configuredEndHour * 60
+
 
     const startHour =
-        Math.floor(
-            timeToMinutes(dayStart) / 60
+        Math.min(
+            configuredStartHour,
+            Math.floor(
+                earliestVisibleTime / 60
+            )
         )
 
+
     const endHour =
-        Math.ceil(
-            timeToMinutes(dayEnd) / 60
+        Math.max(
+            configuredEndHour,
+            Math.ceil(
+                latestVisibleTime / 60
+            )
         )
+
+    const [showFilters, setShowFilters] =
+        useState(true)
+
+    const eventTypes: {
+        value: Event["type"]
+        label: string
+    }[] = [
+            { value: "class", label: "Classes" },
+            { value: "sport", label: "Sports" },
+            { value: "club", label: "Clubs" },
+            { value: "activity", label: "Activities" },
+            { value: "personal", label: "Personal" },
+            { value: "other", label: "Other" },
+        ]
 
 
     /* OPEN EDITOR */
@@ -429,7 +602,6 @@ function Schedule() {
         setEditingStudyTime(false)
     }
 
-
     return (
         <section className="schedule">
 
@@ -566,6 +738,151 @@ function Schedule() {
 
             </div>
 
+            <div className="schedule-filters">
+
+                <div className="schedule-filter-group">
+
+                    <span className="schedule-filter-label">
+                        EVENTS
+                    </span>
+
+                    {eventTypes.map((eventType) => {
+
+                        const active =
+                            eventFilters.has(
+                                eventType.value
+                            )
+
+                        return (
+                            <button
+                                key={eventType.value}
+                                className={
+                                    active
+                                        ? "schedule-filter active"
+                                        : "schedule-filter"
+                                }
+                                onClick={() => {
+
+                                    setEventFilters(
+                                        (current) => {
+
+                                            const next =
+                                                new Set(current)
+
+                                            if (
+                                                next.has(
+                                                    eventType.value
+                                                )
+                                            ) {
+                                                next.delete(
+                                                    eventType.value
+                                                )
+                                            } else {
+                                                next.add(
+                                                    eventType.value
+                                                )
+                                            }
+
+                                            return next
+                                        }
+                                    )
+                                }}
+                            >
+                                {eventType.label}
+                            </button>
+                        )
+                    })}
+
+                </div>
+
+                {/* SCHEDULE FILTERS */}
+
+                <div className="schedule-filter-group">
+
+                    <span className="schedule-filter-label">
+                        TASKS
+                    </span>
+
+                    <button
+                        className={
+                            showTasks
+                                ? "schedule-filter active"
+                                : "schedule-filter"
+                        }
+                        onClick={() =>
+                            setShowTasks(
+                                (current) => !current
+                            )
+                        }
+                    >
+                        Tasks
+                    </button>
+
+                </div>
+
+
+                {subjects.length > 0 && showTasks && (
+
+                    <div className="schedule-filter-group">
+
+                        <span className="schedule-filter-label">
+                            SUBJECTS
+                        </span>
+
+                        {subjects.map((subject) => {
+
+                            const subjectName =
+                                subject.name
+
+                            const active =
+                                subjectFilters.has(
+                                    subjectName
+                                )
+
+                            return (
+                                <button
+                                    key={subjectName}
+                                    className={
+                                        active
+                                            ? "schedule-filter active"
+                                            : "schedule-filter"
+                                    }
+                                    onClick={() => {
+
+                                        setSubjectFilters(
+                                            (current) => {
+
+                                                const next =
+                                                    new Set(current)
+
+                                                if (
+                                                    next.has(
+                                                        subjectName
+                                                    )
+                                                ) {
+                                                    next.delete(
+                                                        subjectName
+                                                    )
+                                                } else {
+                                                    next.add(
+                                                        subjectName
+                                                    )
+                                                }
+
+                                                return next
+                                            }
+                                        )
+                                    }}
+                                >
+                                    {subjectName}
+                                </button>
+                            )
+                        })}
+
+                    </div>
+                )}
+
+            </div>
 
             {/* CALENDAR */}
 
@@ -744,6 +1061,10 @@ function Schedule() {
                             const dayEvents =
                                 events.filter((event) => {
 
+                                    if (!isEventVisible(event)) {
+                                        return false
+                                    }
+
                                     if (event.recurring) {
                                         return (
                                             event.days?.includes(
@@ -819,6 +1140,75 @@ function Schedule() {
 
                                         )
                                     })}
+
+                                    {tasks
+                                        .filter((task) => {
+
+                                            if (!isTaskVisible(task)) {
+                                                return false
+                                            }
+
+                                            return (
+                                                task.dueDate ===
+                                                dateKey
+                                            )
+                                        })
+                                        .map((task) => {
+
+                                            const taskStart =
+                                                timeToMinutes(
+                                                    task.dueTime
+                                                )
+
+                                            const taskEnd =
+                                                taskStart +
+                                                task.estimatedMinutes
+
+                                            const top =
+                                                (
+                                                    taskStart -
+                                                    startHour * 60
+                                                ) *
+                                                (88 / 60)
+
+                                            const height =
+                                                (
+                                                    taskEnd -
+                                                    taskStart
+                                                ) *
+                                                (88 / 60)
+
+                                            return (
+
+                                                <div
+                                                    key={`task-${task.id}`}
+                                                    className="schedule-task"
+                                                    style={{
+                                                        top:
+                                                            `${top}px`,
+                                                        height:
+                                                            `${height}px`,
+                                                    }}
+                                                >
+
+                                                    <strong>
+                                                        {task.title}
+                                                    </strong>
+
+                                                    <span>
+                                                        {formatTaskTime(
+                                                            task.dueTime
+                                                        )}
+                                                    </span>
+
+                                                    <span>
+                                                        {task.subject}
+                                                    </span>
+
+                                                </div>
+
+                                            )
+                                        })}
 
                                 </div>
                             )

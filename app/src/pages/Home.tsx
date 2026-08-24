@@ -47,7 +47,19 @@ function Home() {
                 </span>
 
                 <h1>
-                    Good morning.
+                    {(() => {
+                        const hour = new Date().getHours()
+
+                        if (hour < 12) {
+                            return "Good morning."
+                        }
+
+                        if (hour < 18) {
+                            return "Good afternoon."
+                        }
+
+                        return "Good evening."
+                    })()}
                 </h1>
 
                 <p>
@@ -59,10 +71,6 @@ function Home() {
             <div className="home-section study-plan-section">
                 <div className="home-section-header">
                     <div>
-                        <span className="home-label">
-                            ✦ GENERATED FOR YOU
-                        </span>
-
                         <h2>
                             Your study plan
                         </h2>
