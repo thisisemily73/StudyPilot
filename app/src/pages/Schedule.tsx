@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 
 import { useTasks } from "../context/TaskContext"
 import { useSubjects } from "../context/SubjectContext"
@@ -10,6 +10,14 @@ import { useStudyTime } from "../context/StudyTimeContext"
 import type { Event } from "../types/Event"
 import { useEvents } from "../context/EventContext"
 import AddEventModal from "../components/AddEventModal"
+
+import {
+    taskTypes,
+    assessmentTypes,
+    type TaskType,
+    type AssessmentType,
+} from "../types/Task"
+
 
 const days = [
     "MON",
@@ -221,22 +229,27 @@ function Schedule() {
             timeToMinutes(dayEnd) / 60
         )
 
-
-    /*
-     * Find the earliest and latest visible
-     * task/event times for this week.
-     */
-
-    const visibleTimes: number[] = []
-
     const {
         studyTime,
         addStudyTime,
         deleteStudyTime,
     } = useStudyTime()
 
-    const [showTasks, setShowTasks] =
+    const [showTasks] =
         useState(true)
+
+    const [taskTypeFilters, setTaskTypeFilters] =
+        useState<Set<TaskType>>(
+            new Set(taskTypes)
+        )
+
+    const [assessmentFilters, setAssessmentFilters] =
+        useState<Set<AssessmentType>>(
+            new Set(assessmentTypes)
+        )
+
+    const [showAssessmentFilters, setShowAssessmentFilters] =
+        useState(false)
 
 
     const [editingStudyTime, setEditingStudyTime] =
@@ -268,6 +281,26 @@ function Schedule() {
             ])
         )
 
+    const [openFilter, setOpenFilter] =
+        useState<
+            "events" |
+            "tasks" |
+            "subjects" |
+            null
+        >(null)
+
+    const eventTypes: {
+        value: Event["type"]
+        label: string
+    }[] = [
+            { value: "class", label: "Classes" },
+            { value: "sport", label: "Sports" },
+            { value: "club", label: "Clubs" },
+            { value: "activity", label: "Activities" },
+            { value: "personal", label: "Personal" },
+            { value: "other", label: "Other" },
+        ]
+
     // FUNCTIONS
 
     function isEventVisible(
@@ -280,7 +313,22 @@ function Schedule() {
     function isTaskVisible(
         task: typeof tasks[number]
     ) {
-        if (!showTasks) {
+
+        if (
+            !taskTypeFilters.has(
+                task.type
+            )
+        ) {
+            return false
+        }
+
+        if (
+            task.type === "assessment" &&
+            task.assessmentType &&
+            !assessmentFilters.has(
+                task.assessmentType
+            )
+        ) {
             return false
         }
 
@@ -289,6 +337,15 @@ function Schedule() {
         )
     }
 
+    /*
+ * Find the earliest and latest visible
+ * task/event times for this week.
+ */
+
+    const visibleTimes: number[] = []
+
+
+    // EVENTS
 
     events.forEach((event) => {
 
@@ -296,7 +353,11 @@ function Schedule() {
             return
         }
 
-        for (let dayIndex = 0; dayIndex < 7; dayIndex++) {
+        for (
+            let dayIndex = 0;
+            dayIndex < 7;
+            dayIndex++
+        ) {
 
             if (
                 getEventForDay(
@@ -305,17 +366,24 @@ function Schedule() {
                     weekDates
                 )
             ) {
+
                 visibleTimes.push(
-                    timeToMinutes(event.startTime)
+                    timeToMinutes(
+                        event.startTime
+                    )
                 )
 
                 visibleTimes.push(
-                    timeToMinutes(event.endTime)
+                    timeToMinutes(
+                        event.endTime
+                    )
                 )
             }
         }
     })
 
+
+    // TASKS
 
     if (showTasks) {
 
@@ -329,18 +397,25 @@ function Schedule() {
                 task.dueTime &&
                 task.dueDate
             ) {
+
                 visibleTimes.push(
-                    timeToMinutes(task.dueTime)
+                    timeToMinutes(
+                        task.dueTime
+                    )
                 )
 
                 visibleTimes.push(
-                    timeToMinutes(task.dueTime) +
+                    timeToMinutes(
+                        task.dueTime
+                    ) +
                     task.estimatedMinutes
                 )
             }
         })
     }
 
+
+    // NOW calculate the calendar boundaries
 
     const earliestVisibleTime =
         visibleTimes.length > 0
@@ -371,20 +446,38 @@ function Schedule() {
             )
         )
 
-    const [showFilters, setShowFilters] =
-        useState(true)
+    const filterRef =
+        useRef<HTMLDivElement>(null)
 
-    const eventTypes: {
-        value: Event["type"]
-        label: string
-    }[] = [
-            { value: "class", label: "Classes" },
-            { value: "sport", label: "Sports" },
-            { value: "club", label: "Clubs" },
-            { value: "activity", label: "Activities" },
-            { value: "personal", label: "Personal" },
-            { value: "other", label: "Other" },
-        ]
+    useEffect(() => {
+
+        function handleClickOutside(event: MouseEvent) {
+
+            if (
+                filterRef.current &&
+                !filterRef.current.contains(
+                    event.target as Node
+                )
+            ) {
+                setOpenFilter(null)
+            }
+        }
+
+        document.addEventListener(
+            "mousedown",
+            handleClickOutside
+        )
+
+        return () => {
+            document.removeEventListener(
+                "mousedown",
+                handleClickOutside
+            )
+        }
+
+    }, [])
+
+
 
 
     /* OPEN EDITOR */
@@ -738,48 +831,215 @@ function Schedule() {
 
             </div>
 
-            <div className="schedule-filters">
+            <div
+                className="schedule-filters"
+                ref={filterRef}
+            >
 
-                <div className="schedule-filter-group">
+                {/* EVENTS DROPDOWN */}
 
-                    <span className="schedule-filter-label">
-                        EVENTS
-                    </span>
+                <div className="schedule-filter-dropdown">
 
-                    {eventTypes.map((eventType) => {
-
-                        const active =
-                            eventFilters.has(
-                                eventType.value
+                    <button
+                        className="schedule-filter-dropdown-trigger"
+                        onClick={() =>
+                            setOpenFilter(
+                                openFilter === "events"
+                                    ? null
+                                    : "events"
                             )
+                        }
+                    >
+                        <span>EVENTS</span>
+                        <span className="schedule-filter-chevron" />
+                    </button>
 
-                        return (
+                    {openFilter === "events" && (
+
+                        <div className="schedule-filter-menu">
+
+                            <div className="schedule-filter-menu-actions">
+
+                                <button
+                                    onClick={() =>
+                                        setEventFilters(
+                                            new Set(
+                                                eventTypes.map(
+                                                    (eventType) =>
+                                                        eventType.value
+                                                )
+                                            )
+                                        )
+                                    }
+                                >
+                                    Select all
+                                </button>
+
+                                <button
+                                    onClick={() =>
+                                        setEventFilters(
+                                            new Set()
+                                        )
+                                    }
+                                >
+                                    Remove filters
+                                </button>
+
+                            </div>
+
+                            {eventTypes.map((eventType) => {
+
+                                const active =
+                                    eventFilters.has(
+                                        eventType.value
+                                    )
+
+                                return (
+
+                                    <button
+                                        key={eventType.value}
+                                        className={
+                                            active
+                                                ? "schedule-filter-option active"
+                                                : "schedule-filter-option"
+                                        }
+                                        onClick={() => {
+
+                                            setEventFilters(
+                                                (current) => {
+
+                                                    const next =
+                                                        new Set(current)
+
+                                                    if (
+                                                        next.has(
+                                                            eventType.value
+                                                        )
+                                                    ) {
+                                                        next.delete(
+                                                            eventType.value
+                                                        )
+                                                    } else {
+                                                        next.add(
+                                                            eventType.value
+                                                        )
+                                                    }
+
+                                                    return next
+                                                }
+                                            )
+                                        }}
+                                    >
+
+                                        <span>
+                                            {eventType.label}
+                                        </span>
+
+                                        {active && (
+                                            <span className="schedule-filter-check">
+                                                ✓
+                                            </span>
+                                        )}
+
+                                    </button>
+                                )
+                            })}
+
+                        </div>
+                    )}
+
+                </div>
+
+
+                {/* TASKS DROPDOWN */}
+
+                <div className="schedule-filter-dropdown">
+
+                    <button
+                        className="schedule-filter-dropdown-trigger"
+                        onClick={() =>
+                            setOpenFilter(
+                                openFilter === "tasks"
+                                    ? null
+                                    : "tasks"
+                            )
+                        }
+                    >
+                        <span>TASKS</span>
+                        <span className="schedule-filter-chevron" />
+                    </button>
+
+
+                    {openFilter === "tasks" && (
+
+                        <div className="schedule-filter-menu">
+
+                            <div className="schedule-filter-menu-actions">
+
+                                <button
+                                    onClick={() =>
+                                        setTaskTypeFilters(
+                                            new Set(taskTypes)
+                                        )
+                                    }
+                                >
+                                    Select all
+                                </button>
+
+                                <button
+                                    onClick={() =>
+                                        setTaskTypeFilters(
+                                            new Set()
+                                        )
+                                    }
+                                >
+                                    Remove filters
+                                </button>
+
+                            </div>
+
+                            {/* ASSESSMENT */}
                             <button
-                                key={eventType.value}
+                                className="schedule-filter-option"
+                                onClick={() =>
+                                    setShowAssessmentFilters(
+                                        current => !current
+                                    )
+                                }
+                            >
+                                <span>Assessment</span>
+
+                                <span className="schedule-filter-submenu-arrow">
+                                    ›
+                                </span>
+                            </button>
+
+
+                            {/* HOMEWORK */}
+
+                            <button
                                 className={
-                                    active
-                                        ? "schedule-filter active"
-                                        : "schedule-filter"
+                                    taskTypeFilters.has("homework")
+                                        ? "schedule-filter-option active"
+                                        : "schedule-filter-option"
                                 }
                                 onClick={() => {
 
-                                    setEventFilters(
+                                    setTaskTypeFilters(
                                         (current) => {
 
                                             const next =
                                                 new Set(current)
 
                                             if (
-                                                next.has(
-                                                    eventType.value
-                                                )
+                                                next.has("homework")
                                             ) {
                                                 next.delete(
-                                                    eventType.value
+                                                    "homework"
                                                 )
                                             } else {
                                                 next.add(
-                                                    eventType.value
+                                                    "homework"
                                                 )
                                             }
 
@@ -788,96 +1048,321 @@ function Schedule() {
                                     )
                                 }}
                             >
-                                {eventType.label}
+                                <span>Homework</span>
+
+                                {taskTypeFilters.has("homework") && (
+                                    <span className="schedule-filter-check">
+                                        ✓
+                                    </span>
+                                )}
+
                             </button>
-                        )
-                    })}
+
+
+                            {/* CLASSWORK */}
+
+                            <button
+                                className={
+                                    taskTypeFilters.has("classwork")
+                                        ? "schedule-filter-option active"
+                                        : "schedule-filter-option"
+                                }
+                                onClick={() => {
+
+                                    setTaskTypeFilters(
+                                        (current) => {
+
+                                            const next =
+                                                new Set(current)
+
+                                            if (
+                                                next.has("classwork")
+                                            ) {
+                                                next.delete(
+                                                    "classwork"
+                                                )
+                                            } else {
+                                                next.add(
+                                                    "classwork"
+                                                )
+                                            }
+
+                                            return next
+                                        }
+                                    )
+                                }}
+                            >
+                                <span>Classwork</span>
+
+                                {taskTypeFilters.has("classwork") && (
+                                    <span className="schedule-filter-check">
+                                        ✓
+                                    </span>
+                                )}
+
+                            </button>
+
+
+                            {/* STUDY */}
+
+                            <button
+                                className={
+                                    taskTypeFilters.has("study")
+                                        ? "schedule-filter-option active"
+                                        : "schedule-filter-option"
+                                }
+                                onClick={() => {
+
+                                    setTaskTypeFilters(
+                                        (current) => {
+
+                                            const next =
+                                                new Set(current)
+
+                                            if (
+                                                next.has("study")
+                                            ) {
+                                                next.delete(
+                                                    "study"
+                                                )
+                                            } else {
+                                                next.add(
+                                                    "study"
+                                                )
+                                            }
+
+                                            return next
+                                        }
+                                    )
+                                }}
+                            >
+                                <span>Study</span>
+
+                                {taskTypeFilters.has("study") && (
+                                    <span className="schedule-filter-check">
+                                        ✓
+                                    </span>
+                                )}
+
+                            </button>
+
+
+                            {/* ASSESSMENT SUBMENU */}
+                            {showAssessmentFilters && (
+
+                                <div className="schedule-assessment-menu">
+
+                                    <div className="schedule-assessment-header">
+                                        Assessment
+                                    </div>
+
+                                    <div className="schedule-assessment-actions">
+
+                                        <button
+                                            onClick={() =>
+                                                setAssessmentFilters(
+                                                    new Set(assessmentTypes)
+                                                )
+                                            }
+                                        >
+                                            Select all
+                                        </button>
+
+                                        <button
+                                            onClick={() =>
+                                                setAssessmentFilters(
+                                                    new Set()
+                                                )
+                                            }
+                                        >
+                                            Remove filters
+                                        </button>
+
+                                    </div>
+
+                                    {assessmentTypes.map(
+                                        (assessmentType) => {
+
+                                            const active =
+                                                assessmentFilters.has(
+                                                    assessmentType
+                                                )
+
+                                            return (
+                                                <button
+                                                    key={assessmentType}
+                                                    className={
+                                                        active
+                                                            ? "schedule-assessment-option active"
+                                                            : "schedule-assessment-option"
+                                                    }
+                                                    onClick={() => {
+
+                                                        setAssessmentFilters(
+                                                            current => {
+
+                                                                const next =
+                                                                    new Set(
+                                                                        current
+                                                                    )
+
+                                                                if (
+                                                                    next.has(
+                                                                        assessmentType
+                                                                    )
+                                                                ) {
+                                                                    next.delete(
+                                                                        assessmentType
+                                                                    )
+                                                                } else {
+                                                                    next.add(
+                                                                        assessmentType
+                                                                    )
+                                                                }
+
+                                                                return next
+                                                            }
+                                                        )
+                                                    }}
+                                                >
+                                                    <span>
+                                                        {assessmentType}
+                                                    </span>
+
+                                                    {active && (
+                                                        <span>✓</span>
+                                                    )}
+                                                </button>
+                                            )
+                                        }
+                                    )}
+
+                                </div>
+                            )}
+
+                        </div>
+                    )}
+
 
                 </div>
 
-                {/* SCHEDULE FILTERS */}
 
-                <div className="schedule-filter-group">
-
-                    <span className="schedule-filter-label">
-                        TASKS
-                    </span>
-
-                    <button
-                        className={
-                            showTasks
-                                ? "schedule-filter active"
-                                : "schedule-filter"
-                        }
-                        onClick={() =>
-                            setShowTasks(
-                                (current) => !current
-                            )
-                        }
-                    >
-                        Tasks
-                    </button>
-
-                </div>
-
+                {/* SUBJECTS DROPDOWN */}
 
                 {subjects.length > 0 && showTasks && (
 
-                    <div className="schedule-filter-group">
+                    <div className="schedule-filter-dropdown">
 
-                        <span className="schedule-filter-label">
-                            SUBJECTS
-                        </span>
-
-                        {subjects.map((subject) => {
-
-                            const subjectName =
-                                subject.name
-
-                            const active =
-                                subjectFilters.has(
-                                    subjectName
+                        <button
+                            className="schedule-filter-dropdown-trigger"
+                            onClick={() =>
+                                setOpenFilter(
+                                    openFilter === "subjects"
+                                        ? null
+                                        : "subjects"
                                 )
+                            }
+                        >
+                            <span>SUBJECTS</span>
+                            <span className="schedule-filter-chevron" />
+                        </button>
 
-                            return (
-                                <button
-                                    key={subjectName}
-                                    className={
-                                        active
-                                            ? "schedule-filter active"
-                                            : "schedule-filter"
-                                    }
-                                    onClick={() => {
+                        {openFilter === "subjects" && (
 
-                                        setSubjectFilters(
-                                            (current) => {
+                            <div className="schedule-filter-menu">
 
-                                                const next =
-                                                    new Set(current)
+                                <div className="schedule-filter-menu-actions">
 
-                                                if (
-                                                    next.has(
-                                                        subjectName
+                                    <button
+                                        onClick={() =>
+                                            setSubjectFilters(
+                                                new Set(
+                                                    subjects.map(
+                                                        (subject) =>
+                                                            subject.name
                                                     )
-                                                ) {
-                                                    next.delete(
-                                                        subjectName
-                                                    )
-                                                } else {
-                                                    next.add(
-                                                        subjectName
-                                                    )
-                                                }
+                                                )
+                                            )
+                                        }
+                                    >
+                                        Select all
+                                    </button>
 
-                                                return next
-                                            }
+                                    <button
+                                        onClick={() =>
+                                            setSubjectFilters(
+                                                new Set()
+                                            )
+                                        }
+                                    >
+                                        Remove filters
+                                    </button>
+
+                                </div>
+
+                                {subjects.map((subject) => {
+
+                                    const subjectName =
+                                        subject.name
+
+                                    const active =
+                                        subjectFilters.has(
+                                            subjectName
                                         )
-                                    }}
-                                >
-                                    {subjectName}
-                                </button>
-                            )
-                        })}
+
+                                    return (
+
+                                        <button
+                                            key={subjectName}
+                                            className={
+                                                active
+                                                    ? "schedule-filter-option active"
+                                                    : "schedule-filter-option"
+                                            }
+                                            onClick={() => {
+
+                                                setSubjectFilters(
+                                                    (current) => {
+
+                                                        const next =
+                                                            new Set(current)
+
+                                                        if (
+                                                            next.has(
+                                                                subjectName
+                                                            )
+                                                        ) {
+                                                            next.delete(
+                                                                subjectName
+                                                            )
+                                                        } else {
+                                                            next.add(
+                                                                subjectName
+                                                            )
+                                                        }
+
+                                                        return next
+                                                    }
+                                                )
+                                            }}
+                                        >
+
+                                            <span>
+                                                {subjectName}
+                                            </span>
+
+                                            {active && (
+                                                <span className="schedule-filter-check">
+                                                    ✓
+                                                </span>
+                                            )}
+
+                                        </button>
+                                    )
+                                })}
+
+                            </div>
+                        )}
 
                     </div>
                 )}
@@ -1220,15 +1705,17 @@ function Schedule() {
 
             </div>
 
-            {showEventModal && (
-                <AddEventModal
-                    onClose={() =>
-                        setShowEventModal(false)
-                    }
-                />
-            )}
+            {
+                showEventModal && (
+                    <AddEventModal
+                        onClose={() =>
+                            setShowEventModal(false)
+                        }
+                    />
+                )
+            }
 
-        </section>
+        </section >
     )
 }
 

@@ -145,7 +145,7 @@
     width: 100%;
 
     overflow: hidden;
-    
+
     border: 1px solid var(--border);
     border-radius: 14px;
 
@@ -166,7 +166,7 @@
 
     position: relative;
     z-index: 2;
-    
+
     overflow-y: scroll;
 }
 
@@ -402,7 +402,7 @@
     background: var(--surface);
 }
 
-.study-time-editing-bar > div:first-child {
+.study-time-editing-bar>div:first-child {
     display: flex;
     flex-direction: column;
     gap: 3px;
@@ -418,7 +418,7 @@
     color: var(--text-secondary);
 }
 
-.study-time-editing-bar > div:last-child {
+.study-time-editing-bar>div:last-child {
     display: flex;
     gap: 8px;
 }
@@ -467,60 +467,266 @@
     background: rgba(37, 99, 235, 0.35);
 }
 
-/* SCHEDULE FILTERS */
+/* FILTER DROPDOWNS */
 
 .schedule-filters {
     display: flex;
-    flex-wrap: wrap;
     align-items: center;
     gap: 10px;
     margin-bottom: 18px;
-    padding: 12px 14px;
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    background: var(--surface);
 }
 
-.schedule-filter-group {
-    display: flex;
+.schedule-filter-dropdown {
+    position: relative;
+}
+
+.schedule-filter-dropdown-trigger {
+    display: inline-flex;
     align-items: center;
-    flex-wrap: wrap;
-    gap: 6px;
-}
+    gap: 5px;
 
-.schedule-filter-label {
-    margin-right: 3px;
-    font-size: 0.6rem;
-    font-weight: 700;
-    letter-spacing: 0.1em;
-    color: var(--text-secondary);
-}
+    padding: 7px 10px;
 
-.schedule-filter {
-    padding: 6px 10px;
     border: 1px solid var(--border);
-    border-radius: 7px;
-    background: var(--background);
+    border-radius: 8px;
+
+    background: var(--surface);
     color: var(--text-secondary);
+
     font-family: inherit;
-    font-size: 0.65rem;
-    font-weight: 600;
+    font-size: 0.66rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+
     cursor: pointer;
+
     transition:
         background 0.15s ease,
         border-color 0.15s ease,
         color 0.15s ease;
 }
 
-.schedule-filter:hover {
-    border-color: rgba(15, 23, 42, 0.25);
+.schedule-filter-dropdown-trigger:hover {
+    background: var(--background);
+    border-color: rgba(15, 23, 42, 0.22);
     color: var(--navy);
 }
 
-.schedule-filter.active {
-    border-color: var(--navy);
-    background: var(--navy);
-    color: white;
+.schedule-filter-chevron {
+    width: 6px;
+    height: 6px;
+
+    border-right: 1.5px solid currentColor;
+    border-bottom: 1.5px solid currentColor;
+
+    transform: rotate(45deg);
+    margin-top: -3px;
+
+    flex-shrink: 0;
+}
+
+/* ASSESSMENT SUBMENU */
+
+.schedule-assessment-menu {
+    position: absolute;
+    top: 0;
+    left: calc(100% + 6px);
+
+    width: 180px;
+    padding: 6px;
+
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 9px;
+
+    box-shadow:
+        0 8px 24px rgba(15, 23, 42, 0.10);
+
+    z-index: 21;
+}
+
+.schedule-assessment-header {
+    padding: 7px 9px 6px;
+
+    color: var(--text-secondary);
+
+    font-size: 0.62rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+.schedule-assessment-actions {
+    display: flex;
+    gap: 4px;
+
+    padding: 4px 5px 7px;
+    margin-bottom: 2px;
+
+    border-bottom: 1px solid var(--border);
+}
+
+.schedule-assessment-actions button {
+    border: none;
+    background: transparent;
+
+    padding: 4px 5px;
+
+    color: var(--text-secondary);
+    font-family: inherit;
+    font-size: 0.65rem;
+    font-weight: 600;
+
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.schedule-assessment-actions button:hover {
+    background: var(--background);
+    color: var(--navy);
+}
+
+.schedule-assessment-option {
+    width: 100%;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    padding: 7px 9px;
+
+    border: none;
+    border-radius: 6px;
+
+    background: transparent;
+    color: var(--text-secondary);
+
+    font-family: inherit;
+    font-size: 0.72rem;
+    font-weight: 500;
+
+    text-align: left;
+    cursor: pointer;
+
+    transition:
+        background 0.12s ease,
+        color 0.12s ease;
+}
+
+.schedule-assessment-option:hover {
+    background: var(--background);
+    color: var(--navy);
+}
+
+.schedule-assessment-option.active {
+    color: var(--navy);
+    font-weight: 600;
+}
+
+.schedule-assessment-option span:last-child {
+    font-size: 0.72rem;
+}
+
+
+/* MENU */
+
+.schedule-filter-menu {
+    position: absolute;
+    top: calc(100% + 6px);
+    left: 0;
+
+    min-width: 190px;
+
+    padding: 6px;
+
+    border: 1px solid var(--border);
+    border-radius: 10px;
+
+    background: var(--surface);
+
+    box-shadow:
+        0 8px 24px rgba(15, 23, 42, 0.10);
+
+    z-index: 20;
+}
+
+
+/* SELECT ALL / CLEAR */
+
+.schedule-filter-menu-actions {
+    display: flex;
+    gap: 4px;
+
+    padding: 4px;
+    margin-bottom: 4px;
+
+    border-bottom: 1px solid var(--border);
+}
+
+.schedule-filter-menu-actions button {
+    flex: 1;
+
+    padding: 6px 5px;
+
+    border: 0;
+    border-radius: 6px;
+
+    background: transparent;
+    color: var(--text-secondary);
+
+    font-family: inherit;
+    font-size: 0.62rem;
+    font-weight: 600;
+
+    cursor: pointer;
+}
+
+.schedule-filter-menu-actions button:hover {
+    background: var(--background);
+    color: var(--navy);
+}
+
+
+/* OPTIONS */
+
+.schedule-filter-option {
+    width: 100%;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    padding: 7px 8px;
+
+    border: 0;
+    border-radius: 6px;
+
+    background: transparent;
+    color: var(--text-secondary);
+
+    font-family: inherit;
+    font-size: 0.7rem;
+    font-weight: 500;
+
+    text-align: left;
+
+    cursor: pointer;
+}
+
+.schedule-filter-option:hover {
+    background: var(--background);
+    color: var(--navy);
+}
+
+.schedule-filter-option.active {
+    color: var(--navy);
+    font-weight: 600;
+}
+
+.schedule-filter-check {
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: var(--primary);
 }
 
 /* TASKS ON CALENDAR */

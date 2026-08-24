@@ -1,16 +1,26 @@
+export const taskTypes = [
+    "assessment",
+    "homework",
+    "classwork",
+    "study",
+] as const
+
 export type TaskType =
-    | "assessment"
-    | "homework"
-    | "classwork"
-    | "study"
+    typeof taskTypes[number]
+
+
+export const assessmentTypes = [
+    "test",
+    "quiz",
+    "midterm",
+    "final",
+    "benchmark",
+    "other",
+] as const
 
 export type AssessmentType =
-    | "test"
-    | "quiz"
-    | "midterm"
-    | "final"
-    | "benchmark"
-    | "other"
+    typeof assessmentTypes[number]
+
 
 export type Task = {
     id: string
