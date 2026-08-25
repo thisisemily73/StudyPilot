@@ -12,6 +12,7 @@ import { onAuthStateChanged } from "firebase/auth"
 import {
     createAccount,
     signIn,
+    signInWithGoogle,
     signOutUser,
 } from "../services/auth"
 
@@ -26,6 +27,8 @@ type AuthContextType = {
         password: string
     ) => Promise<void>
 
+    signInWithGoogle: () => Promise<void>
+
     signIn: (
         email: string,
         password: string
@@ -38,6 +41,12 @@ const AuthContext =
     createContext<AuthContextType | undefined>(
         undefined
     )
+
+async function handleSignInWithGoogle() {
+
+    await signInWithGoogle()
+
+}
 
 export function AuthProvider({
     children,
@@ -114,6 +123,9 @@ export function AuthProvider({
 
                 signIn:
                     handleSignIn,
+
+                signInWithGoogle:
+                    handleSignInWithGoogle,
 
                 signOut:
                     handleSignOut,

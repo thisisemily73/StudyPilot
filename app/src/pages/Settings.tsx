@@ -1,5 +1,6 @@
 import { useSettings } from "../context/SettingsContext"
 import { useSchoolSchedule } from "../context/SchoolScheduleContext"
+import { useAuth } from "../context/AuthContext"
 
 function Settings() {
 
@@ -33,6 +34,8 @@ function Settings() {
         setSchoolEnd,
         toggleSchoolDay,
     } = useSchoolSchedule()
+
+    const { signOut } = useAuth()
 
     return (
         <section className="settings-page">
@@ -514,7 +517,10 @@ function Settings() {
 
                 <div className="settings-card">
 
-                    <button className="danger-button">
+                    <button
+                        className="danger-button"
+                        onClick={signOut}
+                    >
                         Sign out
                     </button>
 

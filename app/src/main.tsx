@@ -24,6 +24,7 @@ import './styles/Progress.css'
 import './styles/Settings.css'
 import './styles/Subjects.css'
 import './styles/Tasks.css'
+import './styles/Auth.css'
 
 import './styles/SubjectDetails.css'
 
