@@ -10,7 +10,7 @@
     scrollbar-color: rgba(15, 23, 42, 0.15) transparent;
 }
 
-/* Slightly tighter spacing inside the modal */
+/* HEADER */
 
 .task-modal-header {
     margin-bottom: 20px;
@@ -20,6 +20,8 @@
     margin-top: 8px;
 }
 
+/* FORM */
+
 .task-modal .form-field {
     margin-bottom: 14px;
 }
@@ -28,9 +30,54 @@
     gap: 12px;
 }
 
+/* WEEKDAY SELECTOR */
+
+.task-modal .day-selector {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 6px;
+}
+
+.task-modal .day-selector button {
+    height: 32px;
+
+    border: 1px solid var(--border);
+    border-radius: 7px;
+
+    background: var(--surface);
+    color: var(--text-secondary);
+
+    font-family: inherit;
+    font-size: 0.62rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+
+    cursor: pointer;
+
+    transition:
+        background 0.15s ease,
+        border-color 0.15s ease,
+        color 0.15s ease;
+}
+
+.task-modal .day-selector button:hover {
+    border-color: rgba(15, 23, 42, 0.22);
+    color: var(--navy);
+}
+
+.task-modal .day-selector button.active {
+    border-color: var(--navy);
+    background: var(--navy);
+    color: white;
+}
+
+/* FOOTER */
+
 .task-modal-footer {
     margin-top: 20px;
 }
+
+/* SCROLLBAR */
 
 .task-modal::-webkit-scrollbar {
     width: 5px;
@@ -45,25 +92,64 @@
     border-radius: 999px;
 }
 
+/* RECURRING EVENT */
+
+.event-weekday-options {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 6px;
+}
+
+.event-weekday {
+    height: 32px;
+    padding: 0;
+
+    border: 1px solid var(--border);
+    border-radius: 7px;
+
+    background: var(--surface);
+    color: var(--text-secondary);
+
+    font-family: inherit;
+    font-size: 0.62rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+
+    cursor: pointer;
+
+    transition:
+        background 0.15s ease,
+        border-color 0.15s ease,
+        color 0.15s ease;
+}
+
+.event-weekday:hover {
+    border-color: rgba(15, 23, 42, 0.22);
+    color: var(--navy);
+}
+
+.event-weekday.selected {
+    border-color: var(--navy);
+    background: var(--navy);
+    color: white;
+}
+
 /* NARROW SCREENS */
 
 @media (max-width: 600px) {
 
-    @media (max-width: 600px) {
+    .modal-overlay {
+        padding: 16px;
+        align-items: center;
+        overflow-y: auto;
+    }
 
-        .modal-overlay {
-            padding: 16px;
-            align-items: center;
-            overflow-y: auto;
-        }
-
-        .task-modal {
-            width: 100%;
-            max-width: 440px;
-            max-height: calc(100vh - 32px);
-            padding: 20px;
-            border-radius: 14px;
-        }
+    .task-modal {
+        width: 100%;
+        max-width: 440px;
+        max-height: calc(100vh - 32px);
+        padding: 20px;
+        border-radius: 14px;
     }
 
     .task-modal .form-row {
@@ -78,5 +164,4 @@
     .task-modal-footer {
         gap: 12px;
     }
-    
 }

@@ -263,12 +263,17 @@
 
 /* TASK MODAL FIELD SPACING */
 
-.task-modal .form-field + .form-field {
-    margin-top: 20px;
+.task-modal .form-field {
+    margin-bottom: 20px;
 }
 
 .task-modal .form-row {
-    margin-top: 20px;
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+.task-modal .form-row .form-field {
+    margin-bottom: 20px;
 }
 
 

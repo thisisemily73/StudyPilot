@@ -54,6 +54,9 @@ function Schedule() {
     const [showEventModal, setShowEventModal] =
         useState(false)
 
+    const [editingEvent, setEditingEvent] =
+        useState<Event | undefined>(undefined)
+
     const { tasks } = useTasks()
     const { subjects } = useSubjects()
 
@@ -182,6 +185,49 @@ function Schedule() {
         ]
 
     // FUNCTIONS
+
+    function openEventEditor(event: Event) {
+        setEditingEvent(event)
+        setShowEventModal(true)
+    }
+
+    function isSlotBlockedByEvent(
+        dayIndex: number,
+        minutes: number
+    ) {
+
+        const dateKey =
+            formatDateKey(
+                weekDates[dayIndex]
+            )
+
+        return events.some((event) => {
+
+            if (!isEventVisible(event)) {
+                return false
+            }
+
+            const happensOnDay =
+                event.recurring
+                    ? event.days?.includes(dayIndex) ?? false
+                    : event.date === dateKey
+
+            if (!happensOnDay) {
+                return false
+            }
+
+            const eventStart =
+                timeToMinutes(event.startTime)
+
+            const eventEnd =
+                timeToMinutes(event.endTime)
+
+            return (
+                minutes < eventEnd &&
+                minutes + QUARTER_MINUTES > eventStart
+            )
+        })
+    }
 
     function isEventVisible(
         event: Event
@@ -406,6 +452,15 @@ function Schedule() {
         minutes: number
     ) {
 
+        if (
+            isSlotBlockedByEvent(
+                dayIndex,
+                minutes
+            )
+        ) {
+            return
+        }
+
         const key =
             getSlotKey(
                 dayIndex,
@@ -449,6 +504,15 @@ function Schedule() {
         if (
             !dragging ||
             !dragMode
+        ) {
+            return
+        }
+
+        if (
+            isSlotBlockedByEvent(
+                dayIndex,
+                minutes
+            )
         ) {
             return
         }
@@ -597,6 +661,10 @@ function Schedule() {
                         and where you can make room to study.
                     </p>
 
+                    <p className="schedule-hint">
+                        Click an event to edit it.
+                    </p>
+
                 </div>
 
 
@@ -604,7 +672,10 @@ function Schedule() {
 
                     <button
                         className="schedule-button"
-                        onClick={() => setShowEventModal(true)}
+                        onClick={() => {
+                            setEditingEvent(undefined)
+                            setShowEventModal(true)
+                        }}
                     >
                         + Add event
                     </button>
@@ -1346,6 +1417,12 @@ function Schedule() {
                                                                     key
                                                                 )
 
+                                                            const blocked =
+                                                                isSlotBlockedByEvent(
+                                                                    dayIndex,
+                                                                    minutes
+                                                                )
+
                                                             return (
 
                                                                 <div
@@ -1360,16 +1437,20 @@ function Schedule() {
                                                                             editingStudyTime
                                                                             ? "study-time-selected"
                                                                             : "",
+
+                                                                        blocked &&
+                                                                            editingStudyTime
+                                                                            ? "study-time-blocked"
+                                                                            : "",
                                                                     ]
                                                                         .filter(Boolean)
                                                                         .join(" ")}
 
-                                                                    key={minutes}
-
                                                                     onPointerDown={() => {
 
                                                                         if (
-                                                                            !editingStudyTime
+                                                                            !editingStudyTime ||
+                                                                            blocked
                                                                         ) {
                                                                             return
                                                                         }
@@ -1383,7 +1464,8 @@ function Schedule() {
                                                                     onPointerEnter={() => {
 
                                                                         if (
-                                                                            !editingStudyTime
+                                                                            !editingStudyTime ||
+                                                                            blocked
                                                                         ) {
                                                                             return
                                                                         }
@@ -1480,10 +1562,16 @@ function Schedule() {
                                                 key={event.id}
                                                 className={`schedule-event schedule-event-${event.type}`}
                                                 style={{
-                                                    top:
-                                                        `${top}px`,
-                                                    height:
-                                                        `${height}px`,
+                                                    top: `${top}px`,
+                                                    height: `${height}px`,
+                                                }}
+                                                onClick={() => openEventEditor(event)}
+                                                role="button"
+                                                tabIndex={0}
+                                                onKeyDown={(e) => {
+                                                    if (e.key === "Enter" || e.key === " ") {
+                                                        openEventEditor(event)
+                                                    }
                                                 }}
                                             >
 
@@ -1588,9 +1676,11 @@ function Schedule() {
             {
                 showEventModal && (
                     <AddEventModal
-                        onClose={() =>
+                        event={editingEvent}
+                        onClose={() => {
                             setShowEventModal(false)
-                        }
+                            setEditingEvent(undefined)
+                        }}
                     />
                 )
             }
