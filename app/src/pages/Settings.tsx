@@ -352,7 +352,7 @@ function Settings() {
 
             {/* NOTIFICATIONS */}
 
-            < div className="settings-section" >
+            {/* < div className="settings-section" >
 
                 <div className="settings-section-heading">
 
@@ -431,7 +431,7 @@ function Settings() {
 
                 </div>
 
-            </div >
+            </div > */}
 
 
             {/* APPEARANCE */}

@@ -8,6 +8,7 @@ import { SubjectProvider } from "./context/SubjectContext"
 import { StudyTimeProvider } from "./context/StudyTimeContext"
 import { SchoolScheduleProvider } from './context/SchoolScheduleContext'
 import { EventProvider } from './context/EventContext'
+import { AuthProvider } from "./context/AuthContext"
 
 
 import '@shared/Variables.css'
@@ -30,21 +31,25 @@ import './styles/AddTaskModal.css'
 import './styles/AddSubjectModal.css'
 import './styles/AddEventModal.css'
 
+import "./config/firebase"
+
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
-    <SettingsProvider>
-      <TaskProvider>
-        <SubjectProvider>
-          <StudyTimeProvider>
-            <SchoolScheduleProvider>
-              <EventProvider>
-                <App />
-              </EventProvider>
-            </SchoolScheduleProvider>
-          </StudyTimeProvider>
-        </SubjectProvider>
-      </TaskProvider>
-    </SettingsProvider>
+    <AuthProvider>
+      <SettingsProvider>
+        <TaskProvider>
+          <SubjectProvider>
+            <StudyTimeProvider>
+              <SchoolScheduleProvider>
+                <EventProvider>
+                  <App />
+                </EventProvider>
+              </SchoolScheduleProvider>
+            </StudyTimeProvider>
+          </SubjectProvider>
+        </TaskProvider>
+      </SettingsProvider>
+    </AuthProvider>
   </React.StrictMode>,
 )
