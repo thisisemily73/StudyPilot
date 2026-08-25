@@ -324,6 +324,58 @@
     gap: 8px;
 }
 
+/* CUSTOM DEADLINE */
+
+.custom-deadline-time {
+    display: flex;
+    align-items: flex-end;
+    gap: 12px;
+
+    margin-top: 18px;
+    padding-top: 18px;
+
+    border-top: 1px solid var(--border);
+}
+
+.custom-deadline-time label {
+    display: block;
+
+    margin-bottom: 7px;
+
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 0.07em;
+
+    color: var(--text-muted);
+}
+
+.custom-deadline-time input {
+    width: 150px;
+    height: 40px;
+
+    padding: 8px 10px;
+
+    border: 1px solid var(--border);
+    border-radius: 9px;
+
+    background: var(--surface);
+    color: var(--navy);
+
+    font-family: inherit;
+    font-size: 0.75rem;
+}
+
+.custom-deadline-time input:focus {
+    outline: none;
+    border-color: rgba(15, 23, 42, 0.4);
+}
+
+.custom-deadline-time span {
+    padding-bottom: 10px;
+
+    font-size: 0.68rem;
+    color: var(--text-muted);
+}
 
 /* MOBILE */
 

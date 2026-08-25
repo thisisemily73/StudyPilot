@@ -57,28 +57,28 @@ function SubjectDetails() {
     )
 
     if (!subject) {
-    return (
-        <section className="subject-details">
+        return (
+            <section className="subject-details">
 
-            <h1>
-                Subject not found.
-            </h1>
+                <h1>
+                    Subject not found.
+                </h1>
 
-            <button
-                onClick={() =>
-                    navigate(
-                        "/StudyPilot/app/subjects"
-                    )
-                }
-            >
-                Back to subjects
-            </button>
+                <button
+                    onClick={() =>
+                        navigate(
+                            "/StudyPilot/app/subjects"
+                        )
+                    }
+                >
+                    Back to subjects
+                </button>
 
-        </section>
-    )
-}
+            </section>
+        )
+    }
 
-const currentSubject = subject
+    const currentSubject = subject
 
 
     function addClassPeriod() {
@@ -513,19 +513,68 @@ const currentSubject = subject
 
                         <button
                             className={
-                                subject.assignmentDeadline?.type ===
-                                    "custom"
+                                subject.assignmentDeadline?.type === "custom"
                                     ? "selected"
                                     : ""
                             }
                             onClick={() => {
-                                // Custom modal comes next
+                                const currentDeadline =
+                                    subject.assignmentDeadline
+
+                                updateSubject(
+                                    subject.id,
+                                    {
+                                        assignmentDeadline: {
+                                            type: "custom",
+                                            time:
+                                                currentDeadline?.type === "custom"
+                                                    ? currentDeadline.time
+                                                    : "23:59",
+                                        },
+                                    }
+                                )
                             }}
                         >
                             Custom
                         </button>
 
                     </div>
+
+                    {subject.assignmentDeadline?.type === "custom" && (
+
+                        <div className="custom-deadline-time">
+
+                            <label>
+                                Custom due time
+                            </label>
+
+                            <input
+                                type="time"
+                                value={
+                                    subject.assignmentDeadline.time
+                                }
+                                onChange={(event) =>
+                                    updateSubject(
+                                        subject.id,
+                                        {
+                                            assignmentDeadline: {
+                                                type: "custom",
+                                                time: event.target.value,
+                                            },
+                                        }
+                                    )
+                                }
+                            />
+
+                            <span>
+                                {formatTime(
+                                    subject.assignmentDeadline.time
+                                )}
+                            </span>
+
+                        </div>
+
+                    )}
 
                 </div>
 
