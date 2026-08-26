@@ -894,7 +894,7 @@
 @media (max-width: 900px) {
 
     .schedule {
-        width: min(100% - 40px, 1250px);
+        width: calc(100% - 40px);
     }
 
     .schedule-header {
@@ -910,12 +910,23 @@
         flex: 1;
     }
 
+    /* CALENDAR */
+
     .schedule-calendar {
+        width: 100%;
         overflow-x: auto;
+        overflow-y: hidden;
     }
 
-    .schedule-calendar-header,
-    .schedule-row {
-        min-width: 800px;
+    .schedule-calendar-header {
+        width: 762px;
+        min-width: 762px;
     }
+
+    .schedule-calendar-body {
+        width: 762px;
+        min-width: 762px;
+        overflow-x: hidden;
+    }
+
 }
