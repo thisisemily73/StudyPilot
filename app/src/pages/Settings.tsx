@@ -12,17 +12,8 @@ function Settings() {
         setDayStart,
         setDayEnd,
 
-        weeklyStart,
-        setWeeklyStart,
-
         dailyWorkload,
         setDailyWorkload,
-
-        taskReminders,
-        setTaskReminders,
-
-        dailyOverview,
-        setDailyOverview,
 
         theme,
         setTheme,
