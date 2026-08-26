@@ -271,19 +271,27 @@
     border-right: 1px solid transparent;
 }
 
+/* EVENTS + CLASSES */
+
+.schedule-event,
+.schedule-class {
+    position: absolute;
+    left: 8px;
+    right: 8px;
+    padding: 6px 8px;
+    border: 1px solid rgba(15, 23, 42, 0.10);
+    border-left: 3px solid var(--primary);
+    border-radius: 6px;
+    background: var(--card);
+    box-sizing: border-box;
+    overflow: hidden;
+}
+
 /* EVENTS */
 
 .schedule-event {
-    position: absolute;
-    inset: 2px;
     z-index: 3;
-    padding: 7px 8px;
-    border-radius: 7px;
-    border: 1px solid rgba(15, 23, 42, 0.08);
-    background: var(--card);
-    overflow: hidden;
     pointer-events: auto;
-    box-sizing: border-box;
     cursor: pointer;
 }
 
@@ -297,23 +305,18 @@
     position: absolute;
     top: 6px;
     right: 7px;
-
     padding: 2px 4px;
     border-radius: 4px;
-
     background: var(--background);
     color: var(--text-secondary);
-
     font-size: 0.48rem;
     font-weight: 700;
     letter-spacing: 0.08em;
-
     opacity: 0;
     transform: translateY(-2px);
     transition:
         opacity 0.15s ease,
         transform 0.15s ease;
-
     pointer-events: none;
 }
 
@@ -322,28 +325,32 @@
     transform: translateY(0);
 }
 
-.schedule-event strong {
+/* CLASSES */
+
+.schedule-class {
+    z-index: 2;
+    pointer-events: none;
+}
+
+/* SHARED TEXT */
+
+.schedule-event strong,
+.schedule-class strong {
     display: block;
-
-    font-size: 0.7rem;
+    font-size: 0.65rem;
     font-weight: 650;
-
-    /* CHANGE */
     color: var(--card-text-primary);
-
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
 }
 
-.schedule-event span {
+.schedule-event span,
+.schedule-class span {
     display: block;
-
-    margin-top: 2px;
-
-    font-size: 0.6rem;
+    margin-top: 1px;
+    font-size: 0.55rem;
     color: var(--card-text-secondary);
-
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -466,48 +473,6 @@
             rgba(185, 28, 28, 0.2) 7px,
             rgba(185, 28, 28, 0.2) 9px
         ) !important;
-}
-
-/* CLASSES */
-
-.schedule-class {
-    position: absolute;
-    left: 8px;
-    right: 8px;
-    padding: 6px 8px;
-
-    border: 1px solid rgba(15, 23, 42, 0.10);
-    border-left: 3px solid var(--primary);
-    border-radius: 6px;
-
-    background: var(--card);
-    box-sizing: border-box;
-
-    z-index: 2;
-    overflow: hidden;
-    pointer-events: none;
-}
-
-.schedule-class strong {
-    display: block;
-    font-size: 0.65rem;
-    font-weight: 650;
-    color: var(--card-text-primary);
-
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
-
-.schedule-class span {
-    display: block;
-    margin-top: 1px;
-    font-size: 0.55rem;
-    color: var(--card-text-secondary);
-
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
 }
 
 /* STUDY LABEL */
