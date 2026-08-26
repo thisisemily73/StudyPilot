@@ -21,7 +21,7 @@ type ProfileContextType = {
 const defaultProfile: Profile = {
     name: "Student",
     username: "student",
-    profilePicture: "profile-1",
+    profilePicture: `${import.meta.env.BASE_URL}profiles/girl_1.svg`,
     grade: "",
 }
 

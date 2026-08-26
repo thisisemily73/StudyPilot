@@ -18,7 +18,7 @@ function Sidebar() {
 
                 <div className="sidebar-logo">
                     <img
-                        src="${import.meta.env.BASE_URL}logo.svg"
+                        src={`${import.meta.env.BASE_URL}logo.svg`}
                         alt="StudyPilot"
                     />
                     <span>StudyPilot</span>
@@ -84,7 +84,7 @@ function Sidebar() {
 
                 <div className="mobile-header-logo">
                     <img
-                        src="${import.meta.env.BASE_URL}logo.svg"
+                        src={`${import.meta.env.BASE_URL}logo.svg`}
                         alt="StudyPilot"
                     />
                     <span>StudyPilot</span>
