@@ -35,13 +35,13 @@ function App() {
                     <Topbar />
                     <main>
                         <Routes>
-                            <Route path="StudyPilot/app/" element={<Home />} />
-                            <Route path="StudyPilot/app/tasks" element={<Tasks />} />
-                            <Route path="StudyPilot/app/schedule" element={<Schedule />} />
-                            <Route path="StudyPilot/app/subjects" element={<Subjects />} />
-                            <Route path="StudyPilot/app/subjects/:subjectId" element={<SubjectDetails />} />
-                            <Route path="StudyPilot/app/progress" element={<Progress />} />
-                            <Route path="StudyPilot/app/settings" element={<Settings />} />
+                            <Route path="/" element={<Home />} />
+                            <Route path="/tasks" element={<Tasks />} />
+                            <Route path="/schedule" element={<Schedule />} />
+                            <Route path="/subjects" element={<Subjects />} />
+                            <Route path="/subjects/:subjectId" element={<SubjectDetails />} />
+                            <Route path="/progress" element={<Progress />} />
+                            <Route path="/settings" element={<Settings />} />
                         </Routes>
                     </main>
                 </div>

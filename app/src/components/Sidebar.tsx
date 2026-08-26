@@ -18,7 +18,7 @@ function Sidebar() {
 
                 <div className="sidebar-logo">
                     <img
-                        src="/StudyPilot/app/logo.svg"
+                        src="//logo.svg"
                         alt="StudyPilot"
                     />
                     <span>StudyPilot</span>
@@ -27,7 +27,7 @@ function Sidebar() {
                 <nav className="sidebar-nav">
 
                     <NavLink
-                        to="StudyPilot/app/"
+                        to="/"
                         end
                         className="sidebar-link"
                     >
@@ -35,28 +35,28 @@ function Sidebar() {
                     </NavLink>
 
                     <NavLink
-                        to="StudyPilot/app/tasks"
+                        to="/tasks"
                         className="sidebar-link"
                     >
                         Tasks
                     </NavLink>
 
                     <NavLink
-                        to="StudyPilot/app/schedule"
+                        to="/schedule"
                         className="sidebar-link"
                     >
                         Schedule
                     </NavLink>
 
                     <NavLink
-                        to="StudyPilot/app/subjects"
+                        to="/subjects"
                         className="sidebar-link"
                     >
                         Subjects
                     </NavLink>
 
                     <NavLink
-                        to="StudyPilot/app/progress"
+                        to="/progress"
                         className="sidebar-link"
                     >
                         Progress
@@ -67,7 +67,7 @@ function Sidebar() {
                 <div className="sidebar-nav sidebar-bottom">
 
                     <NavLink
-                        to="StudyPilot/app/settings"
+                        to="/settings"
                         className="sidebar-link"
                     >
                         Settings
@@ -119,7 +119,7 @@ function Sidebar() {
                     <div className="mobile-menu-nav">
 
                         <NavLink
-                            to="StudyPilot/app/"
+                            to="/"
                             end
                             className="mobile-menu-link"
                             onClick={closeMobileMenu}
@@ -128,7 +128,7 @@ function Sidebar() {
                         </NavLink>
 
                         <NavLink
-                            to="StudyPilot/app/tasks"
+                            to="/tasks"
                             className="mobile-menu-link"
                             onClick={closeMobileMenu}
                         >
@@ -136,7 +136,7 @@ function Sidebar() {
                         </NavLink>
 
                         <NavLink
-                            to="StudyPilot/app/schedule"
+                            to="/schedule"
                             className="mobile-menu-link"
                             onClick={closeMobileMenu}
                         >
@@ -144,7 +144,7 @@ function Sidebar() {
                         </NavLink>
 
                         <NavLink
-                            to="StudyPilot/app/subjects"
+                            to="/subjects"
                             className="mobile-menu-link"
                             onClick={closeMobileMenu}
                         >
@@ -152,7 +152,7 @@ function Sidebar() {
                         </NavLink>
 
                         <NavLink
-                            to="StudyPilot/app/progress"
+                            to="/progress"
                             className="mobile-menu-link"
                             onClick={closeMobileMenu}
                         >
@@ -160,7 +160,7 @@ function Sidebar() {
                         </NavLink>
 
                         <NavLink
-                            to="StudyPilot/app/settings"
+                            to="/settings"
                             className="mobile-menu-link"
                             onClick={closeMobileMenu}
                         >
