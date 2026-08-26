@@ -33,6 +33,8 @@ import './styles/AddTaskModal.css'
 import './styles/AddSubjectModal.css'
 import './styles/AddEventModal.css'
 
+import './styles/ProfilePicture.css'
+
 import "./config/firebase"
 
 
