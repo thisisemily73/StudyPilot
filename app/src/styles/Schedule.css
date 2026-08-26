@@ -444,6 +444,71 @@
     background: rgba(37, 99, 235, 0.14);
 }
 
+/* CLASS TIME BLOCKING */
+
+.schedule-class-blocked {
+    background:
+        repeating-linear-gradient(
+            135deg,
+            transparent,
+            transparent 7px,
+            rgba(185, 28, 28, 0.15) 7px,
+            rgba(185, 28, 28, 0.15) 9px
+        ) !important;
+}
+
+.schedule-class-blocked:hover {
+    background:
+        repeating-linear-gradient(
+            135deg,
+            transparent,
+            transparent 7px,
+            rgba(185, 28, 28, 0.2) 7px,
+            rgba(185, 28, 28, 0.2) 9px
+        ) !important;
+}
+
+/* CLASSES */
+
+.schedule-class {
+    position: absolute;
+    left: 8px;
+    right: 8px;
+    padding: 6px 8px;
+
+    border: 1px solid rgba(15, 23, 42, 0.10);
+    border-left: 3px solid var(--primary);
+    border-radius: 6px;
+
+    background: var(--card);
+    box-sizing: border-box;
+
+    z-index: 2;
+    overflow: hidden;
+    pointer-events: none;
+}
+
+.schedule-class strong {
+    display: block;
+    font-size: 0.65rem;
+    font-weight: 650;
+    color: var(--card-text-primary);
+
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.schedule-class span {
+    display: block;
+    margin-top: 1px;
+    font-size: 0.55rem;
+    color: var(--card-text-secondary);
+
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
 
 /* STUDY LABEL */
 

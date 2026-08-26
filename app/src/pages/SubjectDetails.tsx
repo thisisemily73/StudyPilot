@@ -12,7 +12,11 @@ const weekdays = [
     "FRI",
 ]
 
-function formatTime(time: string) {
+function formatTime(time?: string) {
+
+    if (!time) {
+        return ""
+    }
 
     const [hours, minutes] =
         time.split(":").map(Number)

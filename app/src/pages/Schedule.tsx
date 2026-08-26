@@ -186,6 +186,36 @@ function Schedule() {
 
     // FUNCTIONS
 
+    function isSlotBlockedByClass(
+        dayIndex: number,
+        minutes: number
+    ) {
+        return subjects.some((subject) => {
+
+            if (!subject.classPeriods) {
+                return false
+            }
+
+            return subject.classPeriods.some((period) => {
+
+                if (period.day !== dayIndex) {
+                    return false
+                }
+
+                const classStart =
+                    timeToMinutes(period.startTime)
+
+                const classEnd =
+                    timeToMinutes(period.endTime)
+
+                return (
+                    minutes < classEnd &&
+                    minutes + QUARTER_MINUTES > classStart
+                )
+            })
+        })
+    }
+
     function openEventEditor(event: Event) {
         setEditingEvent(event)
         setShowEventModal(true)
@@ -195,32 +225,19 @@ function Schedule() {
         dayIndex: number,
         minutes: number
     ) {
-
-        const dateKey =
-            formatDateKey(
-                weekDates[dayIndex]
-            )
+        const dateKey = formatDateKey(weekDates[dayIndex])
 
         return events.some((event) => {
-
-            if (!isEventVisible(event)) {
-                return false
-            }
-
-            const happensOnDay =
-                event.recurring
-                    ? event.days?.includes(dayIndex) ?? false
-                    : event.date === dateKey
+            const happensOnDay = event.recurring
+                ? event.days?.includes(dayIndex) ?? false
+                : event.date === dateKey
 
             if (!happensOnDay) {
                 return false
             }
 
-            const eventStart =
-                timeToMinutes(event.startTime)
-
-            const eventEnd =
-                timeToMinutes(event.endTime)
+            const eventStart = timeToMinutes(event.startTime)
+            const eventEnd = timeToMinutes(event.endTime)
 
             return (
                 minutes < eventEnd &&
@@ -1421,6 +1438,10 @@ function Schedule() {
                                                                 isSlotBlockedByEvent(
                                                                     dayIndex,
                                                                     minutes
+                                                                ) ||
+                                                                isSlotBlockedByClass(
+                                                                    dayIndex,
+                                                                    minutes
                                                                 )
 
                                                             return (
@@ -1441,6 +1462,11 @@ function Schedule() {
                                                                         blocked &&
                                                                             editingStudyTime
                                                                             ? "study-time-blocked"
+                                                                            : "",
+
+                                                                        editingStudyTime &&
+                                                                            isSlotBlockedByClass(dayIndex, minutes)
+                                                                            ? "schedule-class-blocked"
                                                                             : "",
                                                                     ]
                                                                         .filter(Boolean)
@@ -1496,178 +1522,236 @@ function Schedule() {
 
                     {/* EVENTS */}
 
-                    <div className="schedule-events-layer">
+                    {!editingStudyTime && (
+                        <div className="schedule-events-layer">
 
-                        {days.map((_, dayIndex) => {
+                            {days.map((_, dayIndex) => {
 
-                            const dateKey =
-                                formatDateKey(
-                                    weekDates[dayIndex]
-                                )
+                                const dateKey =
+                                    formatDateKey(
+                                        weekDates[dayIndex]
+                                    )
 
-                            const dayEvents =
-                                events.filter((event) => {
+                                const dayEvents =
+                                    events.filter((event) => {
 
-                                    if (!isEventVisible(event)) {
-                                        return false
-                                    }
+                                        if (!isEventVisible(event)) {
+                                            return false
+                                        }
 
-                                    if (event.recurring) {
-                                        return (
-                                            event.days?.includes(
-                                                dayIndex
-                                            ) ?? false
-                                        )
-                                    }
-
-                                    return event.date === dateKey
-                                })
-
-                            return (
-
-                                <div
-                                    className="schedule-events-column"
-                                    key={dayIndex}
-                                >
-
-                                    {dayEvents.map((event) => {
-
-                                        const eventStart =
-                                            timeToMinutes(
-                                                event.startTime
-                                            )
-
-                                        const eventEnd =
-                                            timeToMinutes(
-                                                event.endTime
-                                            )
-
-                                        const top =
-                                            (
-                                                eventStart -
-                                                startHour * 60
-                                            ) *
-                                            (88 / 60)
-
-                                        const height =
-                                            (
-                                                eventEnd -
-                                                eventStart
-                                            ) *
-                                            (88 / 60)
-
-                                        return (
-
-                                            <div
-                                                key={event.id}
-                                                className={`schedule-event schedule-event-${event.type}`}
-                                                style={{
-                                                    top: `${top}px`,
-                                                    height: `${height}px`,
-                                                }}
-                                                onClick={() => openEventEditor(event)}
-                                                role="button"
-                                                tabIndex={0}
-                                                onKeyDown={(e) => {
-                                                    if (e.key === "Enter" || e.key === " ") {
-                                                        openEventEditor(event)
-                                                    }
-                                                }}
-                                            >
-
-                                                <strong>
-                                                    {event.title}
-                                                </strong>
-
-                                                <span>
-                                                    {formatEventTime(event.startTime, event.endTime)}
-                                                </span>
-
-                                                {event.location && (
-                                                    <span>
-                                                        {event.location}
-                                                    </span>
-                                                )}
-
-                                            </div>
-
-                                        )
-                                    })}
-
-                                    {tasks
-                                        .filter((task) => {
-
-                                            if (!isTaskVisible(task)) {
-                                                return false
-                                            }
-
+                                        if (event.recurring) {
                                             return (
-                                                task.dueDate ===
-                                                dateKey
+                                                event.days?.includes(
+                                                    dayIndex
+                                                ) ?? false
                                             )
-                                        })
-                                        .map((task) => {
+                                        }
 
-                                            const taskStart =
+                                        return event.date === dateKey
+                                    })
+
+                                return (
+
+                                    <div
+                                        className="schedule-events-column"
+                                        key={dayIndex}
+                                    >
+
+                                        {subjects.flatMap((subject) =>
+                                            (subject.classPeriods ?? [])
+                                                .filter(
+                                                    (period) =>
+                                                        period.day === dayIndex
+                                                )
+                                                .map((period) => {
+
+                                                    const classStart =
+                                                        timeToMinutes(
+                                                            period.startTime
+                                                        )
+
+                                                    const classEnd =
+                                                        timeToMinutes(
+                                                            period.endTime
+                                                        )
+
+                                                    const top =
+                                                        (
+                                                            classStart -
+                                                            startHour * 60
+                                                        ) *
+                                                        (88 / 60)
+
+                                                    const height =
+                                                        (
+                                                            classEnd -
+                                                            classStart
+                                                        ) *
+                                                        (88 / 60)
+
+                                                    return (
+                                                        <div
+                                                            key={`class-${subject.id}-${period.id}`}
+                                                            className="schedule-class"
+                                                            style={{
+                                                                top: `${top}px`,
+                                                                height: `${height}px`,
+                                                            }}
+                                                        >
+                                                            <strong>
+                                                                {subject.name}
+                                                            </strong>
+
+                                                            <span>
+                                                                {formatEventTime(
+                                                                    period.startTime,
+                                                                    period.endTime
+                                                                )}
+                                                            </span>
+                                                        </div>
+                                                    )
+                                                })
+                                        )}
+
+                                        {dayEvents.map((event) => {
+
+                                            const eventStart =
                                                 timeToMinutes(
-                                                    task.dueTime
+                                                    event.startTime
                                                 )
 
-                                            const taskEnd =
-                                                taskStart +
-                                                task.estimatedMinutes
+                                            const eventEnd =
+                                                timeToMinutes(
+                                                    event.endTime
+                                                )
 
                                             const top =
                                                 (
-                                                    taskStart -
+                                                    eventStart -
                                                     startHour * 60
                                                 ) *
                                                 (88 / 60)
 
                                             const height =
                                                 (
-                                                    taskEnd -
-                                                    taskStart
+                                                    eventEnd -
+                                                    eventStart
                                                 ) *
                                                 (88 / 60)
 
                                             return (
 
                                                 <div
-                                                    key={`task-${task.id}`}
-                                                    className="schedule-task"
+                                                    key={event.id}
+                                                    className={`schedule-event schedule-event-${event.type}`}
                                                     style={{
-                                                        top:
-                                                            `${top}px`,
-                                                        height:
-                                                            `${height}px`,
+                                                        top: `${top}px`,
+                                                        height: `${height}px`,
+                                                    }}
+                                                    onClick={() => openEventEditor(event)}
+                                                    role="button"
+                                                    tabIndex={0}
+                                                    onKeyDown={(e) => {
+                                                        if (e.key === "Enter" || e.key === " ") {
+                                                            openEventEditor(event)
+                                                        }
                                                     }}
                                                 >
 
                                                     <strong>
-                                                        {task.title}
+                                                        {event.title}
                                                     </strong>
 
                                                     <span>
-                                                        {formatTaskTime(
-                                                            task.dueTime
-                                                        )}
+                                                        {formatEventTime(event.startTime, event.endTime)}
                                                     </span>
 
-                                                    <span>
-                                                        {task.subject}
-                                                    </span>
+                                                    {event.location && (
+                                                        <span>
+                                                            {event.location}
+                                                        </span>
+                                                    )}
 
                                                 </div>
 
                                             )
                                         })}
 
-                                </div>
-                            )
-                        })}
+                                        {tasks
+                                            .filter((task) => {
 
-                    </div>
+                                                if (!isTaskVisible(task)) {
+                                                    return false
+                                                }
+
+                                                return (
+                                                    task.dueDate ===
+                                                    dateKey
+                                                )
+                                            })
+                                            .map((task) => {
+
+                                                const taskStart =
+                                                    timeToMinutes(
+                                                        task.dueTime
+                                                    )
+
+                                                const taskEnd =
+                                                    taskStart +
+                                                    task.estimatedMinutes
+
+                                                const top =
+                                                    (
+                                                        taskStart -
+                                                        startHour * 60
+                                                    ) *
+                                                    (88 / 60)
+
+                                                const height =
+                                                    (
+                                                        taskEnd -
+                                                        taskStart
+                                                    ) *
+                                                    (88 / 60)
+
+                                                return (
+
+                                                    <div
+                                                        key={`task-${task.id}`}
+                                                        className="schedule-task"
+                                                        style={{
+                                                            top:
+                                                                `${top}px`,
+                                                            height:
+                                                                `${height}px`,
+                                                        }}
+                                                    >
+
+                                                        <strong>
+                                                            {task.title}
+                                                        </strong>
+
+                                                        <span>
+                                                            {formatTaskTime(
+                                                                task.dueTime
+                                                            )}
+                                                        </span>
+
+                                                        <span>
+                                                            {task.subject}
+                                                        </span>
+
+                                                    </div>
+
+                                                )
+                                            })}
+
+                                    </div>
+                                )
+                            })}
+
+                        </div>
+                    )}
 
                 </div>
 
