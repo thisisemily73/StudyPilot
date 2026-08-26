@@ -17,7 +17,11 @@ function Sidebar() {
             <aside className="sidebar">
 
                 <div className="sidebar-logo">
-                    StudyPilot
+                    <img
+                        src="/StudyPilot/app/logo.svg"
+                        alt="StudyPilot"
+                    />
+                    <span>StudyPilot</span>
                 </div>
 
                 <nav className="sidebar-nav">
@@ -79,7 +83,11 @@ function Sidebar() {
             <header className="mobile-header">
 
                 <div className="mobile-header-logo">
-                    StudyPilot
+                    <img
+                        src="/StudyPilot/app/logo.svg"
+                        alt="StudyPilot"
+                    />
+                    <span>StudyPilot</span>
                 </div>
 
                 <button
