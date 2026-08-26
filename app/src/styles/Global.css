@@ -39,3 +39,13 @@ a {
   display: flex;
   flex-direction: column;
 }
+
+/* MOBILE */
+
+@media (max-width: 900px) {
+
+    .app-main {
+        margin-left: 0;
+    }
+
+}
