@@ -1,6 +1,8 @@
+import { useState } from "react"
 import { useSettings } from "../context/SettingsContext"
 import { useSchoolSchedule } from "../context/SchoolScheduleContext"
 import { useAuth } from "../context/AuthContext"
+import { useProfile } from "../context/ProfileContext"
 
 function Settings() {
 
@@ -36,6 +38,37 @@ function Settings() {
     } = useSchoolSchedule()
 
     const { signOut } = useAuth()
+
+    {/* PROFILE CONSTS */ }
+
+    const {
+        profile,
+        updateProfile,
+    } = useProfile()
+
+    const [editingProfile, setEditingProfile] =
+        useState(false)
+
+    const [profileName, setProfileName] =
+        useState(profile.name)
+
+    const [profileUsername, setProfileUsername] =
+        useState(profile.username)
+
+    const [profileGrade, setProfileGrade] =
+        useState(profile.grade)
+
+    const [profilePicture, setProfilePicture] =
+        useState(profile.profilePicture)
+
+    const profilePictures = [
+        "/StudyPilot/app/profiles/boy_1.svg",
+        "/StudyPilot/app/profiles/boy_2.svg",
+        "/StudyPilot/app/profiles/boy_3.svg",
+        "/StudyPilot/app/profiles/girl_1.svg",
+        "/StudyPilot/app/profiles/girl_2.svg",
+        "/StudyPilot/app/profiles/girl_3.svg",
+    ]
 
     return (
         <section className="settings-page">
@@ -78,27 +111,220 @@ function Settings() {
 
                 <div className="settings-card">
 
-                    <div className="profile-setting">
+                    {!editingProfile ? (
 
-                        <div className="settings-avatar">
-                            E
+                        <div className="profile-setting">
+
+                            <div className="settings-avatar">
+                                <img
+                                    src={profile.profilePicture}
+                                    alt={`${profile.name}'s profile`}
+                                />
+                            </div>
+
+                            <div>
+                                <strong>
+                                    {profile.name}
+                                </strong>
+
+                                <span>
+                                    {profile.username
+                                        ? `@${profile.username}`
+                                        : "Set up your profile"}
+                                </span>
+                            </div>
+
+                            <button
+                                type="button"
+                                onClick={() => {
+                                    setProfileName(profile.name)
+                                    setProfileUsername(profile.username)
+                                    setProfileGrade(profile.grade)
+                                    setProfilePicture(profile.profilePicture)
+                                    setEditingProfile(true)
+                                }}
+                            >
+                                Edit
+                            </button>
+
                         </div>
 
-                        <div>
-                            <strong>
-                                Emily
-                            </strong>
+                    ) : (
 
-                            <span>
-                                Student
-                            </span>
+                    <div className="profile-editor">
+                        <div className="profile-picture-editor">
+
+                            <div className="profile-picture-preview">
+
+                                <img
+                                    src={profilePicture}
+                                    alt="Selected profile picture"
+                                />
+
+                            </div>
+
+                            <div className="profile-picture-options">
+
+                                <span>
+                                    Profile picture
+                                </span>
+
+                                <div className="profile-picture-grid">
+
+                                    {profilePictures.map((picture) => (
+
+                                        <button
+                                            type="button"
+                                            key={picture}
+                                            className={
+                                                profilePicture === picture
+                                                    ? "selected"
+                                                    : ""
+                                            }
+                                            onClick={() =>
+                                                setProfilePicture(picture)
+                                            }
+                                        >
+
+                                            <img
+                                                src={picture}
+                                                alt=""
+                                            />
+
+                                        </button>
+
+                                    ))}
+
+                                </div>
+
+                            </div>
+
                         </div>
 
-                        <button>
-                            Edit
-                        </button>
+                        <div className="profile-editor-field">
+
+                            <label>
+                                Name
+                            </label>
+
+                            <input
+                                type="text"
+                                value={profileName}
+                                onChange={(event) =>
+                                    setProfileName(
+                                        event.target.value
+                                    )
+                                }
+                                placeholder="Your name"
+                            />
+
+                        </div>
+
+
+                        <div className="profile-editor-field">
+
+                            <label>
+                                Username
+                            </label>
+
+                            <input
+                                type="text"
+                                value={profileUsername}
+                                onChange={(event) =>
+                                    setProfileUsername(
+                                        event.target.value
+                                            .replace(/\s/g, "")
+                                    )
+                                }
+                                placeholder="username"
+                            />
+
+                        </div>
+
+
+                        <div className="profile-editor-field">
+
+                            <label>
+                                Grade
+                            </label>
+
+                            <select
+                                value={profileGrade}
+                                onChange={(event) =>
+                                    setProfileGrade(
+                                        event.target.value
+                                    )
+                                }
+                            >
+
+                                <option value="">
+                                    Select grade
+                                </option>
+
+                                <option value="9">
+                                    9th grade
+                                </option>
+
+                                <option value="10">
+                                    10th grade
+                                </option>
+
+                                <option value="11">
+                                    11th grade
+                                </option>
+
+                                <option value="12">
+                                    12th grade
+                                </option>
+
+                            </select>
+
+                        </div>
+
+
+                        <div className="profile-editor-actions">
+
+                            <button
+                                type="button"
+                                onClick={() =>
+                                    setEditingProfile(false)
+                                }
+                            >
+                                Cancel
+                            </button>
+
+                            <button
+                                type="button"
+                                className="primary"
+                                onClick={() => {
+
+                                    updateProfile({
+                                        name:
+                                            profileName.trim() ||
+                                            "Student",
+
+                                        username:
+                                            profileUsername.trim(),
+
+                                        grade:
+                                            profileGrade,
+
+                                        profilePicture:
+                                            profilePicture,
+                                    })
+
+                                    setEditingProfile(false)
+
+                                }}
+                            >
+                                Save changes
+                            </button>
+
+                        </div>
 
                     </div>
+
+                    )}
 
                 </div>
 

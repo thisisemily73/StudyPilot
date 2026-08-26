@@ -1,4 +1,16 @@
+import { useProfile } from "../context/ProfileContext"
+
 function Topbar() {
+    const { profile } = useProfile()
+
+    const today = new Date()
+
+    const formattedDate = today.toLocaleDateString("en-US", {
+        weekday: "long",
+        month: "long",
+        day: "numeric",
+    })
+
     return (
         <header className="topbar">
 
@@ -11,17 +23,20 @@ function Topbar() {
             <div className="topbar-right">
 
                 <span className="topbar-date">
-                    Tuesday, August 11
+                    {formattedDate}
                 </span>
 
                 <div className="profile-avatar">
-                    E
+                    <img
+                        src={profile.profilePicture}
+                        alt={`${profile.name}'s profile`}
+                    />
                 </div>
 
             </div>
 
         </header>
-    );
+    )
 }
 
-export default Topbar;
+export default Topbar

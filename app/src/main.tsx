@@ -9,6 +9,7 @@ import { StudyTimeProvider } from "./context/StudyTimeContext"
 import { SchoolScheduleProvider } from './context/SchoolScheduleContext'
 import { EventProvider } from './context/EventContext'
 import { AuthProvider } from "./context/AuthContext"
+import { ProfileProvider } from "./context/ProfileContext"
 
 
 import '@shared/Variables.css'
@@ -39,17 +40,19 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
     <AuthProvider>
       <SettingsProvider>
-        <TaskProvider>
-          <SubjectProvider>
-            <StudyTimeProvider>
-              <SchoolScheduleProvider>
-                <EventProvider>
-                  <App />
-                </EventProvider>
-              </SchoolScheduleProvider>
-            </StudyTimeProvider>
-          </SubjectProvider>
-        </TaskProvider>
+        <ProfileProvider>
+          <TaskProvider>
+            <SubjectProvider>
+              <StudyTimeProvider>
+                <SchoolScheduleProvider>
+                  <EventProvider>
+                    <App />
+                  </EventProvider>
+                </SchoolScheduleProvider>
+              </StudyTimeProvider>
+            </SubjectProvider>
+          </TaskProvider>
+        </ProfileProvider>
       </SettingsProvider>
     </AuthProvider>
   </React.StrictMode>,
