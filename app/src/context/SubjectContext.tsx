@@ -7,6 +7,14 @@ import {
 } from "react"
 
 import type { Subject } from "../types/Subject"
+import { useAuth } from "./AuthContext"
+
+import {
+    getSubjects,
+    saveSubject,
+    deleteSubjectFromFirestore,
+} from "../services/firestore"
+
 
 type NewSubject = Omit<Subject, "id">
 
@@ -20,8 +28,10 @@ type SubjectContextType = {
     deleteSubject: (id: string) => void
 }
 
+
 const SubjectContext =
     createContext<SubjectContextType | undefined>(undefined)
+
 
 export function SubjectProvider({
     children,
@@ -29,78 +39,174 @@ export function SubjectProvider({
     children: ReactNode
 }) {
 
-    const [subjects, setSubjects] = useState<Subject[]>(() => {
+    const { user } = useAuth()
 
-        const savedSubjects =
-            localStorage.getItem("studypilot-subjects")
+    const [subjects, setSubjects] =
+        useState<Subject[]>([])
 
-        return savedSubjects
-            ? JSON.parse(savedSubjects)
-            : []
-    })
+    const [loading, setLoading] =
+        useState(true)
 
 
     useEffect(() => {
 
-        localStorage.setItem(
-            "studypilot-subjects",
-            JSON.stringify(subjects)
-        )
+        async function loadSubjects() {
 
-    }, [subjects])
-
-
-    function addSubject(subject: NewSubject) {
-
-        setSubjects((currentSubjects) => {
-
-            const alreadyExists =
-                currentSubjects.some(
-                    (existingSubject) =>
-                        existingSubject.name.toLowerCase() ===
-                        subject.name.toLowerCase()
-                )
-
-            if (alreadyExists) {
-                return currentSubjects
+            if (!user) {
+                setSubjects([])
+                setLoading(false)
+                return
             }
 
-            return [
-                ...currentSubjects,
-                {
-                    ...subject,
-                    id: crypto.randomUUID(),
-                },
-            ]
-        })
+            try {
+
+                const savedSubjects =
+                    await getSubjects(user.uid)
+
+                setSubjects(savedSubjects)
+
+            } catch (error) {
+
+                console.error(
+                    "Failed to load subjects:",
+                    error
+                )
+
+            } finally {
+
+                setLoading(false)
+
+            }
+
+        }
+
+        loadSubjects()
+
+    }, [user])
+
+
+    async function addSubject(
+        subject: NewSubject
+    ) {
+
+        if (!user) return
+
+        const alreadyExists =
+            subjects.some(
+                (existingSubject) =>
+                    existingSubject.name.toLowerCase() ===
+                    subject.name.toLowerCase()
+            )
+
+        if (alreadyExists) {
+            return
+        }
+
+        const newSubject: Subject = {
+            ...subject,
+            id: crypto.randomUUID(),
+        }
+
+        setSubjects((currentSubjects) => [
+            ...currentSubjects,
+            newSubject,
+        ])
+
+        try {
+
+            await saveSubject(
+                user.uid,
+                newSubject
+            )
+
+        } catch (error) {
+
+            console.error(
+                "Failed to save subject:",
+                error
+            )
+
+        }
+
     }
 
 
-    function updateSubject(
+    async function updateSubject(
         id: string,
         updates: Partial<Subject>
     ) {
 
+        if (!user) return
+
+        const updatedSubject =
+            subjects.find(
+                (subject) =>
+                    subject.id === id
+            )
+
+        if (!updatedSubject) return
+
+        const newSubject = {
+            ...updatedSubject,
+            ...updates,
+        }
+
         setSubjects((currentSubjects) =>
             currentSubjects.map((subject) =>
                 subject.id === id
-                    ? {
-                        ...subject,
-                        ...updates,
-                    }
+                    ? newSubject
                     : subject
             )
         )
+
+        try {
+
+            await saveSubject(
+                user.uid,
+                newSubject
+            )
+
+        } catch (error) {
+
+            console.error(
+                "Failed to update subject:",
+                error
+            )
+
+        }
+
     }
 
 
-    function deleteSubject(id: string) {
+    async function deleteSubject(
+        id: string
+    ) {
+
+        if (!user) return
 
         setSubjects((currentSubjects) =>
             currentSubjects.filter(
-                (subject) => subject.id !== id
+                (subject) =>
+                    subject.id !== id
             )
         )
+
+        try {
+
+            await deleteSubjectFromFirestore(
+                user.uid,
+                id
+            )
+
+        } catch (error) {
+
+            console.error(
+                "Failed to delete subject:",
+                error
+            )
+
+        }
+
     }
 
 
@@ -121,7 +227,8 @@ export function SubjectProvider({
 
 export function useSubjects() {
 
-    const context = useContext(SubjectContext)
+    const context =
+        useContext(SubjectContext)
 
     if (!context) {
         throw new Error(

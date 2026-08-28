@@ -6,6 +6,7 @@ import Topbar from './components/Topbar'
 
 import Home from './pages/Home'
 import Subjects from './pages/Subjects'
+import Planner from './pages/Planner'
 import Progress from './pages/Progress'
 import Schedule from './pages/Schedule'
 import Settings from './pages/Settings'
@@ -36,6 +37,7 @@ function App() {
                     <main>
                         <Routes>
                             <Route path="/" element={<Home />} />
+                            <Route path="/planner" element={<Planner />} />
                             <Route path="/tasks" element={<Tasks />} />
                             <Route path="/schedule" element={<Schedule />} />
                             <Route path="/subjects" element={<Subjects />} />

@@ -5,22 +5,23 @@ import HowItWorks from "./components/HowItWorks";
 import ProductPreview from "./components/ProductPreview";
 import EarlyAccess from "./components/EarlyAccess";
 import Footer from "./components/Footer";
+import { createElement, Fragment } from "react";
 
 function App() {
-    return (
-        <>
-            <Navbar />
-
-            <main>
-                <Hero />
-                <Problem />
-                <HowItWorks />
-                <ProductPreview />
-                <EarlyAccess />
-            </main>
-
-            <Footer />
-        </>
+    return createElement(
+        Fragment,
+        null,
+        createElement(Navbar),
+        createElement(
+            "main",
+            null,
+            createElement(Hero),
+            createElement(Problem),
+            createElement(HowItWorks),
+            createElement(ProductPreview),
+            createElement(EarlyAccess),
+        ),
+        createElement(Footer),
     );
 }
 

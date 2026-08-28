@@ -35,18 +35,26 @@ function Sidebar() {
                     </NavLink>
 
                     <NavLink
+                        to="/planner"
+                        end
+                        className="sidebar-link"
+                    >
+                        Planner
+                    </NavLink>
+
+                    {/* <NavLink
                         to="/tasks"
                         className="sidebar-link"
                     >
                         Tasks
-                    </NavLink>
+                    </NavLink> */}
 
-                    <NavLink
+                    {/* <NavLink
                         to="/schedule"
                         className="sidebar-link"
                     >
                         Schedule
-                    </NavLink>
+                    </NavLink> */}
 
                     <NavLink
                         to="/subjects"
