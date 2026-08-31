@@ -26,13 +26,6 @@ function Topbar() {
                     {formattedDate}
                 </span>
 
-                <div className="profile-avatar">
-                    <img
-                        src={profile.profilePicture}
-                        alt={`${profile.name}'s profile`}
-                    />
-                </div>
-
             </div>
 
         </header>

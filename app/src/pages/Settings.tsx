@@ -49,18 +49,6 @@ function Settings() {
     const [profileGrade, setProfileGrade] =
         useState(profile.grade)
 
-    const [profilePicture, setProfilePicture] =
-        useState(profile.profilePicture)
-
-    const profilePictures = [
-        `${import.meta.env.BASE_URL}profiles/boy_1.svg`,
-        `${import.meta.env.BASE_URL}profiles/boy_2.svg`,
-        `${import.meta.env.BASE_URL}profiles/boy_3.svg`,
-        `${import.meta.env.BASE_URL}profiles/girl_1.svg`,
-        `${import.meta.env.BASE_URL}profiles/girl_2.svg`,
-        `${import.meta.env.BASE_URL}profiles/girl_3.svg`,
-    ]
-
     return (
         <section className="settings-page">
 
@@ -106,13 +94,6 @@ function Settings() {
 
                         <div className="profile-setting">
 
-                            <div className="settings-avatar">
-                                <img
-                                    src={profile.profilePicture}
-                                    alt={`${profile.name}'s profile`}
-                                />
-                            </div>
-
                             <div>
                                 <strong>
                                     {profile.name}
@@ -131,7 +112,6 @@ function Settings() {
                                     setProfileName(profile.name)
                                     setProfileUsername(profile.username)
                                     setProfileGrade(profile.grade)
-                                    setProfilePicture(profile.profilePicture)
                                     setEditingProfile(true)
                                 }}
                             >
@@ -143,54 +123,6 @@ function Settings() {
                     ) : (
 
                         <div className="profile-editor">
-                            <div className="profile-picture-editor">
-
-                                <div className="profile-picture-preview">
-
-                                    <img
-                                        src={profilePicture}
-                                        alt="Selected profile picture"
-                                    />
-
-                                </div>
-
-                                <div className="profile-picture-options">
-
-                                    <span>
-                                        Profile picture
-                                    </span>
-
-                                    <div className="profile-picture-grid">
-
-                                        {profilePictures.map((picture) => (
-
-                                            <button
-                                                type="button"
-                                                key={picture}
-                                                className={
-                                                    profilePicture === picture
-                                                        ? "selected"
-                                                        : ""
-                                                }
-                                                onClick={() =>
-                                                    setProfilePicture(picture)
-                                                }
-                                            >
-
-                                                <img
-                                                    src={picture}
-                                                    alt=""
-                                                />
-
-                                            </button>
-
-                                        ))}
-
-                                    </div>
-
-                                </div>
-
-                            </div>
 
                             <div className="profile-editor-field">
 
@@ -299,9 +231,6 @@ function Settings() {
 
                                             grade:
                                                 profileGrade,
-
-                                            profilePicture:
-                                                profilePicture,
                                         })
 
                                         setEditingProfile(false)

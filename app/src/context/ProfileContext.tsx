@@ -9,20 +9,18 @@ import {
 export type Profile = {
     name: string
     username: string
-    profilePicture: string
     grade: string
-}
-
-type ProfileContextType = {
-    profile: Profile
-    updateProfile: (updates: Partial<Profile>) => void
 }
 
 const defaultProfile: Profile = {
     name: "Student",
     username: "student",
-    profilePicture: `${import.meta.env.BASE_URL}profiles/girl_1.svg`,
     grade: "",
+}
+
+type ProfileContextType = {
+    profile: Profile
+    updateProfile: (updates: Partial<Profile>) => void
 }
 
 const ProfileContext =

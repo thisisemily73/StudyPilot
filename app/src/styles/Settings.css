@@ -2,9 +2,7 @@
 
 .settings-page {
   width: min(100% - 72px, 850px);
-
   margin: 0 auto;
-
   padding: 55px 0 100px;
 }
 
@@ -19,26 +17,20 @@
   font-size: 0.7rem;
   font-weight: 700;
   letter-spacing: 0.12em;
-
   color: var(--primary);
 }
 
 .settings-header h1 {
   margin: 12px 0 0;
-
   font-size: clamp(2.5rem, 5vw, 3.8rem);
   line-height: 1;
-
   letter-spacing: -0.055em;
-
   color: var(--navy);
 }
 
 .settings-header p {
   margin: 18px 0 0;
-
   font-size: 1rem;
-
   color: var(--text-secondary);
 }
 
@@ -55,20 +47,15 @@
 
 .settings-section-heading h2 {
   margin: 0;
-
   font-size: 1.05rem;
   font-weight: 650;
-
   letter-spacing: -0.02em;
-
   color: var(--navy);
 }
 
 .settings-section-heading p {
   margin: 6px 0 0;
-
   font-size: 0.75rem;
-
   color: var(--text-secondary);
 }
 
@@ -77,10 +64,8 @@
 
 .settings-card {
   overflow: hidden;
-
   border: 1px solid var(--border);
   border-radius: var(--radius-lg);
-
   background: var(--surface);
 }
 
@@ -89,69 +74,143 @@
 
 .profile-setting {
   min-height: 85px;
-
   padding: 18px 22px;
-
   display: flex;
   align-items: center;
-
   gap: 14px;
 }
 
-.settings-avatar {
-  width: 42px;
-  height: 42px;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  border-radius: 50%;
-
-  background: var(--navy);
-
-  color: white;
-
-  font-size: 0.85rem;
-  font-weight: 600;
-}
-
-.profile-setting > div:nth-child(2) {
+.profile-setting > div:first-child {
   flex: 1;
-
+  min-width: 0;
   display: flex;
   flex-direction: column;
-
   gap: 4px;
 }
 
 .profile-setting strong {
   font-size: 0.85rem;
-
   color: var(--navy);
 }
 
 .profile-setting span {
   font-size: 0.72rem;
-
   color: var(--text-muted);
 }
 
 .profile-setting button {
+  flex-shrink: 0;
   padding: 7px 13px;
-
   border: 1px solid var(--border);
   border-radius: var(--radius-pill);
-
   background: transparent;
-
   color: var(--text-secondary);
-
   font-family: inherit;
   font-size: 0.7rem;
   font-weight: 600;
-
   cursor: pointer;
+  transition:
+    background 0.15s ease,
+    border-color 0.15s ease,
+    color 0.15s ease;
+}
+
+.profile-setting button:hover {
+  background: var(--surface-hover);
+  border-color: var(--text-muted);
+  color: var(--navy);
+}
+
+
+/* PROFILE EDITOR */
+
+.profile-editor {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  padding: 24px 22px;
+}
+
+.profile-editor-field {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+
+.profile-editor-field label {
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+}
+
+.profile-editor-field input,
+.profile-editor-field select {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 10px 12px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--surface);
+  color: var(--navy);
+  font-family: inherit;
+  font-size: 0.8rem;
+  outline: none;
+  transition:
+    border-color 0.15s ease,
+    box-shadow 0.15s ease;
+}
+
+.profile-editor-field input:focus,
+.profile-editor-field select:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.04);
+}
+
+.profile-editor-field input::placeholder {
+  color: var(--text-muted);
+}
+
+
+/* PROFILE ACTIONS */
+
+.profile-editor-actions {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 8px;
+  margin-top: 4px;
+}
+
+.profile-editor-actions button {
+  padding: 9px 14px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--surface);
+  color: var(--text-secondary);
+  font-family: inherit;
+  font-size: 0.7rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition:
+    background 0.15s ease,
+    border-color 0.15s ease,
+    color 0.15s ease;
+}
+
+.profile-editor-actions button:hover {
+  background: var(--surface-hover);
+  border-color: var(--text-muted);
+  color: var(--navy);
+}
+
+.profile-editor-actions button.primary {
+  border-color: var(--navy);
+  background: var(--navy);
+  color: white;
+}
+
+.profile-editor-actions button.primary:hover {
+  opacity: 0.9;
 }
 
 
@@ -159,33 +218,27 @@
 
 .settings-row {
   min-height: 75px;
-
   padding: 18px 22px;
-
   display: flex;
   align-items: center;
   justify-content: space-between;
-
   gap: 30px;
 }
 
 .settings-row > div {
   display: flex;
   flex-direction: column;
-
   gap: 5px;
 }
 
 .settings-row strong {
   font-size: 0.82rem;
   font-weight: 600;
-
   color: var(--navy);
 }
 
 .settings-row span {
   font-size: 0.72rem;
-
   color: var(--text-secondary);
 }
 
@@ -194,19 +247,13 @@
 
 .settings-row select {
   min-width: 105px;
-
   padding: 8px 10px;
-
   border: 1px solid var(--border);
   border-radius: 8px;
-
   background: var(--surface);
-
   color: var(--navy);
-
   font-family: inherit;
   font-size: 0.72rem;
-
   cursor: pointer;
 }
 
@@ -215,9 +262,7 @@
 
 .settings-divider {
   height: 1px;
-
   margin: 0 22px;
-
   background: var(--border);
 }
 
@@ -226,49 +271,35 @@
 
 .toggle {
   position: relative;
-
   width: 40px;
   height: 22px;
-
   flex-shrink: 0;
 }
 
 .toggle input {
   opacity: 0;
-
   width: 0;
   height: 0;
 }
 
 .toggle-slider {
   position: absolute;
-
   inset: 0;
-
   border-radius: 999px;
-
   background: var(--border);
-
   cursor: pointer;
-
   transition: background 0.2s ease;
 }
 
 .toggle-slider::before {
   content: "";
-
   position: absolute;
-
   width: 16px;
   height: 16px;
-
   left: 3px;
   top: 3px;
-
   border-radius: 50%;
-
   background: white;
-
   transition: transform 0.2s ease;
 }
 
@@ -281,6 +312,109 @@
 }
 
 
+/* SCHOOL SCHEDULE */
+
+.school-schedule-row {
+  padding: 20px 22px;
+}
+
+.school-schedule-label {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  margin-bottom: 16px;
+}
+
+.school-schedule-label strong {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--navy);
+}
+
+.school-schedule-label span {
+  font-size: 0.72rem;
+  color: var(--text-secondary);
+}
+
+
+/* SCHOOL HOURS */
+
+.schedule-time-settings {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.schedule-time-settings input {
+  width: 105px;
+  height: 34px;
+  box-sizing: border-box;
+  padding: 7px 9px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--surface);
+  color: var(--navy);
+  font-family: inherit;
+  font-size: 0.72rem;
+  cursor: pointer;
+}
+
+.schedule-time-settings span {
+  flex: 0 0 auto;
+  font-size: 0.7rem;
+  color: var(--text-muted);
+}
+
+
+/* SCHOOL DAYS */
+
+.school-days-setting {
+  padding: 18px 22px;
+}
+
+.school-days-label {
+  margin-bottom: 12px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--navy);
+}
+
+.school-day-selector {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 6px;
+  width: 100%;
+}
+
+.school-day-selector button {
+  height: 34px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--surface);
+  color: var(--text-secondary);
+  font-family: inherit;
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  cursor: pointer;
+  transition:
+    background 0.15s ease,
+    color 0.15s ease,
+    border-color 0.15s ease;
+}
+
+.school-day-selector button:hover {
+  border-color: rgba(15, 23, 42, 0.3);
+  color: var(--navy);
+}
+
+.school-day-selector button.selected {
+  background: var(--navy);
+  border-color: var(--navy);
+  color: var(--surface);
+}
+
+
 /* ACCOUNT */
 
 .account-section {
@@ -289,23 +423,15 @@
 
 .danger-button {
   width: 100%;
-
   padding: 17px 22px;
-
   border: none;
-
   background: transparent;
-
   color: #b42318;
-
   text-align: left;
-
   font-family: inherit;
   font-size: 0.8rem;
   font-weight: 600;
-
   cursor: pointer;
-
   transition: background 0.2s ease;
 }
 
@@ -313,317 +439,6 @@
   background: rgba(180, 35, 24, 0.04);
 }
 
-/* SCHEDULE TIME SETTINGS */
-
-.schedule-time-settings {
-    display: inline-flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: flex-end;
-    gap: 8px;
-
-    white-space: nowrap;
-}
-
-.schedule-time-settings input {
-    width: 105px;
-    height: 34px;
-    box-sizing: border-box;
-
-    padding: 7px 9px;
-
-    border: 1px solid var(--border);
-    border-radius: 8px;
-
-    background: var(--surface);
-    color: var(--navy);
-
-    font-family: inherit;
-    font-size: 0.72rem;
-
-    cursor: pointer;
-}
-
-.schedule-time-settings span {
-    flex: 0 0 auto;
-
-    font-size: 0.7rem;
-    color: var(--text-muted);
-}
-
-/* SCHOOL SCHEDULE */
-
-.school-schedule-row {
-    padding: 20px 22px;
-}
-
-.school-schedule-label {
-    display: flex;
-    flex-direction: column;
-    gap: 5px;
-    margin-bottom: 16px;
-}
-
-.school-schedule-label strong {
-    font-size: 0.82rem;
-    font-weight: 600;
-    color: var(--navy);
-}
-
-.school-schedule-label span {
-    font-size: 0.72rem;
-    color: var(--text-secondary);
-}
-
-
-/* SCHOOL HOURS */
-
-.schedule-time-settings {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-}
-
-.schedule-time-settings input {
-    width: 105px;
-    height: 34px;
-    box-sizing: border-box;
-
-    padding: 7px 9px;
-
-    border: 1px solid var(--border);
-    border-radius: 8px;
-
-    background: var(--surface);
-    color: var(--navy);
-
-    font-family: inherit;
-    font-size: 0.72rem;
-
-    cursor: pointer;
-}
-
-.schedule-time-settings span {
-    flex: 0 0 auto;
-
-    font-size: 0.7rem;
-    color: var(--text-muted);
-}
-
-
-/* SCHOOL DAYS */
-
-.school-days-setting {
-    padding: 18px 22px;
-}
-
-.school-days-label {
-    margin-bottom: 12px;
-
-    font-size: 0.82rem;
-    font-weight: 600;
-    color: var(--navy);
-}
-
-.school-day-selector {
-    display: grid;
-    grid-template-columns: repeat(7, 1fr);
-    gap: 6px;
-    width: 100%;
-}
-
-.school-day-selector button {
-    height: 34px;
-
-    border: 1px solid var(--border);
-    border-radius: 8px;
-
-    background: var(--surface);
-    color: var(--text-secondary);
-
-    font-family: inherit;
-    font-size: 0.62rem;
-    font-weight: 700;
-    letter-spacing: 0.03em;
-
-    cursor: pointer;
-
-    transition:
-        background 0.15s ease,
-        color 0.15s ease,
-        border-color 0.15s ease;
-}
-
-.school-day-selector button:hover {
-    border-color: rgba(15, 23, 42, 0.3);
-    color: var(--navy);
-}
-
-.school-day-selector button.selected {
-    background: var(--navy);
-    border-color: var(--navy);
-    color: var(--surface);
-}
-
-/* PROFILE PICTURE */
-
-.profile-picture-editor {
-    display: flex;
-    align-items: center;
-    gap: 24px;
-    margin-bottom: 24px;
-}
-
-.profile-picture-preview {
-    width: 110px;
-    height: 110px;
-    flex-shrink: 0;
-
-    border-radius: 50%;
-    overflow: hidden;
-
-    background: var(--background);
-
-    border: 1px solid var(--border);
-}
-
-.profile-picture-preview img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-}
-
-.profile-picture-options {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-}
-
-.profile-picture-options > span {
-    font-size: 0.7rem;
-    font-weight: 600;
-    color: var(--text-secondary);
-}
-
-.profile-picture-grid {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-}
-
-.profile-picture-grid button {
-    width: 70px;
-    height: 70px;
-    flex-shrink: 0;
-
-    padding: 0;
-
-    border: 1px solid var(--border);
-    border-radius: 50%;
-
-    background: var(--background);
-
-    overflow: hidden;
-    cursor: pointer;
-
-    transition:
-        border-color 0.15s ease,
-        transform 0.15s ease;
-}
-
-.profile-picture-grid button:hover {
-    transform: translateY(-1px);
-}
-
-.profile-picture-grid button.selected {
-    width: 85px;
-    height: 85px;
-    border: 2px solid var(--primary);
-}
-
-.profile-picture-grid img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-}
-
-/* PROFILE EDITOR */
-
-.profile-editor {
-    display: flex;
-    flex-direction: column;
-    gap: 18px;
-    padding: 10px 16px;
-}
-
-.profile-editor-field {
-    display: flex;
-    flex-direction: column;
-    gap: 7px;
-}
-
-.profile-editor-field label {
-    font-size: 0.7rem;
-    font-weight: 600;
-    color: var(--text-secondary);
-}
-
-.profile-editor-field input,
-.profile-editor-field select {
-    width: 100%;
-    padding: 10px 12px;
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    background: var(--surface);
-    color: var(--navy);
-    font-family: inherit;
-    font-size: 0.8rem;
-    position: relative;
-}
-
-.profile-editor-actions {
-    display: flex;
-    justify-content: flex-end;
-    gap: 8px;
-    margin-top: 4px;
-}
-
-.profile-editor-actions button {
-    padding: 9px 13px;
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    background: var(--surface);
-    color: var(--text-secondary);
-    font-family: inherit;
-    font-size: 0.7rem;
-    font-weight: 600;
-    cursor: pointer;
-}
-
-.profile-editor-actions button.primary {
-    border-color: var(--card);
-    background: var(--card);
-    color: var(--card-text-primary);
-}
-
-/* SETTINGS AVATAR */
-
-.settings-avatar {
-    width: 54px;
-    height: 54px;
-    flex-shrink: 0;
-
-    border-radius: 50%;
-    overflow: hidden;
-
-    background: var(--background);
-}
-
-.settings-avatar img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-}
 
 /* MOBILE */
 
@@ -631,12 +446,16 @@
 
   .settings-page {
     width: min(100% - 40px, 850px);
+    padding-top: 35px;
+  }
+
+  .settings-header {
+    margin-bottom: 40px;
   }
 
   .settings-row {
     align-items: flex-start;
     flex-direction: column;
-
     gap: 15px;
   }
 
@@ -645,4 +464,19 @@
     align-self: flex-end;
   }
 
+  .profile-editor {
+    padding: 20px 18px;
+  }
+
+  .profile-editor-actions {
+    width: 100%;
+  }
+
+  .profile-editor-actions button {
+    flex: 1;
+  }
+
+  .school-day-selector {
+    gap: 4px;
+  }
 }
