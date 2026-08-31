@@ -7,7 +7,13 @@ import {
 } from "react"
 
 import type { Task } from "../types/Task"
-//import { initialTasks } from "../data/tasks"
+import { useAuth } from "./AuthContext"
+
+import {
+    getTasks,
+    saveTask,
+    deleteTaskFromFirestore,
+} from "../services/firestore"
 
 
 type TaskContextType = {
@@ -19,64 +25,199 @@ type TaskContextType = {
 }
 
 
-const TaskContext = createContext<TaskContextType | undefined>(undefined)
+const TaskContext =
+    createContext<TaskContextType | undefined>(
+        undefined
+    )
 
 
-export function TaskProvider({ children }: { children: ReactNode }) {
+export function TaskProvider({
+    children,
+}: {
+    children: ReactNode
+}) {
 
-    const [tasks, setTasks] = useState<Task[]>(() => {
-        const savedTasks = localStorage.getItem("studypilot-tasks")
+    const { user } = useAuth()
 
-        return savedTasks
-            ? JSON.parse(savedTasks)
-            : []
-    })
+    const [tasks, setTasks] =
+        useState<Task[]>([])
+
+    const [loading, setLoading] =
+        useState(true)
+
 
     useEffect(() => {
-        localStorage.setItem(
-            "studypilot-tasks",
-            JSON.stringify(tasks)
-        )
-    }, [tasks])
+
+        async function loadTasks() {
+
+            if (!user) {
+                setTasks([])
+                setLoading(false)
+                return
+            }
+
+            try {
+
+                const savedTasks =
+                    await getTasks(user.uid)
+
+                setTasks(savedTasks)
+
+            } catch (error) {
+
+                console.error(
+                    "Failed to load tasks:",
+                    error
+                )
+
+            } finally {
+
+                setLoading(false)
+
+            }
+
+        }
+
+        loadTasks()
+
+    }, [user])
 
 
-    function addTask(task: Task) {
+    async function addTask(task: Task) {
+
+        if (!user) return
+
         setTasks((currentTasks) => [
             ...currentTasks,
             task,
         ])
+
+        try {
+
+            await saveTask(
+                user.uid,
+                task
+            )
+
+        } catch (error) {
+
+            console.error(
+                "Failed to save task:",
+                error
+            )
+
+        }
+
     }
 
 
-    function toggleTask(id: string) {
+    async function toggleTask(id: string) {
+
+        if (!user) return
+
+        const task =
+            tasks.find(
+                (task) =>
+                    task.id === id
+            )
+
+        if (!task) return
+
+        const updatedTask: Task = {
+            ...task,
+            completed: !task.completed,
+        }
+
         setTasks((currentTasks) =>
             currentTasks.map((task) =>
                 task.id === id
-                    ? {
-                        ...task,
-                        completed: !task.completed,
-                    }
+                    ? updatedTask
                     : task
             )
         )
+
+        try {
+
+            await saveTask(
+                user.uid,
+                updatedTask
+            )
+
+        } catch (error) {
+
+            console.error(
+                "Failed to update task:",
+                error
+            )
+
+        }
+
     }
 
 
-    function deleteTask(id: string) {
+    async function updateTask(
+        updatedTask: Task
+    ) {
+
+        if (!user) return
+
         setTasks((currentTasks) =>
-            currentTasks.filter((task) => task.id !== id)
+            currentTasks.map((task) =>
+                task.id === updatedTask.id
+                    ? updatedTask
+                    : task
+            )
         )
+
+        try {
+
+            await saveTask(
+                user.uid,
+                updatedTask
+            )
+
+        } catch (error) {
+
+            console.error(
+                "Failed to update task:",
+                error
+            )
+
+        }
+
     }
 
-    function updateTask(updatedTask: Task) {
-    setTasks((currentTasks) =>
-        currentTasks.map((task) =>
-            task.id === updatedTask.id
-                ? updatedTask
-                : task
+
+    async function deleteTask(
+        id: string
+    ) {
+
+        if (!user) return
+
+        setTasks((currentTasks) =>
+            currentTasks.filter(
+                (task) =>
+                    task.id !== id
+            )
         )
-    )
-}
+
+        try {
+
+            await deleteTaskFromFirestore(
+                user.uid,
+                id
+            )
+
+        } catch (error) {
+
+            console.error(
+                "Failed to delete task:",
+                error
+            )
+
+        }
+
+    }
 
 
     return (
@@ -86,7 +227,7 @@ export function TaskProvider({ children }: { children: ReactNode }) {
                 addTask,
                 toggleTask,
                 deleteTask,
-                updateTask
+                updateTask,
             }}
         >
             {children}
@@ -97,7 +238,8 @@ export function TaskProvider({ children }: { children: ReactNode }) {
 
 export function useTasks() {
 
-    const context = useContext(TaskContext)
+    const context =
+        useContext(TaskContext)
 
     if (!context) {
         throw new Error(

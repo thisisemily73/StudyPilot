@@ -21,12 +21,12 @@ jobs:
 
       # Build landing page
       - name: Install landing dependencies
+        working-directory: ./landing
         run: npm ci
 
       - name: Build landing page
-        run: |
-          cd landing
-          npm run build
+        working-directory: ./landing
+        run: npm run build
 
       - # Build app
         name: Install app dependencies
