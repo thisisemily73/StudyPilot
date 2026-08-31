@@ -1,6 +1,5 @@
 import { useState } from "react"
 import { useSettings } from "../context/SettingsContext"
-import { useSchoolSchedule } from "../context/SchoolScheduleContext"
 import { useAuth } from "../context/AuthContext"
 import { useProfile } from "../context/ProfileContext"
 
@@ -18,15 +17,6 @@ function Settings() {
         theme,
         setTheme,
     } = useSettings()
-
-    const {
-        schoolStart,
-        schoolEnd,
-        schoolDays,
-        setSchoolStart,
-        setSchoolEnd,
-        toggleSchoolDay,
-    } = useSchoolSchedule()
 
     const { signOut } = useAuth()
 
@@ -401,99 +391,6 @@ function Settings() {
                     <p>
                         Tell StudyPilot when your normal school day takes place.
                     </p>
-
-                </div>
-
-
-                <div className="settings-card">
-
-                    {/* SCHOOL HOURS */}
-
-                    <div className="school-schedule-row">
-
-                        <div className="school-schedule-label">
-
-                            <strong>
-                                School hours
-                            </strong>
-
-                            <span>
-                                Used when setting class periods on your schedule.
-                            </span>
-
-                        </div>
-
-
-                        <div className="schedule-time-settings">
-
-                            <input
-                                type="time"
-                                value={schoolStart}
-                                onChange={(event) =>
-                                    setSchoolStart(event.target.value)
-                                }
-                            />
-
-                            <span>
-                                to
-                            </span>
-
-                            <input
-                                type="time"
-                                value={schoolEnd}
-                                onChange={(event) =>
-                                    setSchoolEnd(event.target.value)
-                                }
-                            />
-
-                        </div>
-
-                    </div>
-
-
-                    <div className="settings-divider" />
-
-
-                    {/* SCHOOL DAYS */}
-
-                    <div className="school-days-setting">
-
-                        <div className="school-days-label">
-                            School days
-                        </div>
-
-                        <div className="school-day-selector">
-
-                            {[
-                                "MON",
-                                "TUE",
-                                "WED",
-                                "THU",
-                                "FRI",
-                                "SAT",
-                                "SUN",
-                            ].map((day, index) => (
-
-                                <button
-                                    type="button"
-                                    key={day}
-                                    className={
-                                        schoolDays.includes(index)
-                                            ? "selected"
-                                            : ""
-                                    }
-                                    onClick={() =>
-                                        toggleSchoolDay(index)
-                                    }
-                                >
-                                    {day}
-                                </button>
-
-                            ))}
-
-                        </div>
-
-                    </div>
 
                 </div>
 
