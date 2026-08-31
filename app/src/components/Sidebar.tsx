@@ -17,11 +17,21 @@ function Sidebar() {
             <aside className="sidebar">
 
                 <div className="sidebar-logo">
+
                     <img
                         src={`${import.meta.env.BASE_URL}logo.svg`}
                         alt="StudyPilot"
+                        className="logo-dark-mode"
                     />
+
+                    <img
+                        src={`${import.meta.env.BASE_URL}logo_dark.svg`}
+                        alt="StudyPilot"
+                        className="logo-light-mode"
+                    />
+
                     <span>StudyPilot</span>
+
                 </div>
 
                 <nav className="sidebar-nav">
@@ -41,20 +51,6 @@ function Sidebar() {
                     >
                         Planner
                     </NavLink>
-
-                    {/* <NavLink
-                        to="/tasks"
-                        className="sidebar-link"
-                    >
-                        Tasks
-                    </NavLink> */}
-
-                    {/* <NavLink
-                        to="/schedule"
-                        className="sidebar-link"
-                    >
-                        Schedule
-                    </NavLink> */}
 
                     <NavLink
                         to="/subjects"
@@ -91,11 +87,21 @@ function Sidebar() {
             <header className="mobile-header">
 
                 <div className="mobile-header-logo">
+
                     <img
                         src={`${import.meta.env.BASE_URL}logo.svg`}
                         alt="StudyPilot"
+                        className="logo-light-mode"
                     />
+
+                    <img
+                        src={`${import.meta.env.BASE_URL}logo_dark.svg`}
+                        alt="StudyPilot"
+                        className="logo-dark-mode"
+                    />
+
                     <span>StudyPilot</span>
+
                 </div>
 
                 <button
@@ -136,19 +142,11 @@ function Sidebar() {
                         </NavLink>
 
                         <NavLink
-                            to="/tasks"
+                            to="/planner"
                             className="mobile-menu-link"
                             onClick={closeMobileMenu}
                         >
-                            Tasks
-                        </NavLink>
-
-                        <NavLink
-                            to="/schedule"
-                            className="mobile-menu-link"
-                            onClick={closeMobileMenu}
-                        >
-                            Schedule
+                            Planner
                         </NavLink>
 
                         <NavLink
