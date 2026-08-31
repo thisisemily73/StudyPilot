@@ -6,7 +6,6 @@ import { SettingsProvider } from "./context/SettingsContext"
 import { TaskProvider } from './context/TaskContext'
 import { SubjectProvider } from "./context/SubjectContext"
 import { StudyTimeProvider } from "./context/StudyTimeContext"
-import { SchoolScheduleProvider } from './context/SchoolScheduleContext'
 import { EventProvider } from './context/EventContext'
 import { AuthProvider } from "./context/AuthContext"
 import { ProfileProvider } from "./context/ProfileContext"
@@ -44,11 +43,9 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
           <TaskProvider>
             <SubjectProvider>
               <StudyTimeProvider>
-                <SchoolScheduleProvider>
                   <EventProvider>
                     <App />
                   </EventProvider>
-                </SchoolScheduleProvider>
               </StudyTimeProvider>
             </SubjectProvider>
           </TaskProvider>

@@ -6,7 +6,17 @@ import {
     type ReactNode,
 } from "react"
 
-type Settings = {
+import {
+    doc,
+    getDoc,
+    setDoc,
+} from "firebase/firestore"
+
+import { db } from "../config/firebase"
+import { useAuth } from "./AuthContext"
+
+
+export type Settings = {
     dayStart: string
     dayEnd: string
 
@@ -19,6 +29,22 @@ type Settings = {
 
     theme: "light" | "system" | "dark"
 }
+
+
+const defaultSettings: Settings = {
+    dayStart: "06:00",
+    dayEnd: "23:00",
+
+    weeklyStart: "monday",
+
+    dailyWorkload: "2",
+
+    taskReminders: true,
+    dailyOverview: true,
+
+    theme: "light",
+}
+
 
 type SettingsContextType = {
     dayStart: string
@@ -30,7 +56,9 @@ type SettingsContextType = {
     setWeeklyStart: (day: "monday" | "sunday") => void
 
     dailyWorkload: "1" | "2" | "3" | "4"
-    setDailyWorkload: (workload: "1" | "2" | "3" | "4") => void
+    setDailyWorkload: (
+        workload: "1" | "2" | "3" | "4"
+    ) => void
 
     taskReminders: boolean
     setTaskReminders: (enabled: boolean) => void
@@ -39,13 +67,17 @@ type SettingsContextType = {
     setDailyOverview: (enabled: boolean) => void
 
     theme: "light" | "system" | "dark"
-    setTheme: (theme: "light" | "system" | "dark") => void
+    setTheme: (
+        theme: "light" | "system" | "dark"
+    ) => void
 }
+
 
 const SettingsContext =
     createContext<SettingsContextType | undefined>(
         undefined
     )
+
 
 export function SettingsProvider({
     children,
@@ -53,166 +85,273 @@ export function SettingsProvider({
     children: ReactNode
 }) {
 
-    const [settings, setSettings] =
-        useState<Settings>(() => {
+    const { user } = useAuth()
 
-            const saved =
-                localStorage.getItem(
-                    "studypilot-settings"
+    const [settings, setSettings] =
+        useState<Settings>(defaultSettings)
+
+    const [loaded, setLoaded] =
+        useState(false)
+
+
+    /* LOAD SETTINGS */
+
+    useEffect(() => {
+
+        if (!user) {
+
+            setSettings(defaultSettings)
+            setLoaded(false)
+
+            return
+        }
+
+        const userId = user.uid
+
+        async function loadSettings() {
+
+            try {
+
+                const settingsRef = doc(
+                    db,
+                    "users",
+                    userId,
+                    "settings",
+                    "data"
                 )
 
-            return saved
-                ? JSON.parse(saved)
-                : {
-                    dayStart: "06:00",
-                    dayEnd: "23:00",
+                const snapshot =
+                    await getDoc(settingsRef)
 
-                    weeklyStart: "monday",
+                if (snapshot.exists()) {
 
-                    dailyWorkload: "2",
+                    setSettings({
+                        ...defaultSettings,
+                        ...snapshot.data(),
+                    } as Settings)
 
-                    taskReminders: true,
-                    dailyOverview: true,
+                } else {
 
-                    theme: "light",
+                    setSettings(defaultSettings)
+
                 }
-        })
+
+            } catch (error) {
+
+                console.error(
+                    "Failed to load settings:",
+                    error
+                )
+
+                setSettings(defaultSettings)
+
+            } finally {
+
+                setLoaded(true)
+
+            }
+
+        }
+
+        loadSettings()
+
+    }, [user])
+
+
+    /* SAVE SETTINGS */
 
     useEffect(() => {
 
-        localStorage.setItem(
-            "studypilot-settings",
-            JSON.stringify(settings)
-        )
+        if (!user || !loaded) {
+            return
+        }
 
-    }, [settings])
+        const userId = user.uid
+
+        async function saveSettings() {
+
+            try {
+
+                const settingsRef = doc(
+                    db,
+                    "users",
+                    userId,
+                    "settings",
+                    "data"
+                )
+
+                await setDoc(
+                    settingsRef,
+                    settings,
+                    { merge: true }
+                )
+
+            } catch (error) {
+
+                console.error(
+                    "Failed to save settings:",
+                    error
+                )
+
+            }
+
+        }
+
+        saveSettings()
+
+    }, [settings, user, loaded])
+
+
+    /* THEME */
 
     useEffect(() => {
 
-    const root =
-        document.documentElement
+        const root =
+            document.documentElement
 
-    if (settings.theme === "dark") {
+        if (settings.theme === "dark") {
 
-        root.setAttribute(
-            "data-theme",
-            "dark"
-        )
+            root.setAttribute(
+                "data-theme",
+                "dark"
+            )
 
-        return
-    }
+            return
+        }
 
-    if (settings.theme === "light") {
+        if (settings.theme === "light") {
 
-        root.setAttribute(
-            "data-theme",
-            "light"
-        )
+            root.setAttribute(
+                "data-theme",
+                "light"
+            )
 
-        return
-    }
+            return
+        }
 
-    const mediaQuery =
-        window.matchMedia(
-            "(prefers-color-scheme: dark)"
-        )
-
-    root.setAttribute(
-        "data-theme",
-        mediaQuery.matches
-            ? "dark"
-            : "light"
-    )
-
-    function handleSystemTheme(
-        event: MediaQueryListEvent
-    ) {
+        const mediaQuery =
+            window.matchMedia(
+                "(prefers-color-scheme: dark)"
+            )
 
         root.setAttribute(
             "data-theme",
-            event.matches
+            mediaQuery.matches
                 ? "dark"
                 : "light"
         )
-    }
 
-    mediaQuery.addEventListener(
-        "change",
-        handleSystemTheme
-    )
+        function handleSystemTheme(
+            event: MediaQueryListEvent
+        ) {
 
-    return () => {
+            root.setAttribute(
+                "data-theme",
+                event.matches
+                    ? "dark"
+                    : "light"
+            )
 
-        console.log("THEME:", settings.theme)
+        }
 
-
-        mediaQuery.removeEventListener(
+        mediaQuery.addEventListener(
             "change",
             handleSystemTheme
         )
 
-    }
+        return () => {
 
-}, [settings.theme])
+            mediaQuery.removeEventListener(
+                "change",
+                handleSystemTheme
+            )
+
+        }
+
+    }, [settings.theme])
+
+
+    /* SETTERS */
 
     function setDayStart(time: string) {
+
         setSettings((current) => ({
             ...current,
             dayStart: time,
         }))
+
     }
 
+
     function setDayEnd(time: string) {
+
         setSettings((current) => ({
             ...current,
             dayEnd: time,
         }))
+
     }
+
 
     function setWeeklyStart(
         day: "monday" | "sunday"
     ) {
+
         setSettings((current) => ({
             ...current,
             weeklyStart: day,
         }))
+
     }
+
 
     function setDailyWorkload(
         workload: "1" | "2" | "3" | "4"
     ) {
+
         setSettings((current) => ({
             ...current,
             dailyWorkload: workload,
         }))
+
     }
+
 
     function setTaskReminders(
         enabled: boolean
     ) {
+
         setSettings((current) => ({
             ...current,
             taskReminders: enabled,
         }))
+
     }
+
 
     function setDailyOverview(
         enabled: boolean
     ) {
+
         setSettings((current) => ({
             ...current,
             dailyOverview: enabled,
         }))
+
     }
+
 
     function setTheme(
         theme: "light" | "system" | "dark"
     ) {
+
         setSettings((current) => ({
             ...current,
             theme,
         }))
+
     }
+
 
     return (
         <SettingsContext.Provider
@@ -225,13 +364,16 @@ export function SettingsProvider({
                 weeklyStart: settings.weeklyStart,
                 setWeeklyStart,
 
-                dailyWorkload: settings.dailyWorkload,
+                dailyWorkload:
+                    settings.dailyWorkload,
                 setDailyWorkload,
 
-                taskReminders: settings.taskReminders,
+                taskReminders:
+                    settings.taskReminders,
                 setTaskReminders,
 
-                dailyOverview: settings.dailyOverview,
+                dailyOverview:
+                    settings.dailyOverview,
                 setDailyOverview,
 
                 theme: settings.theme,
@@ -241,7 +383,9 @@ export function SettingsProvider({
             {children}
         </SettingsContext.Provider>
     )
+
 }
+
 
 export function useSettings() {
 
@@ -249,10 +393,13 @@ export function useSettings() {
         useContext(SettingsContext)
 
     if (!context) {
+
         throw new Error(
-            "useSettings must be used inside a SettingsProvider"
+            "useSettings must be used inside an AuthProvider"
         )
+
     }
 
     return context
+
 }

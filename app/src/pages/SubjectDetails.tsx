@@ -2,7 +2,6 @@ import { useState } from "react"
 import { useNavigate, useParams } from "react-router-dom"
 
 import { useSubjects } from "../context/SubjectContext"
-import { useSchoolSchedule } from "../context/SchoolScheduleContext"
 
 const weekdays = [
     "MON",
@@ -42,19 +41,14 @@ function SubjectDetails() {
         updateSubject,
     } = useSubjects()
 
-    const {
-        schoolStart,
-        schoolEnd,
-    } = useSchoolSchedule()
-
     const [selectedDays, setSelectedDays] =
         useState<number[]>([])
 
     const [startTime, setStartTime] =
-        useState(schoolStart)
+        useState("08:00")
 
     const [endTime, setEndTime] =
-        useState(schoolEnd)
+        useState("15:00")
 
     const subject = subjects.find(
         (subject) => subject.id === subjectId
@@ -69,6 +63,7 @@ function SubjectDetails() {
                 </h1>
 
                 <button
+                    type="button"
                     onClick={() =>
                         navigate(
                             "/StudyPilot/app/subjects"
@@ -143,6 +138,7 @@ function SubjectDetails() {
             <div className="subject-details-header">
 
                 <button
+                    type="button"
                     className="subject-back"
                     onClick={() =>
                         navigate(
@@ -213,8 +209,7 @@ function SubjectDetails() {
                                                 selected
                                                     ? current.filter(
                                                         (value) =>
-                                                            value !==
-                                                            index
+                                                            value !== index
                                                     )
                                                     : [
                                                         ...current,
@@ -242,8 +237,6 @@ function SubjectDetails() {
                             <input
                                 type="time"
                                 value={startTime}
-                                min={schoolStart}
-                                max={schoolEnd}
                                 onChange={(event) =>
                                     setStartTime(
                                         event.target.value
@@ -272,8 +265,6 @@ function SubjectDetails() {
                             <input
                                 type="time"
                                 value={endTime}
-                                min={schoolStart}
-                                max={schoolEnd}
                                 onChange={(event) =>
                                     setEndTime(
                                         event.target.value
@@ -383,6 +374,7 @@ function SubjectDetails() {
                     <div className="format-options">
 
                         <button
+                            type="button"
                             className={
                                 subject.classFormat === "inPerson"
                                     ? "selected"
@@ -402,6 +394,7 @@ function SubjectDetails() {
                         </button>
 
                         <button
+                            type="button"
                             className={
                                 subject.classFormat === "online"
                                     ? "selected"
@@ -450,6 +443,7 @@ function SubjectDetails() {
                     <div className="deadline-options">
 
                         <button
+                            type="button"
                             className={
                                 subject.assignmentDeadline?.type ===
                                     "endOfDay"
@@ -472,6 +466,7 @@ function SubjectDetails() {
 
 
                         <button
+                            type="button"
                             className={
                                 subject.assignmentDeadline?.type ===
                                     "startOfPeriod"
@@ -494,6 +489,7 @@ function SubjectDetails() {
 
 
                         <button
+                            type="button"
                             className={
                                 subject.assignmentDeadline?.type ===
                                     "endOfPeriod"
@@ -516,12 +512,15 @@ function SubjectDetails() {
 
 
                         <button
+                            type="button"
                             className={
-                                subject.assignmentDeadline?.type === "custom"
+                                subject.assignmentDeadline?.type ===
+                                    "custom"
                                     ? "selected"
                                     : ""
                             }
                             onClick={() => {
+
                                 const currentDeadline =
                                     subject.assignmentDeadline
 
@@ -531,7 +530,8 @@ function SubjectDetails() {
                                         assignmentDeadline: {
                                             type: "custom",
                                             time:
-                                                currentDeadline?.type === "custom"
+                                                currentDeadline?.type ===
+                                                    "custom"
                                                     ? currentDeadline.time
                                                     : "23:59",
                                         },
@@ -543,6 +543,7 @@ function SubjectDetails() {
                         </button>
 
                     </div>
+
 
                     {subject.assignmentDeadline?.type === "custom" && (
 
