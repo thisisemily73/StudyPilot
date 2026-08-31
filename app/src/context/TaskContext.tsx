@@ -42,9 +42,6 @@ export function TaskProvider({
     const [tasks, setTasks] =
         useState<Task[]>([])
 
-    const [loading, setLoading] =
-        useState(true)
-
 
     useEffect(() => {
 
@@ -52,7 +49,6 @@ export function TaskProvider({
 
             if (!user) {
                 setTasks([])
-                setLoading(false)
                 return
             }
 
@@ -69,10 +65,6 @@ export function TaskProvider({
                     "Failed to load tasks:",
                     error
                 )
-
-            } finally {
-
-                setLoading(false)
 
             }
 

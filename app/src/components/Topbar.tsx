@@ -1,8 +1,4 @@
-import { useProfile } from "../context/ProfileContext"
-
 function Topbar() {
-    const { profile } = useProfile()
-
     const today = new Date()
 
     const formattedDate = today.toLocaleDateString("en-US", {
