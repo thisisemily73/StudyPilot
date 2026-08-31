@@ -44,9 +44,6 @@ export function SubjectProvider({
     const [subjects, setSubjects] =
         useState<Subject[]>([])
 
-    const [loading, setLoading] =
-        useState(true)
-
 
     useEffect(() => {
 
@@ -54,7 +51,6 @@ export function SubjectProvider({
 
             if (!user) {
                 setSubjects([])
-                setLoading(false)
                 return
             }
 
@@ -71,10 +67,6 @@ export function SubjectProvider({
                     "Failed to load subjects:",
                     error
                 )
-
-            } finally {
-
-                setLoading(false)
 
             }
 
