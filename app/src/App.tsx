@@ -8,9 +8,8 @@ import Home from './pages/Home'
 import Subjects from './pages/Subjects'
 import Planner from './pages/Planner'
 import Progress from './pages/Progress'
-import Schedule from './pages/Schedule'
+import Learn from './pages/Learn'
 import Settings from './pages/Settings'
-import Tasks from './pages/Tasks'
 import Auth from './pages/Auth'
 
 
@@ -38,8 +37,7 @@ function App() {
                         <Routes>
                             <Route path="/" element={<Home />} />
                             <Route path="/planner" element={<Planner />} />
-                            <Route path="/tasks" element={<Tasks />} />
-                            <Route path="/schedule" element={<Schedule />} />
+                            <Route path="/learn" element={<Learn />} />
                             <Route path="/subjects" element={<Subjects />} />
                             <Route path="/subjects/:subjectId" element={<SubjectDetails />} />
                             <Route path="/progress" element={<Progress />} />

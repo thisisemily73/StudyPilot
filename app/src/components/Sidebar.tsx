@@ -60,6 +60,13 @@ function Sidebar() {
                     </NavLink>
 
                     <NavLink
+                        to="/learn"
+                        className="sidebar-link"
+                    >
+                        Learn
+                    </NavLink>
+
+                    <NavLink
                         to="/progress"
                         className="sidebar-link"
                     >
