@@ -1,8 +1,13 @@
+import { useState } from "react"
 import { useSubjects } from "../context/SubjectContext"
+import { generateQuestion } from "../services/ai"
 
 function Learn() {
 
     const { subjects } = useSubjects()
+
+    const [question, setQuestion] =
+        useState("")
 
     return (
         <section className="learn-page">
@@ -24,6 +29,22 @@ function Learn() {
                 </p>
 
             </div>
+
+            {/* TEST THE AI WITH QUESTION GENERATION */}
+            <button
+                onClick={async () => {
+                    const generated =
+                        await generateQuestion()
+
+                    setQuestion(generated)
+                }}
+            >
+                Generate question
+            </button>
+
+            <p>
+                {question}
+            </p>
 
 
             {/* SUBJECTS */}
